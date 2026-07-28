@@ -13,7 +13,7 @@ export const WAVE_TIER_LIST: TierRow[] = [
     color: "#a78bfa",
     units: [
       "Sakuna (Heian)",
-      "Goji (Shinjuku)",
+      "Goji Shinjuku",
       "Ais",
       "Aldedo",
       "Shancks",
@@ -69,7 +69,7 @@ export const QUALITY_TIER_LIST: TierRow[] = [
   {
     label: "META",
     color: "#ef4444",
-    units: ["Sakuna (Heian)", "Goji (Shinjuku)", "Ais", "Aldedo", "Kenie", "Kiwusuke"],
+    units: ["Sakuna (Heian)", "Goji Shinjuku", "Ais", "Aldedo", "Kenie", "Kiwusuke"],
   },
   {
     label: "S",
