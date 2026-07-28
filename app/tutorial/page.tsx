@@ -126,8 +126,7 @@ export default function TutorialPage() {
           <div className="rounded-xl border border-ink-line bg-ink-surface p-5">
             <h3 className="font-display text-lg tracking-wide text-text">Cloning</h3>
             <p className="mt-2 font-body text-sm text-text-dim">
-              Costs essence (drops, wheel, VIP chest, events). Copies mutation, trait,
-              and level.
+              Costs essence (drops, wheel, VIP chest, events). Copies mutation and trait.
             </p>
           </div>
         </div>
@@ -148,14 +147,6 @@ export default function TutorialPage() {
             </div>
           ))}
         </div>
-        <a
-          href={GAMEPASS_SOURCE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-1 font-body text-sm text-rarity-rare transition-colors hover:underline"
-        >
-          Full breakdown &rarr;
-        </a>
       </section>
     </div>
   );

@@ -37,11 +37,6 @@ function TierRowShelf({ row }: { row: TierRow }) {
               }`}
             >
               {name}
-              {unit?.tag && (
-                <span className="font-mono text-[10px] text-text-faint">
-                  {unit.tag}
-                </span>
-              )}
             </span>
           );
         })}

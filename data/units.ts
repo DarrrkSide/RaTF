@@ -4,12 +4,12 @@ export type Unit = {
   id: string;
   name: string;
   rarity: Rarity;
-  tag?: string; // e.g. "Lv.7", "30%", "Demon"
+  tag?: string; // optional extra label
   image?: string; // optional real art — drop a file in /public/cards and set e.g. "/cards/sakuna-heian.png"
 };
 
-function u(name: string, rarity: Rarity, tag?: string): Unit {
-  return { id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, rarity, tag };
+function u(name: string, rarity: Rarity, tag?: string, image?: string): Unit {
+  return { id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, rarity, tag, image };
 }
 
 // Master unit list, transcribed from the community tier list screenshots.
@@ -19,9 +19,9 @@ function u(name: string, rarity: Rarity, tag?: string): Unit {
 // looks off — anime-style names are easy to misread from stylized banners.
 export const UNITS: Unit[] = [
   // Meta / top tier
-  u("Sakuna (Heian)", "God"),
-  u("Goji (Shinjuku)", "God", "Slayer Lv.7"),
-  u("Ais", "God"),
+  u("Sakuna (Heian)", "God", undefined, "/cards/anime-card-art.svg"),
+  u("Goji (Shinjuku)", "God", undefined, "/cards/anime-card-art.svg"),
+  u("Ais", "God", undefined, "/cards/anime-card-art.svg"),
   u("Aldedo", "Limited"),
   u("Kenie", "Secret"),
   u("Kiwusuke", "Mythic"),
@@ -29,10 +29,10 @@ export const UNITS: Unit[] = [
 
   // S tier
   u("Saitome (Serious)", "Limited"),
-  u("Bloodtear", "Limited", "Lv.1"),
-  u("Shancks", "Limited", "Lv.3 Demon"),
+  u("Bloodtear", "Limited"),
+  u("Shancks", "Limited"),
   u("Takamoso", "Limited"),
-  u("Yoichi", "God", "Lv.1 Demon"),
+  u("Yoichi", "God"),
   u("Aisen (Divine)", "God"),
 
   // A tier
@@ -46,11 +46,11 @@ export const UNITS: Unit[] = [
   u("Bakura", "Secret"),
   u("Yuwah", "Secret"),
   u("Duma", "Rare", "30%"),
-  u("Bills", "God", "Lv.1"),
+  u("Bills", "God"),
 
   // Progress
   u("Joti", "Mythic"),
-  u("Lulu", "God", "Lv.1 Hollow"),
+  u("Lulu", "God"),
   u("Michael", "God"),
   u("Brocolli", "Mythic"),
   u("Deyo", "Legendary"),

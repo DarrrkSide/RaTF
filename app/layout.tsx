@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter, JetBrains_Mono } from "next/font/google";
+import { Anton, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import DiscordButton from "@/components/DiscordButton";
 
-const display = Bebas_Neue({
+const display = Anton({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
