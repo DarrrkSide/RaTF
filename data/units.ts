@@ -20,7 +20,7 @@ function u(name: string, rarity: Rarity, tag?: string): Unit {
 export const UNITS: Unit[] = [
   // Meta / top tier
   u("Sakuna (Heian)", "God"),
-  u("Goji (Shinjuku)", "God"),
+  u("Goji Shinjuku", "God"),
   u("Ais", "God"),
   u("Aldedo", "Limited"),
   u("Kenie", "Secret"),
@@ -53,7 +53,7 @@ export const UNITS: Unit[] = [
   u("Lulu", "God"),
   u("Michael", "God"),
   u("Brocolli", "Mythic"),
-  u("Deyo", "Legendary"),
+  u("Deyo", "Secret"),
   u("Rengundam", "Mythic"),
   u("Fryren", "Secret"),
   u("Akazo", "Epic", "60%"),
