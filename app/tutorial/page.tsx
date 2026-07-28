@@ -4,7 +4,7 @@ import { GAMEPASS_PRIORITY, GAMEPASS_SOURCE_URL } from "@/data/gamepasses";
 
 function SectionHeading({ title }: { title: string }) {
   return (
-    <h2 className="mb-4 font-display text-2xl tracking-wide text-text sm:text-3xl">
+    <h2 className="mb-4 font-display text-2xl font-black tracking-[0.06em] text-text sm:text-3xl">
       {title}
     </h2>
   );
@@ -13,7 +13,7 @@ function SectionHeading({ title }: { title: string }) {
 export default function TutorialPage() {
   return (
     <div className="flex flex-col gap-14">
-      <h1 className="font-display text-4xl tracking-wide text-text sm:text-5xl">
+      <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
         Guide
       </h1>
 
@@ -28,7 +28,7 @@ export default function TutorialPage() {
                   className="h-2.5 w-2.5 rounded-full"
                   style={{ backgroundColor: tier.color }}
                 />
-                <h3 className="font-display text-lg tracking-wide" style={{ color: tier.color }}>
+                <h3 className="font-display text-lg font-black tracking-[0.06em]" style={{ color: tier.color }}>
                   {tier.tier}
                 </h3>
               </div>
@@ -115,7 +115,7 @@ export default function TutorialPage() {
         <SectionHeading title="Merging & cloning" />
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-xl border border-ink-line bg-ink-surface p-5">
-            <h3 className="font-display text-lg tracking-wide text-text">Merging</h3>
+            <h3 className="font-display text-lg font-black tracking-[0.06em] text-text">Merging</h3>
             <p className="mt-2 font-body text-sm text-text-dim">
               Two of the same anime, same evolution, merge into one stronger unit.
             </p>
@@ -124,7 +124,7 @@ export default function TutorialPage() {
             </p>
           </div>
           <div className="rounded-xl border border-ink-line bg-ink-surface p-5">
-            <h3 className="font-display text-lg tracking-wide text-text">Cloning</h3>
+            <h3 className="font-display text-lg font-black tracking-[0.06em] text-text">Cloning</h3>
             <p className="mt-2 font-body text-sm text-text-dim">
               Costs essence (drops, wheel, VIP chest, events). Copies mutation and trait.
             </p>

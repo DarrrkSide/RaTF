@@ -8,8 +8,8 @@ export type Unit = {
   image?: string; // optional real art — drop a file in /public/cards and set e.g. "/cards/sakuna-heian.png"
 };
 
-function u(name: string, rarity: Rarity, tag?: string, image?: string): Unit {
-  return { id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, rarity, tag, image };
+function u(name: string, rarity: Rarity, tag?: string): Unit {
+  return { id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name, rarity, tag };
 }
 
 // Master unit list, transcribed from the community tier list screenshots.
@@ -19,9 +19,9 @@ function u(name: string, rarity: Rarity, tag?: string, image?: string): Unit {
 // looks off — anime-style names are easy to misread from stylized banners.
 export const UNITS: Unit[] = [
   // Meta / top tier
-  u("Sakuna (Heian)", "God", undefined, "/cards/anime-card-art.svg"),
-  u("Goji (Shinjuku)", "God", undefined, "/cards/anime-card-art.svg"),
-  u("Ais", "God", undefined, "/cards/anime-card-art.svg"),
+  u("Sakuna (Heian)", "God"),
+  u("Goji (Shinjuku)", "God"),
+  u("Ais", "God"),
   u("Aldedo", "Limited"),
   u("Kenie", "Secret"),
   u("Kiwusuke", "Mythic"),

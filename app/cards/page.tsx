@@ -45,7 +45,7 @@ export default function CardsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-display text-4xl tracking-wide text-text sm:text-5xl">
+        <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
           Cards
         </h1>
         <p className="mt-1 font-mono text-xs uppercase tracking-widest text-text-faint">
@@ -90,7 +90,7 @@ export default function CardsPage() {
 
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-ink-line p-12 text-center">
-          <p className="font-display text-2xl text-text-dim">No units match</p>
+          <p className="font-display text-2xl font-black tracking-[0.06em] text-text-dim">No units match</p>
           <p className="mt-1 font-body text-sm text-text-faint">
             Try a different search or turn a rarity filter back on.
           </p>

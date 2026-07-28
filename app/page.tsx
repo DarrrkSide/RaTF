@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col gap-16">
       <section className="flex flex-col items-start gap-6 py-8 sm:py-16">
-        <h1 className="font-display text-5xl leading-[0.95] tracking-wide text-text sm:text-7xl">
+        <h1 className="font-display text-5xl font-black leading-[0.95] tracking-[0.08em] text-text sm:text-7xl">
           ROLL ANIME
           <br />
           TO FIGHT
@@ -43,7 +43,7 @@ export default function HomePage() {
 
       <section>
         <div className="mb-4 flex items-end justify-between">
-          <h2 className="font-display text-2xl tracking-wide text-text">Meta spotlight</h2>
+          <h2 className="font-display text-2xl font-black tracking-[0.06em] text-text">Meta spotlight</h2>
           <Link href="/cards" className="font-body text-sm text-text-dim transition-colors hover:text-text">
             View all &rarr;
           </Link>

@@ -19,7 +19,7 @@ function TierRowShelf({ row }: { row: TierRow }) {
       >
         <div className="flex items-center gap-2">
           <span className="h-8 w-1.5 rounded-full" style={{ backgroundColor: row.color }} />
-          <span className="font-display text-3xl tracking-wide">{row.label}</span>
+          <span className="font-display text-3xl font-black tracking-[0.06em]">{row.label}</span>
         </div>
         {row.sublabel && (
           <p className="font-body text-xs text-text-faint sm:pl-3.5">{row.sublabel}</p>
@@ -52,7 +52,7 @@ export default function TierListPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="font-display text-4xl tracking-wide text-text sm:text-5xl">
+        <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
           Tier List
         </h1>
         <div className="inline-flex gap-1 rounded-full border border-ink-line bg-ink-surface p-1">
