@@ -33,7 +33,7 @@ export const UNITS: Unit[] = [
   u("Shancks", "Limited"),
   u("Takamoso", "Limited"),
   u("Yoichi", "God"),
-  u("Aisen (Divine)", "God"),
+  u("Aisen Divine", "God"),
 
   // A tier
   u("Ulquiopta", "Secret"),
@@ -43,7 +43,7 @@ export const UNITS: Unit[] = [
   u("Entomancer", "Limited"),
   u("Yamumoto", "God"),
   u("Genes", "Limited"),
-  u("Bakura", "Secret"),
+  u("Brakura", "Secret"),
   u("Yuwah", "Secret"),
   u("Duma", "Secret"),
   u("Bills", "God"),
