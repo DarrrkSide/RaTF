@@ -37,7 +37,7 @@ function u(name: string, rarity: Rarity, value?: number, tag?: string): UnitDeta
 
 const GOD_UNITS: UnitDetails[] = [
   u("Sakuna (Heian)", "God",500000),
-  u("Goji Shinjuku", "God", 90000),
+  u("Goji Shinjuku", "God", 190000),
   u("Ais", "God", 225000),
   u("Wise", "God", 130000),
   u("Yoichi", "God", 110000),
