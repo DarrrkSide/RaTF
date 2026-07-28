@@ -32,11 +32,22 @@ function TierRowShelf({ row }: { row: TierRow }) {
           return (
             <span
               key={name}
-              className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-body text-xs font-medium sm:text-sm ${
+              className={`inline-flex items-center gap-2 rounded-lg border px-2.5 py-1.5 font-body text-xs font-medium sm:text-sm ${
                 meta ? `${meta.border} ${meta.bg} ${meta.text}` : "border-ink-line text-text-dim"
               }`}
             >
-              {name}
+              {unit?.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={unit.image}
+                  alt={name}
+                  className="h-7 w-7 rounded-md object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <span className="h-7 w-7 rounded-md border border-current/20 bg-black/10" />
+              )}
+              <span>{name}</span>
             </span>
           );
         })}

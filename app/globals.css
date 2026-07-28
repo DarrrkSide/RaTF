@@ -17,12 +17,35 @@ html {
 }
 
 body {
+  position: relative;
+  overflow-x: hidden;
   background-color: #08090d;
   background-image:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(239, 68, 68, 0.12), transparent),
     radial-gradient(ellipse 60% 40% at 90% 10%, rgba(167, 139, 250, 0.08), transparent);
   color: #eef0f6;
   font-family: var(--font-body);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.07) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06) 0 1px, transparent 2px),
+    radial-gradient(circle at 85% 75%, rgba(255,255,255,0.04) 0 1px, transparent 2px);
+  background-size: 220px 220px, 260px 260px, 300px 300px, 240px 240px;
+  opacity: 0.55;
+  animation: drift 22s linear infinite;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {
@@ -115,4 +138,9 @@ select:focus-visible,
 }
 .fade-in {
   animation: fade-in 0.3s ease-out both;
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-40px, -40px, 0); }
 }

@@ -19,7 +19,7 @@ export default function NavBar() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="font-display text-xl tracking-[0.2em] text-text sm:text-2xl">
-            RaTF <span className="text-rarity-god">TF</span>
+            Ra<span className="text-rarity-god">TF</span>
           </span>
         </Link>
         <nav className="flex flex-wrap items-center gap-4 border-l border-ink-line/70 pl-3 sm:gap-6 sm:pl-4">

@@ -15,7 +15,7 @@ const QUICK_LINKS = [
 export default function HomePage() {
   return (
     <div className="flex flex-col gap-16">
-      <section className="flex flex-col items-start gap-6 py-8 sm:py-16">
+      <section className="flex min-h-[calc(100vh-8rem)] flex-col items-start justify-center gap-6 bg-transparent p-0 sm:min-h-[calc(100vh-7rem)] sm:p-0">
         <h1 className="font-display text-5xl font-black leading-[0.95] tracking-[0.08em] text-text sm:text-7xl">
           ROLL ANIME
           <br />

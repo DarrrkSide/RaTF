@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className="min-h-screen font-body">
         <NavBar />
         <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">{children}</main>
-        <footer className="border-t border-ink-line/70 py-8 text-center font-body text-xs text-text-faint">
+        <footer className="mx-auto max-w-6xl border-t border-ink-line/70 px-4 py-8 text-center font-body text-xs text-text-faint sm:px-6">
           Website developed and design by Eternal (@etx1_) on Discord.
         </footer>
         <DiscordButton />
