@@ -42,12 +42,14 @@ function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, 
             >
               {image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={image}
-                  alt={name}
-                  className="h-14 w-14 rounded-md object-contain"
-                  loading="lazy"
-                />
+                <div className="h-14 w-14 overflow-hidden rounded-md">
+                  <img
+                    src={image}
+                    alt={name}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
               ) : (
                 <span className="h-14 w-14 rounded-md border border-current/20 bg-black/10" />
               )}

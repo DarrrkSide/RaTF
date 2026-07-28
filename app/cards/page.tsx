@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import { Unit } from "@/data/units";
 import { RARITY_ORDER, RARITY_META, Rarity } from "@/data/rarity";
 import CardTile from "@/components/CardTile";
+import Portal from "@/components/Portal";
 
 export default function CardsPage() {
   const [query, setQuery] = useState("");
@@ -121,29 +122,31 @@ export default function CardsPage() {
       )}
 
       {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setSelected(null)} />
-          <div className="relative w-[90%] max-w-3xl rounded-xl border bg-ink-surface p-6 shadow-lg">
-            <div className="flex justify-between">
-              <h2 className="font-display text-2xl font-black">{selected.name}</h2>
-              <button className="text-text-dim" onClick={() => setSelected(null)}>Close</button>
-            </div>
-            <div className="mt-4 flex gap-4">
-              <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg border" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
-                {selected.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={selected.image} alt={selected.name} className="h-full w-full object-contain" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">No image</div>
-                )}
+        <Portal>
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40" onClick={() => setSelected(null)} />
+            <div className="relative w-[90%] max-w-3xl rounded-xl border bg-ink-surface p-6 shadow-lg">
+              <div className="flex justify-between">
+                <h2 className="font-display text-2xl font-black">{selected.name}</h2>
+                <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
               </div>
-              <div>
-                <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
-                <div className="mt-4 prose">No bio yet.</div>
+              <div className="mt-4 flex gap-4">
+                <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg border" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
+                  {selected.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={selected.image} alt={selected.name} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">No image</div>
+                  )}
+                </div>
+                <div>
+                  <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
+                  <div className="mt-4 prose">No bio yet.</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </Portal>
       )}
     </div>
   );
