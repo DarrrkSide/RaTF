@@ -227,38 +227,40 @@ export default function TradesPage() {
       </div>
 
       {mode === "value" ? (
-        <div className="rounded-2xl border border-ink-line bg-ink-surface p-6">
-          <h3 className="font-display text-xl font-black">Value tracker</h3>
-          <p className="mt-2 text-sm text-text-faint">Each unit card shows its image, name, and value estimate so you can compare quickly.</p>
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {availableUnits.map((unit) => {
-              const value = getAdjustedValue({ unitId: unit.id, mutation: null, trait: null, level: 1 }, availableUnits);
-              return (
-                <div key={unit.id} className="rounded-xl border border-ink-line/70 p-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-ink-line/70 bg-ink">
-                      {unit.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={unit.image} alt={unit.name} className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">No image</div>
-                      )}
+        <div className="relative">
+          <div className="rounded-2xl border border-ink-line bg-ink-surface p-6">
+            <h3 className="font-display text-xl font-black">Value tracker</h3>
+            <p className="mt-2 text-sm text-text-faint">Each unit card shows its image, name, and value estimate so you can compare quickly.</p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {availableUnits.map((unit) => {
+                const value = getAdjustedValue({ unitId: unit.id, mutation: null, trait: null, level: 1 }, availableUnits);
+                return (
+                  <div key={unit.id} className="rounded-xl border border-ink-line/70 p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-ink-line/70 bg-ink">
+                        {unit.image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={unit.image} alt={unit.name} className="h-full w-full object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">No image</div>
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="truncate font-semibold text-text">{unit.name}</h4>
+                        <p className="text-xs uppercase tracking-[0.2em] text-text-faint">{unit.rarity}</p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <h4 className="truncate font-semibold text-text">{unit.name}</h4>
-                      <p className="text-xs uppercase tracking-[0.2em] text-text-faint">{unit.rarity}</p>
+                    <div className="mt-3 rounded-lg bg-ink px-3 py-2 text-sm text-text-faint">
+                      Value: <span className="font-semibold text-text">{value}</span>
                     </div>
                   </div>
-                  <div className="mt-3 rounded-lg bg-ink px-3 py-2 text-sm text-text-faint">
-                    Value: <span className="font-semibold text-text">{value}</span>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
           <button
             onClick={() => openValuePanel("give", 0)}
-            className="fixed bottom-5 left-5 z-[60] flex h-12 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg sm:bottom-6 sm:left-6"
+            className="fixed bottom-5 left-5 z-[60] flex h-12 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-300 hover:scale-105 active:scale-95 sm:bottom-6 sm:left-6"
           >
             Edit value modifiers
           </button>

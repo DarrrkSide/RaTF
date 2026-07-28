@@ -1,9 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { NextResponse } from "next/server";
 
-export async function GET(_: Request, { params }: { params: { image: string } }) {
-  const image = params.image;
+export async function GET(_: Request, { params }: { params: Promise<{ image: string }> }) {
+  const { image } = await params;
   const filePath = path.join(process.cwd(), "app", "cards", image);
   if (!fs.existsSync(filePath)) return new Response("Not found", { status: 404 });
   const buffer = fs.readFileSync(filePath);
