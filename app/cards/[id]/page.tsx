@@ -68,11 +68,11 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
               <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Trait</p>
-              <p className="mt-2 text-lg font-semibold text-text">+{breakdown.traitBonus}</p>
+              <p className="mt-2 text-lg font-semibold text-text">×{breakdown.traitMultiplier}</p>
             </div>
             <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
               <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Level</p>
-              <p className="mt-2 text-lg font-semibold text-text">+{breakdown.levelBonus} (lvl {breakdown.level})</p>
+              <p className="mt-2 text-lg font-semibold text-text">×{breakdown.levelMultiplier.toFixed(2)} (lvl {breakdown.level})</p>
             </div>
           </div>
         ) : (

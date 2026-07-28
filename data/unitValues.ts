@@ -1,9 +1,8 @@
 import type { Unit } from "./units";
 
 export type ModifierBonuses = {
-  mutationBonus: number;
-  traitBonus: number;
-  levelBonusPerLevel: number;
+  traitMultipliers: Record<string, number>;
+  levelMultipliers: Record<number, number>;
 };
 
 export type ModifierSettings = {
@@ -13,9 +12,34 @@ export type ModifierSettings = {
 };
 
 export const DEFAULT_MODIFIER_BONUSES: ModifierBonuses = {
-  mutationBonus: 6000,
-  traitBonus: 4000,
-  levelBonusPerLevel: 10000,
+  traitMultipliers: {
+    Sharp: 1.02,
+    Swift: 1.02,
+    Strong: 1.04,
+    Deadly: 1.04,
+    Rush: 1.1,
+    Powerful: 1.1,
+    Deadeye: 1.2,
+    Juggernaut: 1.2,
+    Lethal: 1.2,
+    Royal: 1.2,
+    Entrepreneur: 1.45,
+    Reaper: 1.5,
+    Cloner: 1.25,
+    Ghost: 1.4,
+    Superior: 1.65,
+    Cursed: 1.85,
+    Viking: 1.95,
+  },
+  levelMultipliers: {
+    1: 1,
+    2: 1.05,
+    3: 1.1,
+    4: 1.15,
+    5: 1.2,
+    6: 1.3,
+    7: 1.45
+  },
 };
 
 export const MUTATION_VALUE_MULTIPLIERS: Record<string, number> = {
@@ -25,12 +49,21 @@ export const MUTATION_VALUE_MULTIPLIERS: Record<string, number> = {
   Destroyer: 1.5,
   Hollow: 1.6,
   Nova: 1.8,
-  Astronaut: 2,
+  Astronaut: 2.2,
 };
 
 export function getMutationValueMultiplier(mutation?: string | null) {
   if (!mutation) return 1;
   return MUTATION_VALUE_MULTIPLIERS[mutation] ?? 1;
+}
+
+function getTraitMultiplier(traitName?: string | null, bonuses: ModifierBonuses = DEFAULT_MODIFIER_BONUSES) {
+  if (!traitName) return 1;
+  return bonuses.traitMultipliers[traitName] ?? 1;
+}
+
+function getLevelMultiplier(level: number, bonuses: ModifierBonuses = DEFAULT_MODIFIER_BONUSES) {
+  return bonuses.levelMultipliers[level] ?? 1;
 }
 
 export function getUnitDisplayValue(
@@ -44,8 +77,8 @@ export function getUnitDisplayValue(
   const level = Math.max(1, Math.min(7, modifierSettings?.level ?? 1));
   let value = (unit.value ?? 0) * getMutationValueMultiplier(modifierSettings?.mutation);
 
-  if (modifierSettings?.trait) value += bonuses.traitBonus;
-  value += level * bonuses.levelBonusPerLevel;
+  value *= getTraitMultiplier(modifierSettings?.trait, bonuses);
+  value *= getLevelMultiplier(level, bonuses);
 
   return value;
 }
@@ -60,17 +93,15 @@ export function getModifierBreakdown(
   const level = Math.max(1, Math.min(7, modifierSettings?.level ?? 1));
   const baseValue = unit.value ?? 0;
   const mutationMultiplier = getMutationValueMultiplier(modifierSettings?.mutation);
-  const mutationValue = baseValue * mutationMultiplier;
-  const traitBonus = modifierSettings?.trait ? bonuses.traitBonus : 0;
-  const levelBonus = level * bonuses.levelBonusPerLevel;
-  const total = mutationValue + traitBonus + levelBonus;
+  const traitMultiplier = getTraitMultiplier(modifierSettings?.trait, bonuses);
+  const levelMultiplier = getLevelMultiplier(level, bonuses);
+  const total = baseValue * mutationMultiplier * traitMultiplier * levelMultiplier;
 
   return {
     baseValue,
     mutationMultiplier,
-    mutationValue,
-    traitBonus,
-    levelBonus,
+    traitMultiplier,
+    levelMultiplier,
     total,
     level,
   };
