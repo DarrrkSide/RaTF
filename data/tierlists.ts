@@ -56,7 +56,7 @@ export const WAVE_TIER_LIST: TierRow[] = [
       "Joti", "Nonomi", "Deyo", "Sakuna", "Bills", "Goji", "Lulu", "Grimmick",
       "Jerin", "Michael", "Noruto", "Remura", "Zinichou", "Sukora", "Duma",
       "Coyote", "Fryren", "Tanjuro", "Brocolli", "Itadoro", "Rengundam",
-      "Coke", "Mobi", "Shinrat", "Akazo", "Manji", "Bon", "Orihemi", "Erwon",
+       "Mobi", "Shinrat", "Akazo", "Manji", "Bon", "Orihemi", "Erwon",
       "Rinnju", "Janwoo", "Mika", "Acer", "Yoriki", "Hoshira", "Kokushiro",
       "Muscle", "Usoff", "Got", "Saitomo", "Truck", "Zero", "Keririn", "Picurro",
     ],
