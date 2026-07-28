@@ -89,10 +89,6 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
           </>
         )}
 
-        <svg viewBox="0 0 100 100" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
-          <polygon points="50,6 90,30 90,70 50,94 10,70 10,30" fill="none" stroke={meta.hex} strokeWidth={3} strokeOpacity={0.9} />
-        </svg>
-
         <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: meta.hex }} />
       </div>
 
