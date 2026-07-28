@@ -35,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <body className="min-h-screen font-body">
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable}`}>
+      <body suppressHydrationWarning className="min-h-screen font-body">
         <NavBar />
         <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">{children}</main>
         <footer className="mx-auto max-w-6xl border-t border-ink-line/70 px-4 py-8 text-center font-body text-xs text-text-faint sm:px-6">
