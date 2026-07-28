@@ -341,137 +341,138 @@ export default function TradesPage() {
         </div>
       )}
 
-      {mode === "value" && (
-        <button
-          onClick={() => {
-            setModifierDraft(valueListModifier);
-            setModifierPanelOpen(true);
-          }}
-          className="fixed bottom-5 left-5 z-[60] flex h-11 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg sm:bottom-6 sm:left-6"
-        >
-          Edit modifier value
-        </button>
-      )}
+      <div className="sticky bottom-4 z-40 ml-0 mr-4 mt-2 flex w-fit flex-col items-end gap-2 sm:mr-5">
+        <div className="relative">
+          <div className="flex flex-col gap-2">
+            {mode === "value" && (
+              <button
+                onClick={() => {
+                  setModifierDraft(valueListModifier);
+                  setModifierPanelOpen(true);
+                }}
+                className="flex h-12 items-center whitespace-nowrap rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Edit modifier value
+              </button>
+            )}
 
-      {selectedSlot && (
-        <button
-          onClick={() => openModifierEditor(selectedSlot.side, selectedSlot.slotIndex)}
-          className="fixed bottom-5 left-5 z-[60] flex h-11 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg sm:bottom-6 sm:left-6"
-        >
-          Edit selected slot
-        </button>
-      )}
+            {selectedSlot && (
+              <button
+                onClick={() => openModifierEditor(selectedSlot.side, selectedSlot.slotIndex)}
+                className="flex h-12 items-center whitespace-nowrap rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Edit selected slot
+              </button>
+            )}
+          </div>
 
-      {modifierPanelOpen && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3 sm:p-4">
-          <div className="flex max-h-[90vh] w-full max-w-[20rem] flex-col overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
-            <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
-              <h3 className="font-display text-lg font-black">Modifier values</h3>
-              <button onClick={() => setModifierPanelOpen(false)} className="text-2xl text-text-faint">×</button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-3">
-                <label className="block text-sm text-text-faint">
-                  Mutation
-                  <select value={modifierDraft.mutation ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                    <option value="">None</option>
-                    {MUTATIONS.map((mutation) => (
-                      <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm text-text-faint">
-                  Trait
-                  <select value={modifierDraft.trait ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                    <option value="">None</option>
-                    {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
-                      <option key={trait.name} value={trait.name}>{trait.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm text-text-faint">
-                  Level
-                  <input type="number" min="1" max={MAX_LEVEL} value={modifierDraft.level} onChange={(e) => setModifierDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
-                </label>
+          {modifierPanelOpen && (
+            <div className="absolute bottom-full left-0 mb-3 w-[min(84vw,18rem)] max-w-[18rem] overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
+              <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
+                <h3 className="font-display text-lg font-black">Modifier values</h3>
+                <button onClick={() => setModifierPanelOpen(false)} className="pr-1 text-2xl text-text-faint">×</button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-4">
+                <div className="space-y-3">
+                  <label className="block text-sm text-text-faint">
+                    Mutation
+                    <select value={modifierDraft.mutation ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                      <option value="">None</option>
+                      {MUTATIONS.map((mutation) => (
+                        <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block text-sm text-text-faint">
+                    Trait
+                    <select value={modifierDraft.trait ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                      <option value="">None</option>
+                      {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
+                        <option key={trait.name} value={trait.name}>{trait.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="block text-sm text-text-faint">
+                    Level
+                    <input type="number" min="1" max={MAX_LEVEL} value={modifierDraft.level} onChange={(e) => setModifierDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
+                  </label>
+                </div>
+              </div>
+              <div className="border-t border-ink-line px-4 py-3">
+                <button onClick={applyModifierPreset} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">Apply</button>
               </div>
             </div>
-            <div className="border-t border-ink-line px-4 py-3">
-              <button onClick={applyModifierPreset} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">Apply</button>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {modalState.type && selectedSlot && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4">
-          <div className="relative flex max-h-[85vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
-            <button onClick={() => setModalState({ type: null, side: null, slotIndex: null })} className="absolute right-3 top-3 z-10 text-2xl text-text-faint">×</button>
-            <div className="overflow-y-auto px-4 py-5 sm:px-5 sm:py-6">
-              {modalState.type === "unit" ? (
-                <div>
-                  <h3 className="font-display text-lg font-black">Choose a unit</h3>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {availableUnits.map((unit) => {
-                      const value = getUnitDisplayValue(unit, availableUnits);
-                      return (
-                        <button key={unit.id} onClick={() => selectUnit(unit.id)} className="rounded-xl border border-ink-line/70 bg-ink p-2.5 text-left">
-                          <div className="flex items-center gap-2">
-                            <div className="h-10 w-10 overflow-hidden rounded-lg border border-ink-line/70 bg-ink-surface">
-                              {unit.image ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img src={unit.image} alt={unit.name} className="h-full w-full object-cover" />
-                              ) : (
-                                <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">img</div>
-                              )}
+          {modalState.type && selectedSlot && (
+            <div className="absolute bottom-full left-0 mb-3 w-[min(84vw,32rem)] max-w-[32rem] overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
+              <button onClick={() => setModalState({ type: null, side: null, slotIndex: null })} className="absolute right-3 top-3 z-10 pr-1 text-2xl text-text-faint">×</button>
+              <div className="overflow-y-auto px-4 py-5 sm:px-5 sm:py-6">
+                {modalState.type === "unit" ? (
+                  <div>
+                    <h3 className="font-display text-lg font-black">Choose a unit</h3>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      {availableUnits.map((unit) => {
+                        const value = getUnitDisplayValue(unit, availableUnits);
+                        return (
+                          <button key={unit.id} onClick={() => selectUnit(unit.id)} className="rounded-xl border border-ink-line/70 bg-ink p-2.5 text-left">
+                            <div className="flex items-center gap-2">
+                              <div className="h-10 w-10 overflow-hidden rounded-lg border border-ink-line/70 bg-ink-surface">
+                                {unit.image ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={unit.image} alt={unit.name} className="h-full w-full object-cover" />
+                                ) : (
+                                  <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">img</div>
+                                )}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="truncate font-semibold text-text">{unit.name}</p>
+                                <p className="text-xs text-text-faint">Value: {value}</p>
+                              </div>
                             </div>
-                            <div className="min-w-0">
-                              <p className="truncate font-semibold text-text">{unit.name}</p>
-                              <p className="text-xs text-text-faint">Value: {value}</p>
-                            </div>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <h3 className="font-display text-lg font-black">Adjust modifiers</h3>
-                  <div className="mt-3 space-y-3">
-                    <label className="block text-sm text-text-faint">
-                      Mutation
-                      <select value={draft.mutation ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                        <option value="">None</option>
-                        {MUTATIONS.map((mutation) => (
-                          <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="block text-sm text-text-faint">
-                      Trait
-                      <select value={draft.trait ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                        <option value="">None</option>
-                        {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
-                          <option key={trait.name} value={trait.name}>{trait.name}</option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="block text-sm text-text-faint">
-                      Level
-                      <input type="number" min="1" max={MAX_LEVEL} value={draft.level} onChange={(e) => setDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      <button onClick={saveSlot} className="rounded-full border border-rarity-legendary px-4 py-2 text-sm font-semibold text-rarity-legendary">Save</button>
-                      <button onClick={clearSlot} className="rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">Clear</button>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div>
+                    <h3 className="font-display text-lg font-black">Adjust modifiers</h3>
+                    <div className="mt-3 space-y-3">
+                      <label className="block text-sm text-text-faint">
+                        Mutation
+                        <select value={draft.mutation ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                          <option value="">None</option>
+                          {MUTATIONS.map((mutation) => (
+                            <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="block text-sm text-text-faint">
+                        Trait
+                        <select value={draft.trait ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                          <option value="">None</option>
+                          {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
+                            <option key={trait.name} value={trait.name}>{trait.name}</option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="block text-sm text-text-faint">
+                        Level
+                        <input type="number" min="1" max={MAX_LEVEL} value={draft.level} onChange={(e) => setDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        <button onClick={saveSlot} className="rounded-full border border-rarity-legendary px-4 py-2 text-sm font-semibold text-rarity-legendary">Save</button>
+                        <button onClick={clearSlot} className="rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">Clear</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
-
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Anton, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
   title: "Roll Anime to Fight — Unofficial Guide",
   description:
     "Tier lists, unit cards, traits, mutations, and upgrade guides for the Roblox game Roll Anime to Fight.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -43,6 +47,7 @@ export default function RootLayout({
           Website developed and design by Eternal (@etx1_) on Discord.
         </footer>
         <DiscordButton />
+        <Analytics />
       </body>
     </html>
   );
