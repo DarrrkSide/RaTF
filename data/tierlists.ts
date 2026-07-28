@@ -31,7 +31,7 @@ export const WAVE_TIER_LIST: TierRow[] = [
   {
     label: "180",
     color: "#fb923c",
-    units: ["Aisen (Divine)", "Isoge (True Form)", "Takamoso", "Entomancer", "Galactic Garo"],
+    units: ["Aisen Divine", "Isogo True Form", "Takamoso", "Entomancer", "Galactic Garo"],
   },
   {
     label: "170",
