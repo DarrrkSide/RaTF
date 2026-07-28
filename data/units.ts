@@ -30,15 +30,14 @@ export const UNITS: Unit[] = [
   // S tier
   u("Saitome (Serious)", "Limited"),
   u("Bloodtear", "Limited"),
-  u("Shancks", "Limited"),
   u("Takamoso", "Limited"),
   u("Yoichi", "God"),
   u("Aisen Divine", "God"),
- u("Shanks", "God"),
+ u("Shancks", "God"),
 
   // A tier
   u("Ulquiopta", "Secret"),
-  u("Isoge (True Form)", "God"),
+  u("Isogo True Form", "God"),
   u("Shimo Haya", "Mythic"),
   u("Yutta", "Secret"),
   u("Entomancer", "Limited"),
@@ -103,7 +102,6 @@ export const UNITS: Unit[] = [
   u("Zero", "Common"),
   u("Keririn", "Common"),
   u("Luppi", "Common"),
- u("Isogo True Form", "God"),
 
 
 ];
