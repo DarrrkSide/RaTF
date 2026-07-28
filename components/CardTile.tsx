@@ -70,15 +70,13 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
       >
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <div className="absolute inset-0 overflow-hidden">
-            <img
-              src={unit.image}
-              alt={unit.name}
-              className="h-full w-full object-cover transform scale-105"
-              loading="lazy"
-              onError={() => setImgFailed(true)}
-            />
-          </div>
+          <img
+            src={unit.image}
+            alt={unit.name}
+            className="max-h-full max-w-full object-contain"
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+          />
         ) : (
           <>
             <Emblem unit={unit} hex={meta.hex} />
