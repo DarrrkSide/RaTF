@@ -40,7 +40,7 @@ export default function RootLayout({
         <NavBar />
         <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">{children}</main>
         <footer className="border-t border-ink-line/70 py-8 text-center font-body text-xs text-text-faint">
-          Fan-made — not affiliated with Roll Anime to Fight or Roblox.
+          Website developed and design by Eternal (@etx1_) on Discord.
         </footer>
         <DiscordButton />
       </body>

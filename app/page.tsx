@@ -19,7 +19,7 @@ export default function HomePage() {
         <h1 className="font-display text-5xl font-black leading-[0.95] tracking-[0.08em] text-text sm:text-7xl">
           ROLL ANIME
           <br />
-          TO FIGHT
+          <span className="text-rarity-god">TO FIGHT</span>
         </h1>
         <p className="max-w-md font-body text-sm text-text-dim sm:text-base">
           Tier lists, unit cards, and everything else you need in one place.
