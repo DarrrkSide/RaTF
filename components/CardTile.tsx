@@ -20,13 +20,10 @@ function initials(name: string) {
   return (parts[0][0] + parts[1][0]).toUpperCase();
 }
 
-// Deterministic placeholder emblem so every card looks distinct even
-// without real art. Swap in unit.image (see data/units.ts) whenever real
-// card art is available and this is skipped automatically.
 function Emblem({ unit, hex }: { unit: Unit; hex: string }) {
   const seed = hash(unit.id);
   const rotate = seed % 360;
-  const points = 5 + (seed % 3); // 5–7 sided
+  const points = 5 + (seed % 3);
   const radius = 30;
   const cx = 40;
   const cy = 40;
@@ -52,25 +49,31 @@ function Emblem({ unit, hex }: { unit: Unit; hex: string }) {
   );
 }
 
-export default function CardTile({ unit }: { unit: Unit }) {
+export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Unit) => void }) {
   const meta = RARITY_META[unit.rarity];
   const [imgFailed, setImgFailed] = useState(false);
-  const showImage = unit.image && !imgFailed;
+  const showImage = Boolean(unit.image && !imgFailed);
 
   return (
     <div
-      className={`group relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-transform duration-300 hover:-translate-y-1 ${meta.border}`}
+      onClick={() => onOpen?.(unit)}
+      role="button"
+      tabIndex={0}
+      className={`relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-transform duration-300 hover:-translate-y-1 ${meta.border} cursor-pointer`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") onOpen?.(unit);
+      }}
     >
       <div
-        className="relative flex h-24 items-center justify-center overflow-hidden"
-        style={{ backgroundColor: `${meta.hex}14` }}
+        className="relative flex h-28 items-center justify-center overflow-hidden"
+        style={{ backgroundColor: `${meta.hex}08` }}
       >
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={unit.image}
             alt={unit.name}
-            className="h-full w-full object-cover"
+            className="max-h-full max-w-full object-contain"
             loading="lazy"
             onError={() => setImgFailed(true)}
           />
@@ -85,15 +88,12 @@ export default function CardTile({ unit }: { unit: Unit }) {
             </span>
           </>
         )}
-        <span
-          className="absolute left-0 top-0 h-full w-1"
-          style={{ backgroundColor: meta.hex }}
-        />
+
+        <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: meta.hex }} />
       </div>
+
       <div className="flex flex-1 flex-col gap-1.5 p-2.5">
-        <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">
-          {unit.name}
-        </h3>
+        <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">{unit.name}</h3>
         <span
           className="w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider"
           style={{ color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}

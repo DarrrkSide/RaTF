@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { WAVE_TIER_LIST, QUALITY_TIER_LIST, TierRow } from "@/data/tierlists";
 import { getUnitByName } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
+
+type UnitMap = Record<string, { image?: string }>;
 
 const TABS = [
   { key: "wave", label: "Wave Clear", rows: WAVE_TIER_LIST },
   { key: "quality", label: "Quality", rows: QUALITY_TIER_LIST },
 ] as const;
 
-function TierRowShelf({ row }: { row: TierRow }) {
+function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, { image?: string }>; }) {
   return (
     <div className="flex flex-col gap-3 border-b border-ink-line/70 py-5 sm:flex-row sm:gap-6">
       <div
@@ -29,6 +31,8 @@ function TierRowShelf({ row }: { row: TierRow }) {
         {row.units.map((name) => {
           const unit = getUnitByName(name);
           const meta = unit ? RARITY_META[unit.rarity] : null;
+          const id = unit ? unit.id : name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          const image = unitMap[id]?.image;
           return (
             <span
               key={name}
@@ -36,16 +40,18 @@ function TierRowShelf({ row }: { row: TierRow }) {
                 meta ? `${meta.border} ${meta.bg} ${meta.text}` : "border-ink-line text-text-dim"
               }`}
             >
-              {unit?.image ? (
+              {image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={unit.image}
-                  alt={name}
-                  className="h-7 w-7 rounded-md object-cover"
-                  loading="lazy"
-                />
+                <div className="h-14 w-14 overflow-hidden rounded-md">
+                  <img
+                    src={image}
+                    alt={name}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
               ) : (
-                <span className="h-7 w-7 rounded-md border border-current/20 bg-black/10" />
+                <span className="h-14 w-14 rounded-md border border-current/20 bg-black/10" />
               )}
               <span>{name}</span>
             </span>
@@ -59,6 +65,15 @@ function TierRowShelf({ row }: { row: TierRow }) {
 export default function TierListPage() {
   const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("wave");
   const active = TABS.find((t) => t.key === tab)!;
+  const [unitMap, setUnitMap] = useState<UnitMap>({});
+
+  useEffect(() => {
+    fetch('/api/cards/list').then(r => r.json()).then((items: any[]) => {
+      const map: UnitMap = {};
+      items.forEach(it => { map[it.id] = { image: it.image }; });
+      setUnitMap(map);
+    }).catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col gap-8">
@@ -85,7 +100,7 @@ export default function TierListPage() {
 
       <div key={tab} className="fade-in rounded-2xl border border-ink-line bg-ink-surface px-4 sm:px-6">
         {active.rows.map((row) => (
-          <TierRowShelf key={row.label} row={row} />
+          <TierRowShelf key={row.label} row={row} unitMap={unitMap} />
         ))}
       </div>
     </div>
