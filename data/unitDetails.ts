@@ -36,32 +36,32 @@ function u(name: string, rarity: Rarity, value?: number, tag?: string): UnitDeta
 }
 
 const GOD_UNITS: UnitDetails[] = [
-  u("Sakuna (Heian)", "God",300000),
+  u("Sakuna (Heian)", "God",500000),
   u("Goji Shinjuku", "God", 90000),
-  u("Ais", "God", 125000),
-  u("Wise", "God", 30000),
-  u("Yoichi", "God", 17000),
-  u("Aisen Divine", "God", 70000),
-  u("Shancks", "God", 27000),
+  u("Ais", "God", 225000),
+  u("Wise", "God", 130000),
+  u("Yoichi", "God", 110000),
+  u("Aisen Divine", "God", 150000),
+  u("Shancks", "God", 120000),
   u("Isogo True Form", "God", 69000),
-  u("Yamumoto", "God", 54000),
-  u("Bills", "God", 38000),
-  u("Lulu", "God", 34000),
-  u("Michael", "God", 42000),
-  u("Remura", "God", 10000),
+  u("Yamumoto", "God", 16000),
+  u("Bills", "God", 138000),
+  u("Lulu", "God", 99000),
+  u("Michael", "God", 172000),
+  u("Remura", "God", 70000),
 ];
 
 const LIMITED_UNITS: UnitDetails[] = [
-  u("Aldedo", "Limited", 98000),
-  u("Saitome (Serious)", "Limited", 84000),
-  u("Bloodtear", "Limited", 81000),
-  u("Takamoso", "Limited", 79000),
-  u("Entomancer", "Limited", 65000),
-  u("Genes", "Limited", 62000),
-  u("Galactic Garo", "Limited", 39000),
-  u("Golden Frozer", "Limited", 37000),
-  u("Muscle", "Limited", 30000),
-  u("Tanjuro", "Epic", 17000),
+  u("Aldedo", "Limited", 298000),
+  u("Saitome (Serious)", "Limited", 274000),
+  u("Bloodtear", "Limited", 261000),
+  u("Takamoso", "Limited", 179000),
+  u("Entomancer", "Limited", 165000),
+  u("Genes", "Limited", 162000),
+  u("Galactic Garo", "Limited", 139000),
+  u("Golden Frozer", "Limited", 137000),
+  u("Muscle", "Limited", 130000),
+  u("Tanjuro", "Epic", 117000),
 ];
 
 const SECRET_UNITS: UnitDetails[] = [
@@ -145,6 +145,14 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   jerin: { stats: { damage: 500, defense: 1.25, health: 16500, speed: 1 } },
   yuwah: { stats: { damage: 300, defense: 1.12, health: 6500, speed: 3 } },
   fryren: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 3.5 } },
+  saitomo: { stats: { damage: 120, defense: 1.27, health: 4500, speed: 1 } },
+  brakura: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 1 } },
+  wise: { stats: { damage: 2600, defense: 1.25, health: 14000, speed: 4 } },
+  zero: { stats: { damage: 30, defense: 1.15, health: 320, speed: 2 } },
+  mika: { stats: { damage: 44, defense: 1.1, health: 620, speed: 1 } },
+  itadoro: { stats: { damage: 10, defense: 1.12, health: 620, speed: 1 } },
+  nonomi: { stats: { damage: 950, defense: 1.5, health: 10000, speed: 0.7 } },
+  noruto: { stats: { damage: 200, defense: 1.25, health: 2500, speed: 1 } },
 };
 
 function applyOverrides(units: UnitDetails[]) {
