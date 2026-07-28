@@ -10,6 +10,48 @@ import { QUALITY_TIER_LIST } from "@/data/tierlists";
 import CardTile from "@/components/CardTile";
 import Portal from "@/components/Portal";
 
+function parsePercentValue(value?: string) {
+  const match = value?.match(/([+-]?\d+(?:\.\d+)?)/);
+  if (!match) return 0;
+  return Number(match[1]) / 100;
+}
+
+function getBuffPercent(buffs: string | undefined, keyword: "damage" | "health" | "speed") {
+  if (!buffs) return 0;
+  const lower = buffs.toLowerCase();
+
+  if (keyword === "speed") {
+    const fasterMatch = lower.match(/([+-]?\d+(?:\.\d+)?)%\s*faster/);
+    const slowerMatch = lower.match(/([+-]?\d+(?:\.\d+)?)%\s*slower/);
+    const match = fasterMatch ?? slowerMatch;
+    if (!match) return 0;
+    const sign = slowerMatch ? -1 : 1;
+    return Number(match[1]) / 100 * sign;
+  }
+
+  const match = lower.match(new RegExp(`([+-]?\\d+(?:\\.\\d+)?)%\\s*${keyword}`));
+  return match ? Number(match[1]) / 100 : 0;
+}
+
+function getEffectiveStats(unit: Unit, traitName: string | null, mutationName: string | null) {
+  const details = getDetailsById(unit.id)?.stats;
+  const mutation = MUTATIONS.find((entry) => entry.name === mutationName);
+  const trait = TRAIT_TIERS.flatMap((tier) => tier.traits).find((entry) => entry.name === traitName);
+
+  const mutationDamageMultiplier = mutation ? parsePercentValue(mutation.damage) : 0;
+  const mutationHealthMultiplier = mutation ? parsePercentValue(mutation.health) : 0;
+  const traitDamageMultiplier = getBuffPercent(trait?.buffs, "damage");
+  const traitHealthMultiplier = getBuffPercent(trait?.buffs, "health");
+  const traitSpeedMultiplier = getBuffPercent(trait?.buffs, "speed");
+
+  return {
+    damage: details?.damage ? details.damage * (1 + mutationDamageMultiplier + traitDamageMultiplier) : undefined,
+    defense: details?.defense,
+    health: details?.health ? details.health * (1 + mutationHealthMultiplier + traitHealthMultiplier) : undefined,
+    speed: details?.speed ? details.speed * (1 + traitSpeedMultiplier) : undefined,
+  };
+}
+
 export default function CardsPage() {
   const [query, setQuery] = useState("");
   const [activeRarities, setActiveRarities] = useState<Set<Rarity>>(
@@ -35,6 +77,11 @@ export default function CardsPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setSelectedTrait(null);
+    setSelectedMutation(null);
+  }, [selected?.id]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return units
@@ -45,6 +92,11 @@ export default function CardsPage() {
       })
       .sort((a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity));
   }, [query, activeRarities, units]);
+
+  const effectiveStats = useMemo(() => {
+    if (!selected) return null;
+    return getEffectiveStats(selected, selectedTrait, selectedMutation);
+  }, [selected, selectedTrait, selectedMutation]);
 
   function toggleRarity(rarity: Rarity) {
     setActiveRarities((prev) => {
@@ -153,19 +205,19 @@ export default function CardsPage() {
                   <div className="mt-4 grid grid-cols-2 gap-3">
                     <div>
                       <h4 className="font-semibold">Damage</h4>
-                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.damage ?? "—"}</p>
+                      <p className="text-sm text-text-faint">{effectiveStats?.damage?.toLocaleString() ?? "—"}</p>
                     </div>
                     <div>
                       <h4 className="font-semibold">Defense</h4>
-                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.defense ?? "—"}</p>
+                      <p className="text-sm text-text-faint">{effectiveStats?.defense?.toLocaleString() ?? "—"}</p>
                     </div>
                     <div>
                       <h4 className="font-semibold">Health</h4>
-                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.health ?? "—"}</p>
+                      <p className="text-sm text-text-faint">{effectiveStats?.health?.toLocaleString() ?? "—"}</p>
                     </div>
                     <div>
                       <h4 className="font-semibold">Speed</h4>
-                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.speed ?? "—"}</p>
+                      <p className="text-sm text-text-faint">{effectiveStats?.speed?.toLocaleString() ?? "—"}</p>
                     </div>
                   </div>
 

@@ -3,8 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { MUTATIONS } from "@/data/mutations";
 import { TRAIT_TIERS } from "@/data/traits";
-import { QUALITY_TIER_LIST } from "@/data/tierlists";
 import { UNITS, type Unit } from "@/data/units";
+import {
+  DEFAULT_MODIFIER_BONUSES,
+  getUnitDisplayValue,
+  type ModifierBonuses,
+  type ModifierSettings,
+} from "@/data/unitValues";
 
 type TradeMode = "value" | "calculator";
 type Slot = {
@@ -15,49 +20,14 @@ type Slot = {
 };
 
 type ModalType = "unit" | "modifier" | null;
-type PickerPanel = "give" | "get" | null;
 
 const SLOT_COUNT = 6;
 const MAX_LEVEL = 7;
-const TIER_VALUES: Record<string, number> = {
-  META: 50000,
-  S: 30000,
-  A: 15000,
-  Progress: 8000,
-  B: 4000,
-  C: 2000,
-  Trash: 1000,
-};
 
-function getBaseValue(unitId: string | null, units: Unit[]) {
-  if (!unitId) return 0;
-  const unit = units.find((entry) => entry.id === unitId);
-  if (!unit) return 0;
-
-  const qualityTier = QUALITY_TIER_LIST.find((tier) => tier.units.includes(unit.name));
-  const tierValue = qualityTier ? TIER_VALUES[qualityTier.label] ?? 1000 : 1000;
-  const rarityFloor = unit.rarity === "God"
-    ? 2000
-    : unit.rarity === "Limited"
-      ? 4000
-      : unit.rarity === "Mythic"
-        ? 6000
-        : unit.rarity === "Legendary"
-          ? 4000
-          : unit.rarity === "Epic"
-            ? 3000
-            : unit.rarity === "Rare"
-              ? 2000
-              : 1000;
-  return Math.max(1000, tierValue + rarityFloor);
-}
-
-function getAdjustedValue(slot: Slot, units: Unit[]) {
-  const base = getBaseValue(slot.unitId, units);
-  const traitBonus = slot.trait ? 4000 : 0;
-  const mutationBonus = slot.mutation ? 6000 : 0;
-  const levelBonus = Math.max(0, Math.min(MAX_LEVEL, slot.level)) * 3000;
-  return base + traitBonus + mutationBonus + levelBonus;
+function getAdjustedValue(slot: Slot, units: Unit[], bonuses: ModifierBonuses = DEFAULT_MODIFIER_BONUSES) {
+  const unit = slot.unitId ? units.find((entry) => entry.id === slot.unitId) ?? null : null;
+  const base = unit ? getUnitDisplayValue(unit, units, { mutation: slot.mutation, trait: slot.trait, level: slot.level }, bonuses) : 0;
+  return base;
 }
 
 function getLossLabel(percent: number) {
@@ -80,22 +50,25 @@ export default function TradesPage() {
   const [selectedSlot, setSelectedSlot] = useState<{ side: "give" | "get"; slotIndex: number } | null>(null);
   const [draft, setDraft] = useState<Slot>({ unitId: null, mutation: null, trait: null, level: 1 });
   const [showResult, setShowResult] = useState(false);
-  const [valuePanelOpen, setValuePanelOpen] = useState(false);
-  const [valuePanelSide, setValuePanelSide] = useState<PickerPanel>(null);
-  const [valuePanelSlot, setValuePanelSlot] = useState<number | null>(null);
-  const [valueDraft, setValueDraft] = useState<Slot>({ unitId: null, mutation: null, trait: null, level: 1 });
-  const [valueOverrides, setValueOverrides] = useState<Record<string, number>>({});
   const [catalogUnits, setCatalogUnits] = useState<Unit[]>([]);
+  const [valueListModifier, setValueListModifier] = useState<ModifierSettings>({ mutation: null, trait: null, level: 1 });
+  const [modifierBonuses] = useState<ModifierBonuses>(DEFAULT_MODIFIER_BONUSES);
+  const [modifierPanelOpen, setModifierPanelOpen] = useState(false);
+  const [modifierDraft, setModifierDraft] = useState<ModifierSettings>({ mutation: null, trait: null, level: 1 });
 
   useEffect(() => {
     let cancelled = false;
     fetch("/api/cards/list")
       .then((response) => response.json())
       .then((data: Unit[]) => {
-        if (!cancelled) setCatalogUnits(data);
+        if (!cancelled) {
+          setCatalogUnits(data);
+        }
       })
       .catch(() => {
-        if (!cancelled) setCatalogUnits([]);
+        if (!cancelled) {
+          setCatalogUnits([]);
+        }
       });
 
     return () => {
@@ -108,17 +81,15 @@ export default function TradesPage() {
     catalogUnits.forEach((unit) => {
       lookup.set(unit.id, { ...(lookup.get(unit.id) ?? {}), ...unit });
     });
-    return Array.from(lookup.values());
+    return Array.from(lookup.values()).sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
   }, [catalogUnits]);
 
   const getSlotValue = (slot: Slot) => {
-    const base = getAdjustedValue(slot, availableUnits);
-    if (!slot.unitId) return base;
-    return base + (valueOverrides[slot.unitId] ?? 0);
+    return getAdjustedValue(slot, availableUnits, modifierBonuses);
   };
 
-  const giveTotal = useMemo(() => giveSlots.reduce((sum, slot) => sum + getSlotValue(slot), 0), [giveSlots, availableUnits, valueOverrides]);
-  const getTotal = useMemo(() => getSlots.reduce((sum, slot) => sum + getSlotValue(slot), 0), [getSlots, availableUnits, valueOverrides]);
+  const giveTotal = useMemo(() => giveSlots.reduce((sum, slot) => sum + getSlotValue(slot), 0), [giveSlots, availableUnits, modifierBonuses]);
+  const getTotal = useMemo(() => getSlots.reduce((sum, slot) => sum + getSlotValue(slot), 0), [getSlots, availableUnits, modifierBonuses]);
   const difference = useMemo(() => {
     if (!giveTotal || !getTotal) return 0;
     return ((getTotal - giveTotal) / giveTotal) * 100;
@@ -149,31 +120,6 @@ export default function TradesPage() {
     setModalState({ type: "modifier", side, slotIndex });
   };
 
-  const openValuePanel = (side: "give" | "get", slotIndex: number) => {
-    const current = side === "give" ? giveSlots[slotIndex] : getSlots[slotIndex];
-    setValuePanelSide(side);
-    setValuePanelSlot(slotIndex);
-    setValueDraft(current ?? { unitId: null, mutation: null, trait: null, level: 1 });
-    setValuePanelOpen(true);
-  };
-
-  const saveValueSlot = () => {
-    if (valuePanelSide == null || valuePanelSlot == null) return;
-    const next = valuePanelSide === "give" ? [...giveSlots] : [...getSlots];
-    next[valuePanelSlot] = { ...valueDraft };
-    if (valuePanelSide === "give") setGiveSlots(next);
-    else setGetSlots(next);
-    if (valueDraft.unitId) {
-      setValueOverrides((prev) => ({
-        ...prev,
-        [valueDraft.unitId!]: getSlotValue(valueDraft) - getAdjustedValue(valueDraft, availableUnits),
-      }));
-    }
-    setValuePanelOpen(false);
-    setValuePanelSide(null);
-    setValuePanelSlot(null);
-  };
-
   const saveSlot = () => {
     if (!selectedSlot) return;
     const next = selectedSlot.side === "give" ? [...giveSlots] : [...getSlots];
@@ -200,6 +146,11 @@ export default function TradesPage() {
     if (!selectedSlot) return;
     setDraft((prev) => ({ ...prev, unitId }));
     setModalState({ type: "modifier", side: selectedSlot.side, slotIndex: selectedSlot.slotIndex });
+  };
+
+  const applyModifierPreset = () => {
+    setValueListModifier(modifierDraft);
+    setModifierPanelOpen(false);
   };
 
   return (
@@ -233,7 +184,7 @@ export default function TradesPage() {
             <p className="mt-2 text-sm text-text-faint">Each unit card shows its image, name, and value estimate so you can compare quickly.</p>
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {availableUnits.map((unit) => {
-                const value = getAdjustedValue({ unitId: unit.id, mutation: null, trait: null, level: 1 }, availableUnits);
+                const value = getUnitDisplayValue(unit, availableUnits, valueListModifier, modifierBonuses);
                 return (
                   <div key={unit.id} className="rounded-xl border border-ink-line/70 p-3">
                     <div className="flex items-center gap-3">
@@ -258,12 +209,6 @@ export default function TradesPage() {
               })}
             </div>
           </div>
-          <button
-            onClick={() => openValuePanel("give", 0)}
-            className="fixed bottom-5 left-5 z-[60] flex h-12 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-300 hover:scale-105 active:scale-95 sm:bottom-6 sm:left-6"
-          >
-            Edit value modifiers
-          </button>
         </div>
       ) : (
         <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
@@ -396,6 +341,18 @@ export default function TradesPage() {
         </div>
       )}
 
+      {mode === "value" && (
+        <button
+          onClick={() => {
+            setModifierDraft(valueListModifier);
+            setModifierPanelOpen(true);
+          }}
+          className="fixed bottom-5 left-5 z-[60] flex h-11 items-center rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg sm:bottom-6 sm:left-6"
+        >
+          Edit modifier value
+        </button>
+      )}
+
       {selectedSlot && (
         <button
           onClick={() => openModifierEditor(selectedSlot.side, selectedSlot.slotIndex)}
@@ -403,6 +360,46 @@ export default function TradesPage() {
         >
           Edit selected slot
         </button>
+      )}
+
+      {modifierPanelOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 p-3 sm:p-4">
+          <div className="flex max-h-[90vh] w-full max-w-[20rem] flex-col overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
+            <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
+              <h3 className="font-display text-lg font-black">Modifier values</h3>
+              <button onClick={() => setModifierPanelOpen(false)} className="text-2xl text-text-faint">×</button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-3">
+                <label className="block text-sm text-text-faint">
+                  Mutation
+                  <select value={modifierDraft.mutation ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                    <option value="">None</option>
+                    {MUTATIONS.map((mutation) => (
+                      <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-sm text-text-faint">
+                  Trait
+                  <select value={modifierDraft.trait ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
+                    <option value="">None</option>
+                    {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
+                      <option key={trait.name} value={trait.name}>{trait.name}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-sm text-text-faint">
+                  Level
+                  <input type="number" min="1" max={MAX_LEVEL} value={modifierDraft.level} onChange={(e) => setModifierDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
+                </label>
+              </div>
+            </div>
+            <div className="border-t border-ink-line px-4 py-3">
+              <button onClick={applyModifierPreset} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">Apply</button>
+            </div>
+          </div>
+        </div>
       )}
 
       {modalState.type && selectedSlot && (
@@ -415,7 +412,7 @@ export default function TradesPage() {
                   <h3 className="font-display text-lg font-black">Choose a unit</h3>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     {availableUnits.map((unit) => {
-                      const value = getAdjustedValue({ unitId: unit.id, mutation: null, trait: null, level: 1 }, availableUnits);
+                      const value = getUnitDisplayValue(unit, availableUnits);
                       return (
                         <button key={unit.id} onClick={() => selectUnit(unit.id)} className="rounded-xl border border-ink-line/70 bg-ink p-2.5 text-left">
                           <div className="flex items-center gap-2">
@@ -475,57 +472,6 @@ export default function TradesPage() {
         </div>
       )}
 
-      {valuePanelOpen && (
-        <div className="fixed inset-0 z-[70] flex items-end justify-start bg-black/60 p-3 sm:p-4">
-          <div className="flex max-h-[80vh] w-full max-w-[20rem] flex-col rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
-            <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
-              <h3 className="font-display text-lg font-black">Value modifiers</h3>
-              <button onClick={() => setValuePanelOpen(false)} className="text-2xl text-text-faint">×</button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-3">
-                <label className="block text-sm text-text-faint">
-                  Unit
-                  <select value={valueDraft.unitId ?? ""} onChange={(e) => setValueDraft((prev) => ({ ...prev, unitId: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                    <option value="">None</option>
-                    {availableUnits.map((unit) => (
-                      <option key={unit.id} value={unit.id}>{unit.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm text-text-faint">
-                  Mutation
-                  <select value={valueDraft.mutation ?? ""} onChange={(e) => setValueDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                    <option value="">None</option>
-                    {MUTATIONS.map((mutation) => (
-                      <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm text-text-faint">
-                  Trait
-                  <select value={valueDraft.trait ?? ""} onChange={(e) => setValueDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                    <option value="">None</option>
-                    {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
-                      <option key={trait.name} value={trait.name}>{trait.name}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm text-text-faint">
-                  Level
-                  <input type="number" min="1" max={MAX_LEVEL} value={valueDraft.level} onChange={(e) => setValueDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
-                </label>
-                <div className="rounded-lg border border-ink-line/70 bg-ink p-4 text-sm text-text-faint">
-                  Updated value: <span className="font-semibold text-text">{getSlotValue(valueDraft)}</span>
-                </div>
-              </div>
-            </div>
-            <div className="border-t border-ink-line px-4 py-3">
-              <button onClick={saveValueSlot} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">Apply</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
