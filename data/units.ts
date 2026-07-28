@@ -45,7 +45,7 @@ export const UNITS: Unit[] = [
   u("Genes", "Limited"),
   u("Bakura", "Secret"),
   u("Yuwah", "Secret"),
-  u("Duma", "Rare", "30%"),
+  u("Duma", "Secret"),
   u("Bills", "God"),
 
   // Progress
@@ -56,7 +56,7 @@ export const UNITS: Unit[] = [
   u("Deyo", "Secret"),
   u("Rengundam", "Mythic"),
   u("Fryren", "Secret"),
-  u("Akazo", "Epic", "60%"),
+  u("Akazo", "Mythic"),
   u("Remura", "God"),
   u("Galactic Garo", "Limited"),
   u("Megumo", "Secret"),
@@ -103,8 +103,7 @@ export const UNITS: Unit[] = [
   u("Keririn", "Common"),
   u("Luppi", "Common"),
 
-  // Extra units seen only on the wave-clear list
-  u("Coke", "Rare"),
+
 ];
 
 export function getUnitByName(name: string): Unit | undefined {
