@@ -15,17 +15,17 @@ export type ModifierSettings = {
 export const DEFAULT_MODIFIER_BONUSES: ModifierBonuses = {
   mutationBonus: 6000,
   traitBonus: 4000,
-  levelBonusPerLevel: 3000,
+  levelBonusPerLevel: 10000,
 };
 
 export const MUTATION_VALUE_MULTIPLIERS: Record<string, number> = {
-  Gold: 1.5,
-  Diamond: 2,
-  Demon: 2.5,
-  Destroyer: 3,
-  Hollow: 2,
-  Nova: 4,
-  Astronaut: 5,
+  Gold: 1.1,
+  Diamond: 1.2,
+  Demon: 1.4,
+  Destroyer: 1.5,
+  Hollow: 1.6,
+  Nova: 1.8,
+  Astronaut: 2,
 };
 
 export function getMutationValueMultiplier(mutation?: string | null) {
