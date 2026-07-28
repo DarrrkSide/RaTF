@@ -45,11 +45,11 @@ function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, 
                 <img
                   src={image}
                   alt={name}
-                  className="h-7 w-7 rounded-md object-contain"
+                  className="h-14 w-14 rounded-md object-contain"
                   loading="lazy"
                 />
               ) : (
-                <span className="h-7 w-7 rounded-md border border-current/20 bg-black/10" />
+                <span className="h-14 w-14 rounded-md border border-current/20 bg-black/10" />
               )}
               <span>{name}</span>
             </span>
