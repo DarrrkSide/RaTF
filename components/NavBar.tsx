@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/cards", label: "Cards" },
   { href: "/tierlist", label: "Tier List" },
   { href: "/tutorial", label: "Guide" },
+  { href: "/credits", label: "Credits" },
 ];
 
 export default function NavBar() {

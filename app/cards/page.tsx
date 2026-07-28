@@ -45,15 +45,11 @@ export default function CardsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-rarity-epic">
-          {UNITS.length} units catalogued
-        </p>
-        <h1 className="mt-1 font-display text-4xl tracking-wide text-text sm:text-5xl">
-          Unit Cards
+        <h1 className="font-display text-4xl tracking-wide text-text sm:text-5xl">
+          Cards
         </h1>
-        <p className="mt-2 max-w-2xl font-body text-sm text-text-dim sm:text-base">
-          Every unit pulled from the community tier lists, at level 1 with no traits or
-          mutations applied. Tap a rarity chip to isolate it, or search by name.
+        <p className="mt-1 font-mono text-xs uppercase tracking-widest text-text-faint">
+          {UNITS.length} units
         </p>
       </div>
 

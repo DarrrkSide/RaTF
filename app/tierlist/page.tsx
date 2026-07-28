@@ -6,20 +6,8 @@ import { getUnitByName } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
 
 const TABS = [
-  {
-    key: "wave",
-    label: "Wave-Clear Tier List",
-    description:
-      "Ranked by the highest wave each unit can realistically carry a solo push to.",
-    rows: WAVE_TIER_LIST,
-  },
-  {
-    key: "quality",
-    label: "Quality Tier List",
-    description:
-      "Overall usefulness at level 1, no traits or mutations factored in.",
-    rows: QUALITY_TIER_LIST,
-  },
+  { key: "wave", label: "Wave Clear", rows: WAVE_TIER_LIST },
+  { key: "quality", label: "Quality", rows: QUALITY_TIER_LIST },
 ] as const;
 
 function TierRowShelf({ row }: { row: TierRow }) {
@@ -68,22 +56,16 @@ export default function TierListPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-rarity-god">
-          Community tier lists
-        </p>
-        <h1 className="mt-1 font-display text-4xl tracking-wide text-text sm:text-5xl">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="font-display text-4xl tracking-wide text-text sm:text-5xl">
           Tier List
         </h1>
-      </div>
-
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-        <div className="inline-flex w-full gap-1 rounded-full border border-ink-line bg-ink-surface p-1 sm:w-auto">
+        <div className="inline-flex gap-1 rounded-full border border-ink-line bg-ink-surface p-1">
           {TABS.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`flex-1 rounded-full px-4 py-2 font-body text-sm font-semibold transition-colors sm:flex-initial ${
+              className={`flex-1 rounded-full px-4 py-2 font-body text-sm font-semibold transition-colors duration-300 sm:flex-initial ${
                 tab === t.key
                   ? "bg-rarity-legendary text-ink"
                   : "text-text-dim hover:text-text"
@@ -94,9 +76,8 @@ export default function TierListPage() {
           ))}
         </div>
       </div>
-      <p className="-mt-4 font-body text-sm text-text-dim">{active.description}</p>
 
-      <div className="rounded-2xl border border-ink-line bg-ink-surface px-4 sm:px-6">
+      <div key={tab} className="fade-in rounded-2xl border border-ink-line bg-ink-surface px-4 sm:px-6">
         {active.rows.map((row) => (
           <TierRowShelf key={row.label} row={row} />
         ))}

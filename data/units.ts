@@ -5,6 +5,7 @@ export type Unit = {
   name: string;
   rarity: Rarity;
   tag?: string; // e.g. "Lv.7", "30%", "Demon"
+  image?: string; // optional real art — drop a file in /public/cards and set e.g. "/cards/sakuna-heian.png"
 };
 
 function u(name: string, rarity: Rarity, tag?: string): Unit {

@@ -6,17 +6,31 @@ Discord button is pinned in the corner on every page.
 
 ## What's inside
 
-- **`/`** — Home page with hero, rarity legend, and a spotlight of top units.
-- **`/cards`** — Every unit as a searchable, filterable card grid (filter by
-  rarity, search by name).
-- **`/tierlist`** — Tabs between the **Wave-Clear Tier List** (how far a unit
-  can push) and the **Quality Tier List** (META → Trash, level 1, no
-  traits/mutations).
-- **`/tutorial`** — Trait drop rates & buffs, mutation tiers, the coin upgrade
-  path, merging & cloning, and gamepass purchase priority.
-- A floating **Join the Discord** button (`components/DiscordButton.tsx`) is
-  rendered in the root layout, so it appears fixed in the corner on every
-  route and follows scroll.
+- **`/`** — Minimal hero + a spotlight of top units.
+- **`/cards`** — Every unit as a searchable, filterable card grid.
+- **`/tierlist`** — Tabs between the **Wave Clear** and **Quality** tier lists.
+- **`/tutorial`** — Trait/mutation tables, upgrade order, merging & cloning,
+  gamepass priority.
+- **`/credits`** — Placeholder credits list — edit `data/credits.ts`.
+- A floating Discord icon (`components/DiscordButton.tsx`) is rendered in the
+  root layout, so it's pinned in the corner on every route.
+- `app/template.tsx` gives every route a quick fade/slide-in on navigation.
+
+## Card art
+
+Cards don't ship with real character art (there's no reliable source of
+official assets to pull from, and anime character art is copyrighted), so
+each card renders a small generated emblem, colored and shaped uniquely per
+unit, as a placeholder.
+
+To use real art for a unit:
+
+1. Drop the image in `public/cards/` (e.g. `public/cards/sakuna-heian.png`).
+2. In `data/units.ts`, add `image: "/cards/sakuna-heian.png"` to that unit's
+   entry.
+
+The card automatically switches to the real image; if the path 404s it falls
+back to the generated emblem.
 
 ## Editing the data
 
@@ -30,6 +44,7 @@ it without touching any component:
 - `data/mutations.ts` — mutation tiers and their damage/health buffs.
 - `data/gamepasses.ts` — the gamepass purchase priority list.
 - `data/rarity.ts` — the color/styling for each rarity, used everywhere else.
+- `data/credits.ts` — the credits list shown on `/credits`.
 
 > The unit names and rarities in `units.ts` were transcribed by hand from
 > community tier-list screenshots, so a few stylized names may need a
