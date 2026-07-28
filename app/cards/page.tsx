@@ -6,6 +6,7 @@ import { RARITY_ORDER, RARITY_META, Rarity } from "@/data/rarity";
 import { TRAIT_TIERS } from "@/data/traits";
 import { MUTATIONS } from "@/data/mutations";
 import { getDetailsById } from "@/data/unitDetails";
+import { QUALITY_TIER_LIST } from "@/data/tierlists";
 import CardTile from "@/components/CardTile";
 import Portal from "@/components/Portal";
 
@@ -145,8 +146,10 @@ export default function CardsPage() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
-
+                  <div className="flex items-center gap-2">
+                    <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
+                    <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: "#111", borderColor: "#ccc", backgroundColor: "#f3f4f6" }}>{QUALITY_TIER_LIST.find(r=>r.units.includes(selected.name))?.label ?? "—"}</div>
+                  </div>
                   <div className="mt-4 grid grid-cols-2 gap-3">
                     <div>
                       <h4 className="font-semibold">Damage</h4>
@@ -178,30 +181,45 @@ export default function CardsPage() {
                     )}
                   </div>
 
-                  <div className="mt-4 grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-semibold">Trait</label>
-                      <select value={selectedTrait ?? ""} onChange={(e) => setSelectedTrait(e.target.value || null)} className="mt-1 w-full rounded border px-2 py-1 text-sm">
-                        <option value="">(none)</option>
-                        {TRAIT_TIERS.flatMap(t => t.traits).map(tr => (
-                          <option key={tr.name} value={tr.name}>{tr.name} — {tr.buffs}</option>
-                        ))}
-                      </select>
-                      {selectedTrait && <div className="mt-2 text-sm text-text-faint">{TRAIT_TIERS.flatMap(t => t.traits).find(x => x.name === selectedTrait)?.buffs}</div>}
+                  <div className="mt-4">
+                    <h4 className="font-semibold">Trait</h4>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {TRAIT_TIERS.map((tier) => (
+                        tier.traits.map((tr) => {
+                          const active = selectedTrait === tr.name;
+                          return (
+                            <button
+                              key={tr.name}
+                              onClick={() => setSelectedTrait(active ? null : tr.name)}
+                              className={`rounded px-3 py-1 text-sm font-medium ${active ? 'ring-2 ring-offset-1' : ''}`}
+                              style={{ backgroundColor: tier.color + '22', border: `1px solid ${tier.color}`, color: tier.color }}
+                            >
+                              {tr.name}
+                            </button>
+                          );
+                        })
+                      ))}
                     </div>
-                    <div>
-                      <label className="block text-xs font-semibold">Mutation</label>
-                      <select value={selectedMutation ?? ""} onChange={(e) => setSelectedMutation(e.target.value || null)} className="mt-1 w-full rounded border px-2 py-1 text-sm">
-                        <option value="">(none)</option>
-                        {MUTATIONS.map(m => (
-                          <option key={m.name} value={m.name}>{m.name} — {m.damage} / {m.health}</option>
-                        ))}
-                      </select>
-                      {selectedMutation && <div className="mt-2 text-sm text-text-faint">{MUTATIONS.find(m => m.name === selectedMutation)?.damage} / {MUTATIONS.find(m => m.name === selectedMutation)?.health}</div>}
-                    </div>
-                  </div>
+                    {selectedTrait && <div className="mt-2 text-sm text-text-faint">{TRAIT_TIERS.flatMap(t => t.traits).find(x => x.name === selectedTrait)?.buffs}</div>}
 
-                  <div className="mt-4 prose">No bio yet.</div>
+                    <h4 className="font-semibold mt-4">Mutation</h4>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {MUTATIONS.map((m) => {
+                        const active = selectedMutation === m.name;
+                        return (
+                          <button
+                            key={m.name}
+                            onClick={() => setSelectedMutation(active ? null : m.name)}
+                            className={`rounded px-3 py-1 text-sm font-medium ${active ? 'ring-2 ring-offset-1' : ''}`}
+                            style={{ backgroundColor: m.color + '22', border: `1px solid ${m.color}`, color: m.color }}
+                          >
+                            {m.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {selectedMutation && <div className="mt-2 text-sm text-text-faint">{MUTATIONS.find(m => m.name === selectedMutation)?.damage} / {MUTATIONS.find(m => m.name === selectedMutation)?.health}</div>}
+                  </div>
                 </div>
               </div>
             </div>
