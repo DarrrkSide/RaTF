@@ -3,6 +3,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { Unit } from "@/data/units";
 import { RARITY_ORDER, RARITY_META, Rarity } from "@/data/rarity";
+import { TRAIT_TIERS } from "@/data/traits";
+import { MUTATIONS } from "@/data/mutations";
+import { getDetailsById } from "@/data/unitDetails";
 import CardTile from "@/components/CardTile";
 import Portal from "@/components/Portal";
 
@@ -13,6 +16,8 @@ export default function CardsPage() {
   );
   const [units, setUnits] = useState<Unit[]>([]);
   const [selected, setSelected] = useState<Unit | null>(null);
+  const [selectedTrait, setSelectedTrait] = useState<string | null>(null);
+  const [selectedMutation, setSelectedMutation] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -131,7 +136,7 @@ export default function CardsPage() {
                 <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
               </div>
               <div className="mt-4 flex gap-4">
-                <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg border" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
+                <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
                   {selected.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={selected.image} alt={selected.name} className="h-full w-full object-cover" />
@@ -139,8 +144,63 @@ export default function CardsPage() {
                     <div className="flex h-full w-full items-center justify-center">No image</div>
                   )}
                 </div>
-                <div>
+                <div className="flex-1">
                   <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <div>
+                      <h4 className="font-semibold">Damage</h4>
+                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.damage ?? "—"}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Defense</h4>
+                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.defense ?? "—"}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Health</h4>
+                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.health ?? "—"}</p>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Speed</h4>
+                      <p className="text-sm text-text-faint">{getDetailsById(selected.id)?.stats?.speed ?? "—"}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <h4 className="font-semibold">Ability</h4>
+                    {getDetailsById(selected.id)?.ability ? (
+                      <div>
+                        <div className="font-bold">{getDetailsById(selected.id)!.ability!.title}</div>
+                        <div className="text-sm text-text-faint">{getDetailsById(selected.id)!.ability!.description}</div>
+                      </div>
+                    ) : (
+                      <div className="text-sm text-text-faint">No ability info</div>
+                    )}
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold">Trait</label>
+                      <select value={selectedTrait ?? ""} onChange={(e) => setSelectedTrait(e.target.value || null)} className="mt-1 w-full rounded border px-2 py-1 text-sm">
+                        <option value="">(none)</option>
+                        {TRAIT_TIERS.flatMap(t => t.traits).map(tr => (
+                          <option key={tr.name} value={tr.name}>{tr.name} — {tr.buffs}</option>
+                        ))}
+                      </select>
+                      {selectedTrait && <div className="mt-2 text-sm text-text-faint">{TRAIT_TIERS.flatMap(t => t.traits).find(x => x.name === selectedTrait)?.buffs}</div>}
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold">Mutation</label>
+                      <select value={selectedMutation ?? ""} onChange={(e) => setSelectedMutation(e.target.value || null)} className="mt-1 w-full rounded border px-2 py-1 text-sm">
+                        <option value="">(none)</option>
+                        {MUTATIONS.map(m => (
+                          <option key={m.name} value={m.name}>{m.name} — {m.damage} / {m.health}</option>
+                        ))}
+                      </select>
+                      {selectedMutation && <div className="mt-2 text-sm text-text-faint">{MUTATIONS.find(m => m.name === selectedMutation)?.damage} / {MUTATIONS.find(m => m.name === selectedMutation)?.health}</div>}
+                    </div>
+                  </div>
+
                   <div className="mt-4 prose">No bio yet.</div>
                 </div>
               </div>
