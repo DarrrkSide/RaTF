@@ -34,6 +34,7 @@ export const UNITS: Unit[] = [
   u("Takamoso", "Limited"),
   u("Yoichi", "God"),
   u("Aisen Divine", "God"),
+ u("Shanks", "God"),
 
   // A tier
   u("Ulquiopta", "Secret"),
