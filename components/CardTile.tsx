@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import React from "react";
 import { Unit } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
 
@@ -52,25 +53,29 @@ function Emblem({ unit, hex }: { unit: Unit; hex: string }) {
   );
 }
 
-export default function CardTile({ unit }: { unit: Unit }) {
+export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Unit) => void }) {
   const meta = RARITY_META[unit.rarity];
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = unit.image && !imgFailed;
 
   return (
     <div
-      className={`group relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-transform duration-300 hover:-translate-y-1 ${meta.border}`}
+      onClick={() => onOpen?.(unit)}
+      role="button"
+      tabIndex={0}
+      className={`relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-transform duration-300 hover:-translate-y-1 ${meta.border} cursor-pointer`}
+      onKeyDown={(e) => { if (e.key === 'Enter') onOpen?.(unit); }}
     >
       <div
-        className="relative flex h-24 items-center justify-center overflow-hidden"
-        style={{ backgroundColor: `${meta.hex}14` }}
+        className="relative flex h-28 items-center justify-center overflow-hidden"
+        style={{ backgroundColor: `${meta.hex}08` }}
       >
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={unit.image}
             alt={unit.name}
-            className="h-full w-full object-cover"
+            className="max-h-full max-w-full object-contain"
             loading="lazy"
             onError={() => setImgFailed(true)}
           />
@@ -85,12 +90,16 @@ export default function CardTile({ unit }: { unit: Unit }) {
             </span>
           </>
         )}
+        {/* Hex frame overlay to emphasize borders */}
+        <svg viewBox="0 0 100 100" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
+          <polygon points="50,6 90,30 90,70 50,94 10,70 10,30" fill="none" stroke={meta.hex} strokeWidth={3} strokeOpacity={0.9} />
+        </svg>
         <span
           className="absolute left-0 top-0 h-full w-1"
           style={{ backgroundColor: meta.hex }}
         />
-      </div>
-      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+        </div>
+        <div className="flex flex-1 flex-col gap-1.5 p-2.5">
         <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">
           {unit.name}
         </h3>
@@ -100,7 +109,8 @@ export default function CardTile({ unit }: { unit: Unit }) {
         >
           {unit.rarity}
         </span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

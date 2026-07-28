@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { UNITS } from "@/data/units";
+import { useMemo, useState, useEffect } from "react";
+import { Unit } from "@/data/units";
 import { RARITY_ORDER, RARITY_META, Rarity } from "@/data/rarity";
 import CardTile from "@/components/CardTile";
 
@@ -10,17 +10,34 @@ export default function CardsPage() {
   const [activeRarities, setActiveRarities] = useState<Set<Rarity>>(
     new Set(RARITY_ORDER)
   );
+  const [units, setUnits] = useState<Unit[]>([]);
+  const [selected, setSelected] = useState<Unit | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/cards/list")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setUnits(data);
+      })
+      .catch(() => {
+        if (!cancelled) setUnits([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return UNITS.filter((unit) => {
-      if (!activeRarities.has(unit.rarity)) return false;
-      if (q && !unit.name.toLowerCase().includes(q)) return false;
-      return true;
-    }).sort(
-      (a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity)
-    );
-  }, [query, activeRarities]);
+    return units
+      .filter((unit) => {
+        if (!activeRarities.has(unit.rarity)) return false;
+        if (q && !unit.name.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity));
+  }, [query, activeRarities, units]);
 
   function toggleRarity(rarity: Rarity) {
     setActiveRarities((prev) => {
@@ -49,7 +66,7 @@ export default function CardsPage() {
           Cards
         </h1>
         <p className="mt-1 font-mono text-xs uppercase tracking-widest text-text-faint">
-          {UNITS.length} units
+          {units.length} units
         </p>
       </div>
 
@@ -98,8 +115,31 @@ export default function CardsPage() {
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filtered.map((unit) => (
-            <CardTile key={unit.id} unit={unit} />
+            <CardTile key={unit.id} unit={unit} onOpen={(u) => setSelected(u)} />
           ))}
+        </div>
+      )}
+
+      {selected && (
+        <div className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-3xl -translate-x-1/2 -translate-y-1/2 rounded-xl border bg-ink-surface p-6 shadow-lg">
+          <div className="flex justify-between">
+            <h2 className="font-display text-2xl font-black">{selected.name}</h2>
+            <button className="text-text-dim" onClick={() => setSelected(null)}>Close</button>
+          </div>
+          <div className="mt-4 flex gap-4">
+            <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg border" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
+              {selected.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={selected.image} alt={selected.name} className="h-full w-full object-contain" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">No image</div>
+              )}
+            </div>
+            <div>
+              <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
+              <div className="mt-4 prose">No bio yet.</div>
+            </div>
+          </div>
         </div>
       )}
     </div>
