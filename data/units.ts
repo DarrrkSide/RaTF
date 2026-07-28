@@ -103,6 +103,7 @@ export const UNITS: Unit[] = [
   u("Zero", "Common"),
   u("Keririn", "Common"),
   u("Luppi", "Common"),
+ u("Isogo True Form", "God"),
 
 
 ];
