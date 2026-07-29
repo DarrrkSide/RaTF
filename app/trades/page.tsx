@@ -23,6 +23,7 @@ type ModalType = "unit" | "modifier" | null;
 
 const SLOT_COUNT = 6;
 const MAX_LEVEL = 7;
+const UNDER_CONSTRUCTION = true;
 
 function getAdjustedValue(slot: Slot, units: Unit[], bonuses: ModifierBonuses = DEFAULT_MODIFIER_BONUSES) {
   const unit = slot.unitId ? units.find((entry) => entry.id === slot.unitId) ?? null : null;
@@ -43,7 +44,7 @@ function getGainLabel(percent: number) {
 }
 
 export default function TradesPage() {
-  const [mode, setMode] = useState<TradeMode>("value");
+  const [mode, setMode] = useState<TradeMode>("calculator");
   const [giveSlots, setGiveSlots] = useState<Slot[]>(() => Array.from({ length: SLOT_COUNT }, () => ({ unitId: null, mutation: null, trait: null, level: 1 })));
   const [getSlots, setGetSlots] = useState<Slot[]>(() => Array.from({ length: SLOT_COUNT }, () => ({ unitId: null, mutation: null, trait: null, level: 1 })));
   const [modalState, setModalState] = useState<{ type: ModalType; side: "give" | "get" | null; slotIndex: number | null }>({ type: null, side: null, slotIndex: null });
@@ -160,13 +161,20 @@ export default function TradesPage() {
         <p className="mt-2 max-w-2xl text-sm text-text-faint">Track values, compare offers, and build trade setups with mutation, trait, and level modifiers.</p>
       </div>
 
+      <div className="rounded-3xl border border-amber-500/40 bg-amber-500/10 p-6 text-center shadow-lg shadow-amber-500/10">
+        <p className="text-4xl font-black uppercase tracking-[0.35em] text-amber-400 sm:text-5xl">🚧 Under construction 🚧</p>
+        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">Trade values are temporarily hidden while this feature is being updated.</p>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <button
           onClick={() => setMode("value")}
-          className={`rounded-2xl border p-6 text-left transition ${mode === "value" ? "border-rarity-god bg-rarity-god/10" : "border-ink-line bg-ink-surface"}`}
+          disabled={UNDER_CONSTRUCTION}
+          className={`rounded-2xl border p-6 text-left transition ${mode === "value" ? "border-rarity-god bg-rarity-god/10" : "border-ink-line bg-ink-surface"} ${UNDER_CONSTRUCTION ? "cursor-not-allowed opacity-60" : ""}`}
         >
           <h2 className="font-display text-2xl font-black">Trade Value</h2>
           <p className="mt-2 text-sm text-text-faint">Browse units with their current value and keep a simple tracker ready for trade talks.</p>
+          {UNDER_CONSTRUCTION && <p className="mt-3 text-sm font-semibold text-amber-400">Unavailable for now</p>}
         </button>
         <button
           onClick={() => setMode("calculator")}
@@ -202,7 +210,13 @@ export default function TradesPage() {
                       </div>
                     </div>
                     <div className="mt-3 rounded-lg bg-ink px-3 py-2 text-sm text-text-faint">
-                      Value: <span className="font-semibold text-text">{value}</span>
+                      {UNDER_CONSTRUCTION ? (
+                        <span className="font-semibold text-amber-400">Values hidden</span>
+                      ) : (
+                        <>
+                          Value: <span className="font-semibold text-text">{value}</span>
+                        </>
+                      )}
                     </div>
                   </div>
                 );
@@ -244,7 +258,7 @@ export default function TradesPage() {
                           </div>
                         </div>
                         <div className="text-xs text-text-faint">
-                          Trait: {slot.trait ?? "None"} • Level: {slot.level} • Value: {adjusted}
+                          Trait: {slot.trait ?? "None"} • Level: {slot.level} • {UNDER_CONSTRUCTION ? "Values hidden" : `Value: ${adjusted}`}
                         </div>
                       </div>
                     ) : (
@@ -288,7 +302,7 @@ export default function TradesPage() {
                           </div>
                         </div>
                         <div className="text-xs text-text-faint">
-                          Trait: {slot.trait ?? "None"} • Level: {slot.level} • Value: {adjusted}
+                          Trait: {slot.trait ?? "None"} • Level: {slot.level} • {UNDER_CONSTRUCTION ? "Values hidden" : `Value: ${adjusted}`}
                         </div>
                       </div>
                     ) : (
@@ -317,20 +331,20 @@ export default function TradesPage() {
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-ink-line/70 p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">You give</p>
-                <p className="mt-2 text-2xl font-semibold text-text">{giveTotal}</p>
+                <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : giveTotal}</p>
               </div>
               <div className="rounded-lg border border-ink-line/70 p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">You get</p>
-                <p className="mt-2 text-2xl font-semibold text-text">{getTotal}</p>
+                <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : getTotal}</p>
               </div>
               <div className="rounded-lg border border-ink-line/70 p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Difference</p>
-                <p className="mt-2 text-2xl font-semibold text-text">{showResult ? `${difference.toFixed(1)}%` : "—"}</p>
+                <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : showResult ? `${difference.toFixed(1)}%` : "—"}</p>
               </div>
             </div>
 
             <div className="mt-6 rounded-xl border border-ink-line/70 bg-ink p-4 text-sm text-text-faint">
-              <span className="font-semibold text-text">Result:</span> {summary}
+              <span className="font-semibold text-text">Result:</span> {UNDER_CONSTRUCTION ? "Values are hidden while this page is under construction." : summary}
             </div>
             {showResult && (
               <button onClick={() => setShowResult(false)} className="mt-4 rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">
@@ -427,7 +441,7 @@ export default function TradesPage() {
                               </div>
                               <div className="min-w-0">
                                 <p className="truncate font-semibold text-text">{unit.name}</p>
-                                <p className="text-xs text-text-faint">Value: {value}</p>
+                                <p className="text-xs text-text-faint">{UNDER_CONSTRUCTION ? "Values hidden" : `Value: ${value}`}</p>
                               </div>
                             </div>
                           </button>
