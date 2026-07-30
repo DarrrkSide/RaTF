@@ -24,6 +24,7 @@ export default function TutorialPage() {
         <SectionHeading title="Guide overview" />
         <div className="grid gap-4 md:grid-cols-2">
           {[
+            { title: "Team Building", href: "/tutorial/teambuilding", description: "How to build a META optimal team." },
             { title: "Traits benefits", href: "/tutorial/traits", description: "Trait tiers, buffs, and drop rates." },
             { title: "How to level up units", href: "/tutorial/upgrade", description: "The proper merging process for leveling units." },
             { title: "Mutation events", href: "/tutorial/mutations", description: "Mutation bonuses and the event schedule." },

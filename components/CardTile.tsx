@@ -49,14 +49,19 @@ function Emblem({ unit, hex }: { unit: Unit; hex: string }) {
   );
 }
 
-export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Unit) => void }) {
+export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit; onOpen?: (u: Unit) => void; compact?: boolean }) {
   const meta = RARITY_META[unit.rarity];
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = Boolean(unit.image && !imgFailed);
   const isMythic = unit.rarity === "Mythic";
+  const isAldedo = unit.name === "Aldedo";
 
-  const cardClasses = `relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`;
-  const innerCardClasses = "relative flex flex-col overflow-hidden rounded-xl bg-ink-surface";
+  const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`;
+  const innerCardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-xl bg-ink-surface`;
+  const imageAreaClasses = compact ? "relative flex aspect-[4/5] items-center justify-center overflow-hidden" : "relative flex h-28 items-center justify-center overflow-hidden";
+  const bodyClasses = compact ? "flex flex-1 flex-col justify-end gap-1 p-2" : "flex flex-1 flex-col gap-1.5 p-2.5";
+  const titleClasses = compact ? "truncate font-body text-[10px] font-semibold text-text sm:text-xs" : "truncate font-body text-xs font-semibold text-text sm:text-sm";
+  const badgeClasses = compact ? "w-fit rounded-full border px-2 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider" : "w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider";
 
   return (
     <div
@@ -76,7 +81,7 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
         className={innerCardClasses}
       >
         <div
-          className="relative flex h-28 items-center justify-center overflow-hidden"
+          className={imageAreaClasses}
           style={isMythic ? {
             backgroundColor: `${meta.hex}1a`,
           } : { backgroundColor: `${meta.hex}08` }}
@@ -86,7 +91,7 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
           <img
             src={unit.image}
             alt={unit.name}
-            className="max-h-full max-w-full object-contain"
+            className={`h-full w-full ${isAldedo ? "object-contain object-center scale-[0.9]" : "object-contain"}`}
             loading="lazy"
             onError={() => setImgFailed(true)}
           />
@@ -113,10 +118,10 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
         <span className="absolute left-0 top-0 h-full w-1" style={isMythic ? { background: "linear-gradient(180deg, #f472b6, #a78bfa, #22d3ee)" } : { backgroundColor: meta.hex }} />
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
-        <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">{unit.name}</h3>
+      <div className={bodyClasses}>
+        <h3 className={titleClasses}>{unit.name}</h3>
         <span
-          className="w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider"
+          className={badgeClasses}
           style={isMythic ? { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` } : { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}
         >
           {unit.rarity}
