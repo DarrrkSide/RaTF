@@ -150,6 +150,13 @@ export default function CardsPage() {
                 className={`rounded-full border px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider transition-opacity ${meta.chip} ${
                   active ? "opacity-100" : "opacity-30"
                 }`}
+                style={rarity === "Mythic" ? {
+                  backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.2), rgba(192,132,252,0.2), rgba(34,211,238,0.2))",
+                  color: "transparent",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                } : undefined}
               >
                 {rarity}
               </button>
@@ -199,7 +206,19 @@ export default function CardsPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}>{selected.rarity}</div>
+                    <div
+                      className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"
+                      style={selected.rarity === "Mythic" ? {
+                        color: "transparent",
+                        borderColor: "rgba(244, 114, 182, 0.7)",
+                        backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
+                        WebkitBackgroundClip: "text",
+                        backgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      } : { color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}
+                    >
+                      {selected.rarity}
+                    </div>
                     <div className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: "#111", borderColor: "#ccc", backgroundColor: "#f3f4f6" }}>{QUALITY_TIER_LIST.find(r=>r.units.includes(selected.name))?.label ?? "—"}</div>
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-3">

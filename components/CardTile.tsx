@@ -53,13 +53,18 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
   const meta = RARITY_META[unit.rarity];
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = Boolean(unit.image && !imgFailed);
+  const isMythic = unit.rarity === "Mythic";
 
   return (
     <div
       onClick={() => onOpen?.(unit)}
       role="button"
       tabIndex={0}
-      className={`relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-transform duration-300 hover:-translate-y-1 ${meta.border} cursor-pointer`}
+      className={`relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`}
+      style={isMythic ? {
+        borderColor: "rgba(244, 114, 182, 0.7)",
+        boxShadow: "0 0 0 1px rgba(192, 132, 252, 0.15) inset",
+      } : undefined}
       onKeyDown={(e) => {
         if (e.key === "Enter") onOpen?.(unit);
       }}
@@ -82,21 +87,34 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
             <Emblem unit={unit} hex={meta.hex} />
             <span
               className="absolute bottom-1.5 right-2 font-display text-lg tracking-wide opacity-40"
-              style={{ color: meta.hex }}
+              style={isMythic ? {
+                backgroundImage: "linear-gradient(90deg, #f472b6, #a78bfa, #22d3ee)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+              } : { color: meta.hex }}
             >
               {initials(unit.name)}
             </span>
           </>
         )}
 
-        <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: meta.hex }} />
+        <span className="absolute left-0 top-0 h-full w-1" style={isMythic ? { background: "linear-gradient(180deg, #f472b6, #a78bfa, #22d3ee)" } : { backgroundColor: meta.hex }} />
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-2.5">
         <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">{unit.name}</h3>
         <span
           className="w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider"
-          style={{ color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}
+          style={isMythic ? {
+            color: "transparent",
+            borderColor: "rgba(244, 114, 182, 0.7)",
+            backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          } : { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}
         >
           {unit.rarity}
         </span>

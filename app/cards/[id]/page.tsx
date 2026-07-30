@@ -50,7 +50,19 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
         <div>
           <h1 className="font-display text-3xl font-black">{displayName}</h1>
-          <div className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase" style={{ color: meta.hex, borderColor: meta.hex + "66", backgroundColor: meta.hex + "14" }}>{rarity}</div>
+          <div
+            className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"
+            style={rarity === "Mythic" ? {
+              color: "transparent",
+              borderColor: "rgba(244, 114, 182, 0.7)",
+              backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            } : { color: meta.hex, borderColor: meta.hex + "66", backgroundColor: meta.hex + "14" }}
+          >
+            {rarity}
+          </div>
         </div>
       </div>
 

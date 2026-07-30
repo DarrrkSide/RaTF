@@ -48,12 +48,12 @@ export const RARITY_META: Record<
     hex: "#e879f9",
   },
   Mythic: {
-    text: "text-rarity-mythic",
-    border: "border-rarity-mythic/60",
-    bg: "bg-rarity-mythic/10",
-    glow: "shadow-[0_0_24px_-4px_rgba(251,113,133,0.55)]",
-    chip: "bg-rarity-mythic/15 text-rarity-mythic border-rarity-mythic/40",
-    hex: "#fb7185",
+    text: "bg-[linear-gradient(90deg,_#f43f5e_0%,_#fb7185_15%,_#a855f7_35%,_#8b5cf6_55%,_#22d3ee_75%,_#34d399_100%)] text-transparent bg-clip-text",
+    border: "border-pink-400/80",
+    bg: "bg-[linear-gradient(90deg,_rgba(244,63,94,0.26)_0%,_rgba(251,113,133,0.22)_20%,_rgba(168,85,247,0.24)_45%,_rgba(34,211,238,0.22)_70%,_rgba(52,211,153,0.24)_100%)]",
+    glow: "shadow-[0_0_30px_-4px_rgba(244,114,182,0.7)]",
+    chip: "border-pink-400/70 bg-[linear-gradient(90deg,_rgba(244,63,94,0.24)_0%,_rgba(251,113,133,0.24)_20%,_rgba(168,85,247,0.28)_50%,_rgba(34,211,238,0.24)_80%,_rgba(52,211,153,0.24)_100%)] text-transparent bg-clip-text",
+    hex: "#f472b6",
   },
   Legendary: {
     text: "text-rarity-legendary",
