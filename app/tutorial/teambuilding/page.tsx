@@ -77,9 +77,33 @@ const damageUnits = [
   "Golden Frozer",
 ];
 
-const healerUnits = ["Orihemi"];
-const buffHealerUnits = ["Kiwusuke"];
-const buffUnits = ["Erwon"];
+const healerUnits = ["Orihemi", "Kiwusuke"];
+const reviveUnits = ["Wise", "Kiwusuke"];
+const healerReviveUnits = ["Orihemi", "Kiwusuke", "Wise"];
+const buffUnits = ["Erwon", "Kiwusuke"];
+
+type SupportRoleFilter = "any" | "healer" | "revive" | "both";
+
+function getSupportRole(unitName: string) {
+  const normalizedName = normalizeName(unitName);
+  const isHealer = healerUnits.some((name) => normalizeName(name) === normalizedName);
+  const isRevive = reviveUnits.some((name) => normalizeName(name) === normalizedName);
+
+  if (isHealer && isRevive) return "both";
+  if (isHealer) return "healer";
+  if (isRevive) return "revive";
+  return null;
+}
+
+function matchesSupportRole(unitName: string, filter: SupportRoleFilter) {
+  const role = getSupportRole(unitName);
+
+  if (filter === "any") return role !== null;
+  if (filter === "healer") return role === "healer" || role === "both";
+  if (filter === "revive") return role === "revive" || role === "both";
+  if (filter === "both") return role === "both";
+  return false;
+}
 
 const slots: Slot[] = [
   { title: "Tank", accent: "from-orange-500/35 via-amber-400/20 to-red-500/15", border: "border-orange-400/30", text: "text-amber-100", units: tankUnits },
@@ -92,7 +116,7 @@ const slots: Slot[] = [
   { title: "Damage Dealer / Ranged", accent: "from-sky-500/30 via-cyan-400/20 to-violet-500/15", border: "border-cyan-400/30", text: "text-cyan-100", units: damageUnits },
   { title: "Healer", accent: "from-emerald-500/35 via-teal-400/20 to-cyan-500/15", border: "border-emerald-400/30", text: "text-emerald-100", units: healerUnits },
   { title: "Healer", accent: "from-emerald-500/35 via-teal-400/20 to-cyan-500/15", border: "border-emerald-400/30", text: "text-emerald-100", units: healerUnits },
-  { title: "Buff / Healer", accent: "from-fuchsia-500/35 via-purple-400/20 to-indigo-500/15", border: "border-fuchsia-400/30", text: "text-fuchsia-100", units: buffHealerUnits },
+  { title: "Healer / Revive", accent: "from-fuchsia-500/35 via-purple-400/20 to-indigo-500/15", border: "border-fuchsia-400/30", text: "text-fuchsia-100", units: healerReviveUnits },
   { title: "Buff", accent: "from-violet-500/35 via-purple-400/20 to-pink-500/15", border: "border-violet-400/30", text: "text-violet-100", units: buffUnits },
 ];
 
@@ -139,8 +163,24 @@ function getScoreForSlot(slotTitle: string, unitName: string, mutation: string |
   const traitBonus = trait ? (isMajorRole ? 18 : 10) : isMajorRole ? -20 : -6;
   const levelBonus = Math.min(12, (level - 1) * 0.12);
   const roleBonus = isMajorRole ? 8 : 4;
+  const supportRole = getSupportRole(unitName);
+  const supportBonus = slotTitle === "Healer / Revive"
+    ? supportRole === "both"
+      ? 16
+      : supportRole === "revive"
+        ? 14
+        : supportRole === "healer"
+          ? 8
+          : 0
+    : slotTitle === "Healer"
+      ? supportRole === "both"
+        ? 10
+        : supportRole === "healer"
+          ? 8
+          : 0
+      : 0;
 
-  return Math.min(100, tierScore + mutationBonus + traitBonus + roleBonus + levelBonus);
+  return Math.min(100, tierScore + mutationBonus + traitBonus + roleBonus + levelBonus + supportBonus);
 }
 
 export default function TeamBuildingPage() {
@@ -157,6 +197,7 @@ export default function TeamBuildingPage() {
   const [pendingMutation, setPendingMutation] = useState<string | null>(null);
   const [pendingTrait, setPendingTrait] = useState<string | null>(null);
   const [pendingLevel, setPendingLevel] = useState(1);
+  const [supportRoleFilter, setSupportRoleFilter] = useState<SupportRoleFilter>("any");
 
   const activeSlot = activeSlotIndex === null ? null : slots[activeSlotIndex];
   const currentSlotUnit = activeSlotIndex === null ? null : selectedUnits[activeSlotIndex];
@@ -224,15 +265,20 @@ export default function TeamBuildingPage() {
     if (activeSlotIndex === null) return [];
 
     const roleUnits = slots[activeSlotIndex].units;
-    return units.filter((unit) =>
-      roleUnits.some((name) => normalizeName(name) === normalizeName(unit.name))
-    ).sort((a, b) => {
+    return units.filter((unit) => {
+      const matchesRole = roleUnits.some((name) => normalizeName(name) === normalizeName(unit.name));
+      if (!matchesRole) return false;
+      if (activeSlot?.title === "Healer / Revive") {
+        return matchesSupportRole(unit.name, supportRoleFilter);
+      }
+      return true;
+    }).sort((a, b) => {
       const tierA = getTierInfo(a.name);
       const tierB = getTierInfo(b.name);
       if (tierA.index !== tierB.index) return tierA.index - tierB.index;
       return a.name.localeCompare(b.name);
     });
-  }, [activeSlotIndex, units]);
+  }, [activeSlot?.title, activeSlotIndex, supportRoleFilter, units]);
 
   const teamScore = useMemo(() => {
     const slotScores = slots.map((slot, index) =>
@@ -246,6 +292,67 @@ export default function TeamBuildingPage() {
     if (average >= 45) return { score: Math.round(average), label: "C" };
     if (average >= 30) return { score: Math.round(average), label: "D" };
     return { score: Math.round(average), label: "F" };
+  }, [selectedLevels, selectedMutations, selectedTraits, selectedUnits]);
+
+  const teamGuidance = useMemo(() => {
+    const tankSelections = selectedUnits.slice(0, 4).filter((unit): unit is string => Boolean(unit));
+    const damageSelections = selectedUnits.slice(4, 8).filter((unit): unit is string => Boolean(unit));
+    const supportSelections = selectedUnits.slice(8, 12).filter((unit): unit is string => Boolean(unit));
+
+    const weakTank = tankSelections.find((unitName) => {
+      const tier = getTierInfo(unitName).label;
+      return ["Trash", "C", "B", "Progress", "Unranked"].includes(tier);
+    });
+    const weakDamage = damageSelections.find((unitName) => {
+      const tier = getTierInfo(unitName).label;
+      return ["Trash", "C", "B", "Progress", "Unranked"].includes(tier);
+    });
+    const weakSupport = supportSelections.find((unitName) => {
+      const tier = getTierInfo(unitName).label;
+      return ["Trash", "C", "B", "Progress", "Unranked"].includes(tier);
+    });
+
+    if (tankSelections.length === 0) {
+      return "You are missing a tank. Add a durable front-line unit such as Itadoro or Bon to improve your team's stability.";
+    }
+
+    if (damageSelections.length === 0) {
+      return "You are missing a damage dealer. Add a strong damage carry such as Usoff or Luppi to boost your damage output.";
+    }
+
+    if (supportSelections.length === 0) {
+      return "You need support utility. Pick a healer or revive option like Orihemi, Wise, or Kiwusuke to keep the team alive.";
+    }
+
+    if (weakTank) {
+      return "One of your tanks is still underwhelming. Try swapping in a stronger tank such as Itadoro or Bon for a safer front line.";
+    }
+
+    if (weakDamage) {
+      return "One of your damage slots could use an upgrade. Consider a stronger damage dealer such as Usoff or Luppi to raise your burst.";
+    }
+
+    if (weakSupport) {
+      return "Your support lineup could be stronger. Wise is a strong revive pick, while Kiwusuke can cover healer or revive and Orihemi is a reliable healer.";
+    }
+
+    const unboostedMajorSlots = slots.filter((slot, index) => {
+      const hasUnit = Boolean(selectedUnits[index]);
+      const missingMutation = !selectedMutations[index];
+      const missingTrait = !selectedTraits[index];
+      return hasUnit && (slot.title === "Tank" || slot.title === "Damage Dealer / Ranged") && (missingMutation || missingTrait);
+    });
+
+    if (unboostedMajorSlots.length > 0) {
+      return "Your main damage and tank slots would benefit from a mutation and trait. Add those first for a major rating increase.";
+    }
+
+    const lowLevelSlots = slots.filter((slot, index) => Boolean(selectedUnits[index]) && selectedLevels[index] < 4);
+    if (lowLevelSlots.length > 0) {
+      return "Level up your core units, especially your tanks and damage dealers, to make the build much stronger.";
+    }
+
+    return "Your team looks fairly balanced. Keep improving the core tanks and damage dealers, and use a reliable healer or revive support to stay consistent.";
   }, [selectedLevels, selectedMutations, selectedTraits, selectedUnits]);
 
   function assignUnit(index: number | null, unitName: string) {
@@ -476,7 +583,16 @@ export default function TeamBuildingPage() {
               </div>
 
               <p className="mt-4 text-sm leading-6 text-text-dim">
-                Tanks and damage dealers receive the biggest bonus from mutation and traits. If those roles are left basic with no mutation or trait, the score drops sharply and can fall to an F-tier build.
+                Tanks and damage dealers receive the biggest bonus from mutation and traits. If those roles are left basic with no mutation or trait, the score drops sharply and can fall to an F-tier build. To improve your rating, prioritize mutations and traits on the front line, use a strong healer/revive support pick when possible, and level up the units you rely on most. Kiwusuke is especially flexible because he can cover the healer or revive support role.
+              </p>
+            </div>
+
+            <div className="mt-4 rounded-[1.2rem] border border-white/10 bg-ink-surface/80 p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-red-300/80">
+                Team guidance
+              </p>
+              <p className="mt-3 text-sm leading-6 text-text-dim">
+                {teamGuidance}
               </p>
             </div>
           </div>
@@ -528,6 +644,22 @@ export default function TeamBuildingPage() {
                   </div>
 
                   <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    {activeSlot.title === "Healer / Revive" ? (
+                      <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.2em] text-text-dim">
+                        Support role filter
+                        <select
+                          value={supportRoleFilter}
+                          onChange={(event) => setSupportRoleFilter(event.target.value as SupportRoleFilter)}
+                          className="rounded-lg border border-ink-line bg-ink-surface px-3 py-2 text-sm text-text"
+                        >
+                          <option value="any">Any support unit</option>
+                          <option value="healer">Healer</option>
+                          <option value="revive">Revive</option>
+                          <option value="both">Healer + Revive</option>
+                        </select>
+                      </label>
+                    ) : null}
+
                     <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.2em] text-text-dim">
                       Mutation
                       <select
@@ -589,7 +721,7 @@ export default function TeamBuildingPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                   {rankedUnits.map((unit) => {
                     const tierInfo = getTierInfo(unit.name);
                     return (
