@@ -1,5 +1,8 @@
+"use client";
+
 import { TutorialSectionShell } from "@/components/TutorialSectionShell";
 import { MUTATIONS } from "@/data/mutations";
+import { useEffect, useState } from "react";
 
 function formatMutationValue(name: string, value: string, type: "damage" | "health") {
   if (name === "Astronaut") {
@@ -9,6 +12,12 @@ function formatMutationValue(name: string, value: string, type: "damage" | "heal
 }
 
 export default function MutationsPage() {
+  const [rowsMounted, setRowsMounted] = useState(false);
+
+  useEffect(() => {
+    const id = setTimeout(() => setRowsMounted(true), 40);
+    return () => clearTimeout(id);
+  }, []);
   return (
     <TutorialSectionShell
       title="Mutation Events"
@@ -25,9 +34,16 @@ export default function MutationsPage() {
           </thead>
           <tbody>
             {MUTATIONS.map((mut, i) => (
-              <tr key={mut.name} className={i % 2 === 0 ? "bg-ink-surface" : "bg-ink-surface/60"}>
+              <tr
+                key={mut.name}
+                className={`${i % 2 === 0 ? "bg-ink-surface" : "bg-ink-surface/60"} ${mut.name === "Astronaut" ? "ring-2 ring-amber-300/20 bg-amber-200/5" : ""}`}
+                style={{ transition: 'all 220ms ease', transitionDelay: `${rowsMounted ? i * 40 : 0}ms`, transform: rowsMounted ? 'translateY(0)' : 'translateY(6px)', opacity: rowsMounted ? 1 : 0 }}
+              >
                 <td className="px-4 py-3 font-body text-sm font-semibold" style={{ color: mut.color }}>
                   {mut.name}
+                  {mut.name === "Astronaut" && (
+                    <span className="ml-2 inline-flex items-center rounded-full bg-amber-200/10 px-2 py-0.5 text-xs font-semibold text-amber-200 animate-pulse">✦</span>
+                  )}
                 </td>
                 <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.damage, "damage")}</td>
                 <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.health, "health")}</td>

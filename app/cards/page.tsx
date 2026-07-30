@@ -61,6 +61,7 @@ export default function CardsPage() {
   const [selected, setSelected] = useState<Unit | null>(null);
   const [selectedTrait, setSelectedTrait] = useState<string | null>(null);
   const [selectedMutation, setSelectedMutation] = useState<string | null>(null);
+  const [modalMounted, setModalMounted] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +82,15 @@ export default function CardsPage() {
     setSelectedTrait(null);
     setSelectedMutation(null);
   }, [selected?.id]);
+
+  useEffect(() => {
+    if (selected) {
+      // small delay to allow portal mount then animate
+      requestAnimationFrame(() => setModalMounted(true));
+    } else {
+      setModalMounted(false);
+    }
+  }, [selected]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -195,7 +205,7 @@ export default function CardsPage() {
         <Portal>
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={() => setSelected(null)} />
-            <div className="relative w-[90%] max-w-3xl rounded-xl border bg-ink-surface p-6 shadow-lg">
+            <div className={`relative w-[90%] max-w-3xl rounded-xl border bg-ink-surface p-6 shadow-lg transform-gpu transition-all duration-200 ease-out ${modalMounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
               <div className="flex justify-between">
                 <h2 className="font-display text-2xl font-black">{selected.name}</h2>
                 <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
@@ -235,28 +245,56 @@ export default function CardsPage() {
                   <div className="mt-4 grid grid-cols-2 gap-3">
                     <div>
                       <h4 className="font-semibold">Damage</h4>
-                      <p className="text-sm font-semibold text-text">{effectiveStats?.damage?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">
+                        {effectiveStats?.damage?.toLocaleString() ?? "—"}
+                        {(selectedTrait || selectedMutation) && (
+                          <span className="ml-2 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-200 animate-pulse">
+                            Modified
+                          </span>
+                        )}
+                      </p>
                       {(selectedTrait || selectedMutation) && originalStats?.damage != null && (
                         <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.damage.toLocaleString()}</p>
                       )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Defense</h4>
-                      <p className="text-sm font-semibold text-text">{effectiveStats?.defense?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">
+                        {effectiveStats?.defense?.toLocaleString() ?? "—"}
+                        {(selectedTrait || selectedMutation) && (
+                          <span className="ml-2 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-200">
+                            Modified
+                          </span>
+                        )}
+                      </p>
                       {(selectedTrait || selectedMutation) && originalStats?.defense != null && (
                         <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.defense.toLocaleString()}</p>
                       )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Health</h4>
-                      <p className="text-sm font-semibold text-text">{effectiveStats?.health?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">
+                        {effectiveStats?.health?.toLocaleString() ?? "—"}
+                        {(selectedTrait || selectedMutation) && (
+                          <span className="ml-2 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-200">
+                            Modified
+                          </span>
+                        )}
+                      </p>
                       {(selectedTrait || selectedMutation) && originalStats?.health != null && (
                         <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.health.toLocaleString()}</p>
                       )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Speed</h4>
-                      <p className="text-sm font-semibold text-text">{effectiveStats?.speed?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">
+                        {effectiveStats?.speed?.toLocaleString() ?? "—"}
+                        {(selectedTrait || selectedMutation) && (
+                          <span className="ml-2 inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-200">
+                            Modified
+                          </span>
+                        )}
+                      </p>
                       {(selectedTrait || selectedMutation) && originalStats?.speed != null && (
                         <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.speed.toLocaleString()}</p>
                       )}

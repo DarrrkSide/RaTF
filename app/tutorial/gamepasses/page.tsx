@@ -1,7 +1,11 @@
+"use client";
+
 import { TutorialSectionShell } from "@/components/TutorialSectionShell";
 import { GAMEPASS_PRIORITY, GAMEPASSES } from "@/data/gamepasses";
+import { useEffect, useState } from "react";
 
 export default function GamepassesPage() {
+  const [listMounted, setListMounted] = useState(false);
   const rankMap = new Map(GAMEPASS_PRIORITY.map((name, index) => [name, index + 1]));
   const sortedGamepasses = [...GAMEPASSES].sort((a, b) => {
     const rankA = rankMap.get(a.name) ?? Number.MAX_SAFE_INTEGER;
@@ -10,24 +14,33 @@ export default function GamepassesPage() {
     return a.name.localeCompare(b.name);
   });
 
+  useEffect(() => {
+    // small delay so CSS transitions apply
+    const id = setTimeout(() => setListMounted(true), 40);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <TutorialSectionShell
       title="Gamepass Priority"
       description="Ranked gamepasses give the strongest value first. Unranked passes are mostly cosmetic or quality-of-life upgrades."
     >
       <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
+        {/** trigger mount animations after hydration */}
+        <div style={{ display: 'none' }} />
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
-          {sortedGamepasses.map((pass) => {
+          {sortedGamepasses.map((pass, idx) => {
             const rank = rankMap.get(pass.name);
             const isRanked = rank != null;
             return (
               <article
                 key={pass.name}
-                className={`rounded-3xl border p-5 shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 ${
+                className={`rounded-3xl border p-5 shadow-[0_20px_60px_rgba(0,0,0,0.15)] transform-gpu will-change-transform transition-transform duration-300 ${
                   isRanked
-                    ? "border-cyan-500/20 bg-cyan-500/5 hover:-translate-y-0.5"
-                    : "border-ink-line bg-ink-surface/80 opacity-90"
+                    ? "border-cyan-500/20 bg-cyan-500/5 hover:-translate-y-1 hover:shadow-2xl"
+                    : "border-ink-line bg-ink-surface/80 opacity-90 hover:-translate-y-0.5 hover:shadow-lg"
                 }`}
+                style={{ transitionDelay: `${listMounted ? idx * 40 : 0}ms` }}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
