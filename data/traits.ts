@@ -46,7 +46,6 @@ export const TRAIT_TIERS: TraitTier[] = [
       { name: "Entrepreneur", dropChance: "0.5%", buffs: "+45% Damage | +25% Health | 10% Faster Attacks | +65% Money" },
       { name: "Reaper", dropChance: "0.35%", buffs: "+90% Damage | +35% Health | 16% Faster Attacks | +35% Crit Chance | +45% Crit Damage" },
       { name: "Cloner", dropChance: "0.25%", buffs: "+40% Damage | +60% Health | Summons 2 units instead of 1" },
-      { name: "Ghost", dropChance: "0.2%", buffs: "+100% Damage | +100% Health | Resurrects on death with 80% stats" },
       { name: "Superior", dropChance: "0.15%", buffs: "+200% Damage | +100% Health | 20% Faster Attacks | +40% Crit Chance | +65% Crit Damage" },
     ],
   },

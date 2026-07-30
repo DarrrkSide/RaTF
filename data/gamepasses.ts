@@ -1,13 +1,13 @@
 export const GAMEPASS_PRIORITY: string[] = [
-  "VIP",
-  "2x Coins",
-  "2x Drop Chance",
-  "2x Luck",
-  "Super Luck",
-  "Ultra Luck",
-  "2x Mutation Chance",
-  "Fast Summon",
   "3x Speed",
+  "Fast Summon",
+  "2x Mutation Chance",
+  "Ultra Luck",
+  "Super Luck",
+  "2x Luck",
+  "2x Drop Chance",
+  "2x Coins",
+  "VIP",
 ];
 
 export const GAMEPASS_SOURCE_URL =
