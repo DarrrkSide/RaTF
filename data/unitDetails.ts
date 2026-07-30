@@ -153,6 +153,12 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   itadoro: { stats: { damage: 10, defense: 1.12, health: 620, speed: 1 } },
   nonomi: { stats: { damage: 950, defense: 1.5, health: 10000, speed: 0.7 } },
   noruto: { stats: { damage: 200, defense: 1.25, health: 2500, speed: 1 } },
+keririn: { stats: { damage: 15, defense: 1.1, health: 240, speed: 1 } },
+luppi: { stats: { damage: 18, defense: 1.1, health: 250, speed: 1 } },
+janwoo: { stats: { damage: 58, defense: 1.1, health: 750, speed: 1 } },
+mobi: { stats: { damage: 52, defense: 1.1, health: 430, speed: 1.2 } },
+sukora: { stats: { damage: 10, defense: 1.13, health: 900, speed: 1 } },
+goke: { stats: { damage: 42, defense: 1, health: 600, speed: 1.1 } },
 };
 
 function applyOverrides(units: UnitDetails[]) {
