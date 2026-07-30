@@ -98,6 +98,11 @@ export default function CardsPage() {
     return getEffectiveStats(selected, selectedTrait, selectedMutation);
   }, [selected, selectedTrait, selectedMutation]);
 
+  const originalStats = useMemo(() => {
+    if (!selected) return null;
+    return getDetailsById(selected.id)?.stats ?? null;
+  }, [selected]);
+
   function toggleRarity(rarity: Rarity) {
     setActiveRarities((prev) => {
       const next = new Set(prev);
@@ -230,19 +235,31 @@ export default function CardsPage() {
                   <div className="mt-4 grid grid-cols-2 gap-3">
                     <div>
                       <h4 className="font-semibold">Damage</h4>
-                      <p className="text-sm text-text-faint">{effectiveStats?.damage?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">{effectiveStats?.damage?.toLocaleString() ?? "—"}</p>
+                      {(selectedTrait || selectedMutation) && originalStats?.damage != null && (
+                        <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.damage.toLocaleString()}</p>
+                      )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Defense</h4>
-                      <p className="text-sm text-text-faint">{effectiveStats?.defense?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">{effectiveStats?.defense?.toLocaleString() ?? "—"}</p>
+                      {(selectedTrait || selectedMutation) && originalStats?.defense != null && (
+                        <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.defense.toLocaleString()}</p>
+                      )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Health</h4>
-                      <p className="text-sm text-text-faint">{effectiveStats?.health?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">{effectiveStats?.health?.toLocaleString() ?? "—"}</p>
+                      {(selectedTrait || selectedMutation) && originalStats?.health != null && (
+                        <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.health.toLocaleString()}</p>
+                      )}
                     </div>
                     <div>
                       <h4 className="font-semibold">Speed</h4>
-                      <p className="text-sm text-text-faint">{effectiveStats?.speed?.toLocaleString() ?? "—"}</p>
+                      <p className="text-sm font-semibold text-text">{effectiveStats?.speed?.toLocaleString() ?? "—"}</p>
+                      {(selectedTrait || selectedMutation) && originalStats?.speed != null && (
+                        <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.speed.toLocaleString()}</p>
+                      )}
                     </div>
                   </div>
 

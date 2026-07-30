@@ -1,21 +1,84 @@
 import { TutorialSectionShell } from "@/components/TutorialSectionShell";
-import { GAMEPASS_PRIORITY } from "@/data/gamepasses";
+import { GAMEPASS_PRIORITY, GAMEPASSES } from "@/data/gamepasses";
 
 export default function GamepassesPage() {
+  const rankMap = new Map(GAMEPASS_PRIORITY.map((name, index) => [name, index + 1]));
+  const sortedGamepasses = [...GAMEPASSES].sort((a, b) => {
+    const rankA = rankMap.get(a.name) ?? Number.MAX_SAFE_INTEGER;
+    const rankB = rankMap.get(b.name) ?? Number.MAX_SAFE_INTEGER;
+    if (rankA !== rankB) return rankA - rankB;
+    return a.name.localeCompare(b.name);
+  });
+
   return (
     <TutorialSectionShell
       title="Gamepass Priority"
-      description="The recommended order to prioritize your gamepasses."
+      description="Ranked gamepasses give the strongest value first. Unranked passes are mostly cosmetic or quality-of-life upgrades."
     >
-      <div className="flex flex-wrap items-center gap-2">
-        {GAMEPASS_PRIORITY.map((pass, i) => (
-          <div key={pass} className="flex items-center gap-2">
-            <span className="rounded-lg border border-ink-line bg-ink-surface px-3 py-2 font-body text-sm font-semibold text-text transition-all duration-300 ease-out hover:-translate-y-0.5">
-              {pass}
-            </span>
-            {i < GAMEPASS_PRIORITY.length - 1 && <span className="text-text-faint">→</span>}
+      <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
+          {sortedGamepasses.map((pass) => {
+            const rank = rankMap.get(pass.name);
+            const isRanked = rank != null;
+            return (
+              <article
+                key={pass.name}
+                className={`rounded-3xl border p-5 shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 ${
+                  isRanked
+                    ? "border-cyan-500/20 bg-cyan-500/5 hover:-translate-y-0.5"
+                    : "border-ink-line bg-ink-surface/80 opacity-90"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                      {isRanked ? `Rank ${rank}` : "Unranked"}
+                    </p>
+                    <h2 className="mt-3 text-lg font-display font-black tracking-[0.04em] text-text">
+                      {pass.name}
+                    </h2>
+                  </div>
+                  <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-semibold text-text">
+                    {pass.price}
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-6 text-text-dim">{pass.description}</p>
+                {!isRanked ? (
+                  <p className="mt-4 rounded-2xl bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-200">
+                    Low priority: not essential for progression.
+                  </p>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+
+        <aside className="space-y-4">
+          <div className="rounded-3xl border border-ink-line/70 bg-ink-surface p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">How to use this page</p>
+            <h3 className="mt-3 text-2xl font-display font-black text-text">Spend Robux smarter</h3>
+            <p className="mt-4 text-sm leading-6 text-text-dim">
+              Focus on the ranked passes first, especially the top 6. These passes boost core progression and summoning value most effectively.
+            </p>
+            <p className="mt-4 text-sm leading-6 text-text-dim">
+              Unranked passes like display upgrades are fine if you want extra slots, but they don’t improve power or rewards directly.
+            </p>
           </div>
-        ))}
+
+          <div className="rounded-3xl border border-ink-line/70 bg-gradient-to-br from-cyan-500/10 via-cyan-500/5 to-ink-surface p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Top priority</p>
+            <ol className="mt-4 space-y-3 text-sm leading-6 text-text-dim">
+              {GAMEPASS_PRIORITY.slice(0, 3).map((pass, index) => (
+                <li key={pass} className="flex items-center gap-3">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500 text-sm font-semibold text-ink">
+                    {index + 1}
+                  </span>
+                  <span>{pass}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </aside>
       </div>
     </TutorialSectionShell>
   );

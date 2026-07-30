@@ -1,6 +1,13 @@
 import { TutorialSectionShell } from "@/components/TutorialSectionShell";
 import { MUTATIONS } from "@/data/mutations";
 
+function formatMutationValue(name: string, value: string, type: "damage" | "health") {
+  if (name === "Astronaut") {
+    return type === "damage" ? "x7.5" : "x3.5";
+  }
+  return value;
+}
+
 export default function MutationsPage() {
   return (
     <TutorialSectionShell
@@ -22,8 +29,8 @@ export default function MutationsPage() {
                 <td className="px-4 py-3 font-body text-sm font-semibold" style={{ color: mut.color }}>
                   {mut.name}
                 </td>
-                <td className="px-4 py-3 font-mono text-sm text-text">{mut.damage}</td>
-                <td className="px-4 py-3 font-mono text-sm text-text">{mut.health}</td>
+                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.damage, "damage")}</td>
+                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.health, "health")}</td>
               </tr>
             ))}
           </tbody>
