@@ -8,11 +8,10 @@ export default function RarityBadge({ rarity }: { rarity: Rarity }) {
     <span
       className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider ${meta.chip}`}
       style={isMythic ? {
-        backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.22), rgba(192,132,252,0.22), rgba(34,211,238,0.22))",
-        color: "transparent",
-        WebkitBackgroundClip: "text",
-        backgroundClip: "text",
-        WebkitTextFillColor: "transparent",
+        borderColor: "transparent",
+        borderImage: "linear-gradient(90deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #6366f1, #c026d3) 1",
+        backgroundColor: "rgba(255, 255, 255, 0.08)",
+        color: "#f8fafc",
       } : undefined}
     >
       {rarity}

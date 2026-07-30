@@ -46,7 +46,7 @@ export const WAVE_TIER_LIST: TierRow[] = [
   {
     label: "150",
     color: "#a3e635",
-    units: ["Yamumoto", "Yuwah", "Megumo", "Bakura", "Genes"],
+    units: ["Yamumoto", "Yuwah", "Megumo", "Brakura", "Genes"],
   },
   {
     label: "Trash",
@@ -81,7 +81,7 @@ export const QUALITY_TIER_LIST: TierRow[] = [
     color: "#fb923c",
     units: [
       "Ulquiopta", "Isoge (True Form)", "Shimo Haya", "Yutta", "Entomancer",
-      "Yamumoto", "Genes", "Bakura", "Yuwah", "Duma", "Bills",
+      "Yamumoto", "Genes", "Brakura", "Yuwah", "Duma", "Bills",
     ],
   },
   {

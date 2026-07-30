@@ -55,12 +55,15 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
   const showImage = Boolean(unit.image && !imgFailed);
   const isMythic = unit.rarity === "Mythic";
 
+  const cardClasses = `relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`;
+  const innerCardClasses = "relative flex flex-col overflow-hidden rounded-xl bg-ink-surface";
+
   return (
     <div
       onClick={() => onOpen?.(unit)}
       role="button"
       tabIndex={0}
-      className={`relative flex flex-col overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`}
+      className={cardClasses}
       style={isMythic ? {
         borderColor: "rgba(244, 114, 182, 0.7)",
         boxShadow: "0 0 0 1px rgba(192, 132, 252, 0.15) inset",
@@ -70,8 +73,13 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
       }}
     >
       <div
-        className="relative flex h-28 items-center justify-center overflow-hidden"
-        style={{ backgroundColor: `${meta.hex}08` }}
+        className={innerCardClasses}
+      >
+        <div
+          className="relative flex h-28 items-center justify-center overflow-hidden"
+          style={isMythic ? {
+            backgroundColor: `${meta.hex}1a`,
+          } : { backgroundColor: `${meta.hex}08` }}
       >
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -86,13 +94,15 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
           <>
             <Emblem unit={unit} hex={meta.hex} />
             <span
-              className="absolute bottom-1.5 right-2 font-display text-lg tracking-wide opacity-40"
+              className="absolute bottom-1.5 right-2 font-display text-lg tracking-wide"
               style={isMythic ? {
-                backgroundImage: "linear-gradient(90deg, #f472b6, #a78bfa, #22d3ee)",
+                backgroundImage: "linear-gradient(90deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #6366f1, #c026d3)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 color: "transparent",
+                opacity: 1,
+                textShadow: "0 0 10px rgba(255,255,255,0.25)",
               } : { color: meta.hex }}
             >
               {initials(unit.name)}
@@ -107,18 +117,12 @@ export default function CardTile({ unit, onOpen }: { unit: Unit; onOpen?: (u: Un
         <h3 className="truncate font-body text-xs font-semibold text-text sm:text-sm">{unit.name}</h3>
         <span
           className="w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider"
-          style={isMythic ? {
-            color: "transparent",
-            borderColor: "rgba(244, 114, 182, 0.7)",
-            backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          } : { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}
+          style={isMythic ? { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` } : { color: meta.hex, borderColor: `${meta.hex}66`, backgroundColor: `${meta.hex}14` }}
         >
           {unit.rarity}
         </span>
       </div>
     </div>
+  </div>
   );
 }

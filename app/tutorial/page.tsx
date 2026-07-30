@@ -29,6 +29,7 @@ export default function TutorialPage() {
             { title: "Mutation events", href: "/tutorial/mutations", description: "Mutation bonuses and the event schedule." },
             { title: "Merging & cloning", href: "/tutorial/merging", description: "How merging and cloning work in practice." },
             { title: "Gamepass priority", href: "/tutorial/gamepasses", description: "The recommended order for gamepasses." },
+            { title: "Codes", href: "/tutorial/codes", description: "Active redeem codes and their rewards." },
           ].map((item) => (
             <Link
               key={item.href}

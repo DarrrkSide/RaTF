@@ -53,12 +53,10 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div
             className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"
             style={rarity === "Mythic" ? {
-              color: "transparent",
-              borderColor: "rgba(244, 114, 182, 0.7)",
-              backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: "#f8fafc",
+              borderColor: "transparent",
+              borderImage: "linear-gradient(90deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #6366f1, #c026d3) 1",
+              backgroundColor: "rgba(255, 255, 255, 0.06)",
             } : { color: meta.hex, borderColor: meta.hex + "66", backgroundColor: meta.hex + "14" }}
           >
             {rarity}

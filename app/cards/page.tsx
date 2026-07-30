@@ -151,7 +151,7 @@ export default function CardsPage() {
                   active ? "opacity-100" : "opacity-30"
                 }`}
                 style={rarity === "Mythic" ? {
-                  backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.2), rgba(192,132,252,0.2), rgba(34,211,238,0.2))",
+                  backgroundImage: "linear-gradient(90deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #6366f1, #c026d3)",
                   color: "transparent",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
@@ -196,7 +196,14 @@ export default function CardsPage() {
                 <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
               </div>
               <div className="mt-4 flex gap-4">
-                <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg" style={{ backgroundColor: RARITY_META[selected.rarity].hex + "08" }}>
+                <div
+                className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg"
+                style={
+                  selected.rarity === "Mythic"
+                    ? { backgroundColor: RARITY_META[selected.rarity].hex + "14" }
+                    : { backgroundColor: RARITY_META[selected.rarity].hex + "08" }
+                }
+              >
                   {selected.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={selected.image} alt={selected.name} className="h-full w-full object-cover" />
@@ -209,12 +216,11 @@ export default function CardsPage() {
                     <div
                       className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"
                       style={selected.rarity === "Mythic" ? {
-                        color: "transparent",
-                        borderColor: "rgba(244, 114, 182, 0.7)",
-                        backgroundImage: "linear-gradient(90deg, rgba(244,114,182,0.18), rgba(192,132,252,0.18), rgba(34,211,238,0.18))",
-                        WebkitBackgroundClip: "text",
-                        backgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
+                        color: "#f8fafc",
+                        borderColor: "transparent",
+                        borderRadius: "9999px",
+                        borderImage: "linear-gradient(90deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #6366f1, #c026d3) 1",
+                        backgroundColor: "rgba(255, 255, 255, 0.06)",
                       } : { color: RARITY_META[selected.rarity].hex, borderColor: RARITY_META[selected.rarity].hex + "66", backgroundColor: RARITY_META[selected.rarity].hex + "14" }}
                     >
                       {selected.rarity}

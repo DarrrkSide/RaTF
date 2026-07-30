@@ -48,7 +48,7 @@ export const RARITY_META: Record<
     hex: "#e879f9",
   },
   Mythic: {
-    text: "bg-[linear-gradient(90deg,_#f43f5e_0%,_#fb7185_15%,_#a855f7_35%,_#8b5cf6_55%,_#22d3ee_75%,_#34d399_100%)] text-transparent bg-clip-text",
+    text: "bg-[linear-gradient(90deg,_#f43f5e_0%,_#fb7185_15%,_#a855f7_35%,_#8b5cf6_55%,_#22c55ee_75%,_#34d399_100%)] text-transparent bg-clip-text",
     border: "border-pink-400/80",
     bg: "bg-[linear-gradient(90deg,_rgba(244,63,94,0.26)_0%,_rgba(251,113,133,0.22)_20%,_rgba(168,85,247,0.24)_45%,_rgba(34,211,238,0.22)_70%,_rgba(52,211,153,0.24)_100%)]",
     glow: "shadow-[0_0_30px_-4px_rgba(244,114,182,0.7)]",
