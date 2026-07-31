@@ -135,7 +135,6 @@ const COMMON_UNITS: UnitDetails[] = [
 
 const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   usoff: { stats: { damage: 16, defense: 1.1, health: 160, speed: 1 } },
-  joti: { stats: { damage: 1750, defense: 1.5, health: 10000, speed: 1 } },
   kiwusuke: {
     stats: { damage: 1500, defense: 1.25, health: 5000, speed: 2 },
     ability: {
@@ -144,7 +143,13 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
     }
   },
   brocolli: { stats: { damage: 600, defense: 1.22, health: 6400, speed: 3 } },
-  acer: { stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 } },
+  acer: {
+    stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 },
+    ability: {
+      title: "Ultimate Entei",
+      description: "Hurls a massive Entei fireball at the target, exploding on impact."
+    }
+  },
   hoshira: { stats: { damage: 430, defense: 1.2, health: 4165, speed: 0.6 } },
   "shimo-haya": { stats: { damage: 7000, defense: 1.2, health: 3145, speed: 3 } },
   yoriki: {
@@ -155,14 +160,6 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
     }
   },
   coyote: { stats: { damage: 175, defense: 1.25, health: 3570, speed: 3 } },
-  acer: {
-    stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 },
-    ability: {
-      title: "Ultimate Entei",
-      description: "Hurls a massive Entei fireball at the target, exploding on impact."
-    }
-  },
-  hoshira: { stats: { damage: 430, defense: 1.2, health: 4165, speed: 0.6 } },
   megumo: {
     stats: { damage: 5000, defense: 1.25, health: 10000, speed: 1 },
     ability: {
@@ -191,7 +188,6 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
       description: "Kenie triggers a life steal effect every 2nd attack!"
     }
   },
-  brakura: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 1 } },
   jerin: { stats: { damage: 500, defense: 1.25, health: 16500, speed: 1 } },
   yuwah: {
     stats: { damage: 3000, defense: 1.12, health: 8500, speed: 3 },
