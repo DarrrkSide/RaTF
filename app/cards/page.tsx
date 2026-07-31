@@ -210,6 +210,26 @@ export default function CardsPage() {
     return getDetailsById(selected.id)?.stats ?? null;
   }, [selected]);
 
+  const selectedRarityMeta = useMemo(() => {
+    if (!selected) return null;
+    return RARITY_META[selected.rarity];
+  }, [selected]);
+
+  const selectedRarityTitleStyle = useMemo(() => {
+    if (!selected) return undefined;
+
+    if (selected.rarity === "Mythic") {
+      return {
+        background: "linear-gradient(90deg, #f43f5e 0%, #fb7185 15%, #a855f7 35%, #8b5cf6 55%, #22c55e 75%, #34d399 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        color: "transparent",
+      };
+    }
+
+    return selectedRarityMeta?.hex ? { color: selectedRarityMeta.hex } : undefined;
+  }, [selected, selectedRarityMeta]);
+
   function toggleRarity(rarity: Rarity) {
     setActiveRarities((prev) => {
       const next = new Set(prev);
@@ -470,15 +490,30 @@ export default function CardsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-4 rounded-xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-transparent to-fuchsia-500/10 p-3 shadow-sm">
+                  <div
+                    className="mt-4 rounded-xl border p-3 shadow-sm"
+                    style={{
+                      borderColor: selectedRarityMeta?.hex ? `${selectedRarityMeta.hex}55` : undefined,
+                      background: selectedRarityMeta?.hex
+                        ? `linear-gradient(135deg, ${selectedRarityMeta.hex}18 0%, rgba(255,255,255,0.03) 100%)`
+                        : undefined,
+                    }}
+                  >
                     <div className="mb-2 flex items-center gap-2">
-                      <div className="rounded-full bg-amber-500/20 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">
+                      <div
+                        className="rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
+                        style={{
+                          backgroundColor: selectedRarityMeta?.hex ? `${selectedRarityMeta.hex}22` : undefined,
+                          color: selectedRarityMeta?.hex ?? undefined,
+                          border: selectedRarityMeta?.hex ? `1px solid ${selectedRarityMeta.hex}44` : undefined,
+                        }}
+                      >
                         Ability
                       </div>
                     </div>
                     {getDetailsById(selected.id)?.ability ? (
                       <div className="space-y-1">
-                        <div className="text-sm font-semibold text-white">
+                        <div className="text-sm font-semibold text-white" style={selectedRarityTitleStyle}>
                           {getDetailsById(selected.id)!.ability!.title}
                         </div>
                         <div className="text-sm leading-relaxed text-text-faint">

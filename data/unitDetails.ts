@@ -132,19 +132,101 @@ const COMMON_UNITS: UnitDetails[] = [
 const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   usoff: { stats: { damage: 16, defense: 1.1, health: 160, speed: 1 } },
   joti: { stats: { damage: 1750, defense: 1.5, health: 10000, speed: 1 } },
-  kiwusuke: { stats: { damage: 1500, defense: 1.15, health: 5000, speed: 2 } },
+  kiwusuke: {
+    stats: { damage: 1500, defense: 1.25, health: 5000, speed: 2 },
+    ability: {
+      title: "Benihime Recovery",
+      description: "Heals allies for 5% of max HP and boosts their attack for 12 seconds."
+    }
+  },
   brocolli: { stats: { damage: 600, defense: 1.22, health: 6400, speed: 3 } },
   acer: { stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 } },
   hoshira: { stats: { damage: 430, defense: 1.2, health: 4165, speed: 0.6 } },
   "shimo-haya": { stats: { damage: 7000, defense: 1.2, health: 3145, speed: 3 } },
-  yoriki: { stats: { damage: 1250, defense: 1.15, health: 5780, speed: 1 } },
+  yoriki: {
+    stats: { damage: 1250, defense: 1.15, health: 5780, speed: 1 },
+    ability: {
+      title: "Flash Step",
+      description: "Teleports to a far enemy and attacks."
+    }
+  },
   coyote: { stats: { damage: 175, defense: 1.25, health: 3570, speed: 3 } },
-  kenie: { stats: { damage: 2100, defense: 1.32, health: 18000, speed: 1 } },
-  ulquiopta: { stats: { damage: 7500, defense: 1.25, health: 7500, speed: 2.5 } },
+  acer: {
+    stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 },
+    ability: {
+      title: "Ultimate Entei",
+      description: "Hurls a massive Entei fireball at the target, exploding on impact."
+    }
+  },
+  hoshira: { stats: { damage: 430, defense: 1.2, health: 4165, speed: 0.6 } },
+  megumo: {
+    stats: { damage: 5000, defense: 1.25, health: 10000, speed: 1 },
+    ability: {
+      title: "Divine General",
+      description: "Summons Mahorogo when Megumo's health is below 10%"
+    }
+  },
+  gyomain: {
+    stats: { damage: 4000, defense: 1.32, health: 25000, speed: 2 },
+    ability: {
+      title: "Stone Impact",
+      description: "Every 3rd attack stuns nearby enemies for 2 seconds."
+    }
+  },
+  ulquiopta: {
+    stats: { damage: 7500, defense: 1.25, health: 7500, speed: 2.5 },
+    ability: {
+      title: "Valiquent Spears",
+      description: "Attacks with a swift, series of spear attacks with large splash area."
+    }
+  },
+  kenie: {
+    stats: { damage: 2100, defense: 1.32, health: 18000, speed: 1.8 },
+    ability: {
+      title: "Bloodlust",
+      description: "Kenie triggers a life steal effect every 2nd attack!"
+    }
+  },
+  brakura: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 1 } },
   jerin: { stats: { damage: 500, defense: 1.25, health: 16500, speed: 1 } },
-  yuwah: { stats: { damage: 300, defense: 1.12, health: 6500, speed: 3 } },
+  yuwah: {
+    stats: { damage: 3000, defense: 1.12, health: 8500, speed: 3 },
+    ability: {
+      title: "Divine Arrowfall",
+      description: "Calls forth a barrage of arrows from the sky, raining destruction upon the enemies."
+    }
+  },
   fryren: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 3.5 } },
   saitomo: { stats: { damage: 120, defense: 1.27, health: 4500, speed: 1 } },
+  joti: {
+    stats: { damage: 1750, defense: 1.5, health: 10000, speed: 1 },
+    ability: {
+      title: "Ambush",
+      description: "Ambushes the highest-health enemy. Kills restore 5% health."
+    }
+  },
+  kokushiro: { stats: { damage: 700, defense: 1.1, health: 5780, speed: 1 } },
+  rengundam: {
+    stats: { damage: 900, defense: 1.25, health: 7500, speed: 1.2 },
+    ability: {
+      title: "Flame Barrage",
+      description: "Moves so fast it creates a large, destructive Flame slashes using the friction in the air."
+    }
+  },
+  zinichou: {
+    stats: { damage: 850, defense: 1.28, health: 8500, speed: 3 },
+    ability: {
+      title: "Thunderclap Stun",
+      description: "25% chance to stun enemies hit for 2 seconds."
+    }
+  },
+  orihemi: {
+    stats: { damage: 350, defense: 1.2, health: 3500, speed: 5 },
+    ability: {
+      title: "Soten Kisshun",
+      description: "Heals the ally with the lowest health"
+    }
+  },
   truck: { stats: { damage: 385, defense: 1.18, health: 2800, speed: 1.1 } },
   sakuna: { stats: { damage: 250, defense: 1.25, health: 2100, speed: 0.75 } },
   erwon: {
