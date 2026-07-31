@@ -1,16 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import { WAVE_TIER_LIST, QUALITY_TIER_LIST, TierRow } from "@/data/tierlists";
 import { getUnitByName } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
 
 type UnitMap = Record<string, { image?: string }>;
 
-const TABS = [
-  { key: "wave", label: "Wave Clear", rows: WAVE_TIER_LIST },
-  { key: "quality", label: "Quality", rows: QUALITY_TIER_LIST },
-] as const;
+const TABS = {
+  en: [
+    { key: "wave", label: "Wave Clear", rows: WAVE_TIER_LIST },
+    { key: "quality", label: "Quality", rows: QUALITY_TIER_LIST },
+  ],
+  es: [
+    { key: "wave", label: "Clear de oleada", rows: WAVE_TIER_LIST },
+    { key: "quality", label: "Calidad", rows: QUALITY_TIER_LIST },
+  ],
+} as const;
 
 function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, { image?: string }>; }) {
   return (
@@ -63,8 +70,10 @@ function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, 
 }
 
 export default function TierListPage() {
-  const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("wave");
-  const active = TABS.find((t) => t.key === tab)!;
+  const { language } = useLanguage();
+  const [tab, setTab] = useState<(typeof TABS)["en"][number]["key"]>("wave");
+  const tabs = TABS[language];
+  const active = tabs.find((t) => t.key === tab)!;
   const [unitMap, setUnitMap] = useState<UnitMap>({});
 
   useEffect(() => {
@@ -79,10 +88,10 @@ export default function TierListPage() {
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
-          Tier List
+          {language === "es" ? "Lista de niveles" : "Tier List"}
         </h1>
         <div className="inline-flex gap-1 rounded-full border border-ink-line bg-ink-surface p-1">
-          {TABS.map((t) => (
+          {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}

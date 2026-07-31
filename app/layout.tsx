@@ -5,6 +5,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import DiscordButton from "@/components/DiscordButton";
 import InteractiveBackground from "@/components/InteractiveBackground";
+import { LanguageProvider } from "@/components/LanguageProvider";
 
 const display = Anton({
   subsets: ["latin"],
@@ -42,14 +43,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body suppressHydrationWarning className="min-h-screen font-body">
-        <InteractiveBackground />
-        <NavBar />
-        <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">{children}</main>
-        <footer className="mx-auto max-w-6xl border-t border-ink-line/70 px-4 py-8 text-center font-body text-xs text-text-faint sm:px-6">
-          Website developed and design by Eternal (@etx1_) on Discord.
-        </footer>
-        <DiscordButton />
-        <Analytics />
+        <LanguageProvider>
+          <InteractiveBackground />
+          <NavBar />
+          <main className="mx-auto max-w-6xl px-4 pb-24 pt-8 sm:px-6">{children}</main>
+          <footer className="mx-auto max-w-6xl border-t border-ink-line/70 px-4 py-8 text-center font-body text-xs text-text-faint sm:px-6">
+            Website developed and design by Eternal (@etx1_) on Discord.
+          </footer>
+          <DiscordButton />
+          <Analytics />
+        </LanguageProvider>
       </body>
     </html>
   );

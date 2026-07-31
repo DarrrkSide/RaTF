@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import { MUTATIONS } from "@/data/mutations";
 import { TRAIT_TIERS } from "@/data/traits";
 import { UNITS, type Unit } from "@/data/units";
@@ -31,16 +32,105 @@ function getAdjustedValue(slot: Slot, units: Unit[], bonuses: ModifierBonuses = 
   return base;
 }
 
-function getLossLabel(percent: number) {
-  if (percent <= 10) return "Minor loss";
-  if (percent <= 20) return "Mid loss";
-  return "Major loss";
+const TRADE_COPY = {
+  en: {
+    title: "Trades",
+    intro: "Track values, compare offers, and build trade setups with mutation, trait, and level modifiers.",
+    underConstructionTitle: "🚧 Under construction 🚧",
+    underConstructionBody: "Trade values are temporarily hidden while this feature is being updated.",
+    tradeValue: "Trade Value",
+    tradeValueBody: "Browse units with their current value and keep a simple tracker ready for trade talks.",
+    unavailable: "Unavailable for now",
+    tradeCalculator: "Trade Calculator",
+    tradeCalculatorBody: "Build a full package of units for each side and calculate whether the trade is fair.",
+    valueTracker: "Value tracker",
+    valueTrackerBody: "Each unit card shows its image, name, and value estimate so you can compare quickly.",
+    valuesHidden: "Values hidden",
+    selectUnits: "Select units and calculate",
+    balancedTrade: "Balanced trade",
+    iGive: "I Give",
+    iGet: "I Get",
+    upToSix: "Up to 6 units",
+    noImage: "No image",
+    noMutation: "No mutation",
+    result: "Result",
+    valuesHiddenWhileConstructing: "Values are hidden while this page is under construction.",
+    editModifiers: "Edit modifier value",
+    editSelectedSlot: "Edit selected slot",
+    modifierValues: "Modifier values",
+    none: "None",
+    calculate: "Calculate",
+    calculateAgain: "Calculate again",
+    apply: "Apply",
+    save: "Save",
+    clear: "Clear",
+    chooseUnit: "Choose unit",
+    adjustModifiers: "Adjust modifiers",
+    youGive: "You give",
+    youGet: "You get",
+    difference: "Difference",
+    type: "Type",
+    mutation: "Mutation",
+    value: "Value",
+    trait: "Trait",
+    level: "Level",
+    buildBothSides: "Build both sides, then calculate to see whether the deal leans toward a loss or gain.",
+  },
+  es: {
+    title: "Intercambios",
+    intro: "Controla valores, compara ofertas y arma montajes de intercambio con modificadores de mutación, trait y nivel.",
+    underConstructionTitle: "🚧 En construcción 🚧",
+    underConstructionBody: "Los valores de intercambio están ocultos temporalmente mientras se actualiza esta función.",
+    tradeValue: "Valor de intercambio",
+    tradeValueBody: "Navega por las unidades con su valor actual y mantén un rastreador simple listo para hablar de intercambios.",
+    unavailable: "No disponible por ahora",
+    tradeCalculator: "Calculadora de intercambios",
+    tradeCalculatorBody: "Construye un paquete completo de unidades para cada lado y calcula si el intercambio es justo.",
+    valueTracker: "Rastreador de valores",
+    valueTrackerBody: "Cada tarjeta de unidad muestra su imagen, nombre y estimación de valor para compararlas rápido.",
+    valuesHidden: "Valores ocultos",
+    selectUnits: "Selecciona unidades y calcula",
+    balancedTrade: "Intercambio equilibrado",
+    iGive: "Yo doy",
+    iGet: "Yo recibo",
+    upToSix: "Hasta 6 unidades",
+    noImage: "Sin imagen",
+    noMutation: "Sin mutación",
+    result: "Resultado",
+    valuesHiddenWhileConstructing: "Los valores están ocultos mientras esta página está en construcción.",
+    editModifiers: "Editar valor del modificador",
+    editSelectedSlot: "Editar espacio seleccionado",
+    modifierValues: "Valores de modificadores",
+    none: "Ninguno",
+    calculate: "Calcular",
+    calculateAgain: "Calcular de nuevo",
+    apply: "Aplicar",
+    save: "Guardar",
+    clear: "Borrar",
+    chooseUnit: "Elegir unidad",
+    adjustModifiers: "Ajustar modificadores",
+    youGive: "Tú das",
+    youGet: "Tú recibes",
+    difference: "Diferencia",
+    type: "Tipo",
+    mutation: "Mutación",
+    value: "Valor",
+    trait: "Trait",
+    level: "Nivel",
+    buildBothSides: "Construye ambos lados y luego calcula para ver si el trato se inclina hacia una pérdida o una ganancia.",
+  },
+};
+
+function getLossLabel(percent: number, language: "en" | "es") {
+  if (percent <= 10) return language === "es" ? "Pérdida menor" : "Minor loss";
+  if (percent <= 20) return language === "es" ? "Pérdida media" : "Mid loss";
+  return language === "es" ? "Pérdida mayor" : "Major loss";
 }
 
-function getGainLabel(percent: number) {
-  if (percent <= 10) return "Minor gain";
-  if (percent <= 20) return "Mid gain";
-  return "Major gain";
+function getGainLabel(percent: number, language: "en" | "es") {
+  if (percent <= 10) return language === "es" ? "Ganancia menor" : "Minor gain";
+  if (percent <= 20) return language === "es" ? "Ganancia media" : "Mid gain";
+  return language === "es" ? "Ganancia mayor" : "Major gain";
 }
 
 export default function TradesPage() {
@@ -56,6 +146,8 @@ export default function TradesPage() {
   const [modifierBonuses] = useState<ModifierBonuses>(DEFAULT_MODIFIER_BONUSES);
   const [modifierPanelOpen, setModifierPanelOpen] = useState(false);
   const [modifierDraft, setModifierDraft] = useState<ModifierSettings>({ mutation: null, trait: null, level: 1 });
+  const { language } = useLanguage();
+  const copy = TRADE_COPY[language];
 
   useEffect(() => {
     let cancelled = false;
@@ -97,11 +189,11 @@ export default function TradesPage() {
   }, [giveTotal, getTotal]);
 
   const summary = useMemo(() => {
-    if (!showResult) return "Select units and calculate";
-    if (difference === 0) return "Balanced trade";
-    if (difference > 0) return `${getGainLabel(Math.abs(difference))} (${Math.abs(difference).toFixed(1)}%)`;
-    return `${getLossLabel(Math.abs(difference))} (${Math.abs(difference).toFixed(1)}%)`;
-  }, [difference, showResult]);
+    if (!showResult) return copy.selectUnits;
+    if (difference === 0) return copy.balancedTrade;
+    if (difference > 0) return `${getGainLabel(Math.abs(difference), language)} (${Math.abs(difference).toFixed(1)}%)`;
+    return `${getLossLabel(Math.abs(difference), language)} (${Math.abs(difference).toFixed(1)}%)`;
+  }, [difference, showResult, copy, language]);
 
   const getSlotState = (side: "give" | "get", slotIndex: number) => {
     return side === "give" ? giveSlots[slotIndex] : getSlots[slotIndex];
@@ -157,13 +249,13 @@ export default function TradesPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">Trades</h1>
-        <p className="mt-2 max-w-2xl text-sm text-text-faint">Track values, compare offers, and build trade setups with mutation, trait, and level modifiers.</p>
+        <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">{copy.title}</h1>
+        <p className="mt-2 max-w-2xl text-sm text-text-faint">{copy.intro}</p>
       </div>
 
       <div className="rounded-3xl border border-amber-500/40 bg-amber-500/10 p-6 text-center shadow-lg shadow-amber-500/10">
-        <p className="text-4xl font-black uppercase tracking-[0.35em] text-amber-400 sm:text-5xl">🚧 Under construction 🚧</p>
-        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">Trade values are temporarily hidden while this feature is being updated.</p>
+        <p className="text-4xl font-black uppercase tracking-[0.35em] text-amber-400 sm:text-5xl">{copy.underConstructionTitle}</p>
+        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.25em] text-amber-300">{copy.underConstructionBody}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -172,24 +264,24 @@ export default function TradesPage() {
           disabled={UNDER_CONSTRUCTION}
           className={`rounded-2xl border p-6 text-left transition ${mode === "value" ? "border-rarity-god bg-rarity-god/10" : "border-ink-line bg-ink-surface"} ${UNDER_CONSTRUCTION ? "cursor-not-allowed opacity-60" : ""}`}
         >
-          <h2 className="font-display text-2xl font-black">Trade Value</h2>
-          <p className="mt-2 text-sm text-text-faint">Browse units with their current value and keep a simple tracker ready for trade talks.</p>
-          {UNDER_CONSTRUCTION && <p className="mt-3 text-sm font-semibold text-amber-400">Unavailable for now</p>}
+          <h2 className="font-display text-2xl font-black">{copy.tradeValue}</h2>
+          <p className="mt-2 text-sm text-text-faint">{copy.tradeValueBody}</p>
+          {UNDER_CONSTRUCTION && <p className="mt-3 text-sm font-semibold text-amber-400">{copy.unavailable}</p>}
         </button>
         <button
           onClick={() => setMode("calculator")}
           className={`rounded-2xl border p-6 text-left transition ${mode === "calculator" ? "border-rarity-legendary bg-rarity-legendary/10" : "border-ink-line bg-ink-surface"}`}
         >
-          <h2 className="font-display text-2xl font-black">Trade Calculator</h2>
-          <p className="mt-2 text-sm text-text-faint">Build a full package of units for each side and calculate whether the trade is fair.</p>
+          <h2 className="font-display text-2xl font-black">{copy.tradeCalculator}</h2>
+          <p className="mt-2 text-sm text-text-faint">{copy.tradeCalculatorBody}</p>
         </button>
       </div>
 
       {mode === "value" ? (
         <div className="relative">
           <div className="rounded-2xl border border-ink-line bg-ink-surface p-6">
-            <h3 className="font-display text-xl font-black">Value tracker</h3>
-            <p className="mt-2 text-sm text-text-faint">Each unit card shows its image, name, and value estimate so you can compare quickly.</p>
+            <h3 className="font-display text-xl font-black">{copy.valueTracker}</h3>
+            <p className="mt-2 text-sm text-text-faint">{copy.valueTrackerBody}</p>
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {availableUnits.map((unit) => {
                 const value = getUnitDisplayValue(unit, availableUnits, valueListModifier, modifierBonuses);
@@ -201,7 +293,7 @@ export default function TradesPage() {
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={unit.image} alt={unit.name} className="h-full w-full object-cover" />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">No image</div>
+                          <div className="flex h-full w-full items-center justify-center text-[10px] text-text-faint">{copy.noImage}</div>
                         )}
                       </div>
                       <div className="min-w-0">
@@ -211,7 +303,7 @@ export default function TradesPage() {
                     </div>
                     <div className="mt-3 rounded-lg bg-ink px-3 py-2 text-sm text-text-faint">
                       {UNDER_CONSTRUCTION ? (
-                        <span className="font-semibold text-amber-400">Values hidden</span>
+                        <span className="font-semibold text-amber-400">{copy.valuesHidden}</span>
                       ) : (
                         <>
                           Value: <span className="font-semibold text-text">{value}</span>
@@ -228,8 +320,8 @@ export default function TradesPage() {
         <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
           <div className="rounded-2xl border border-ink-line bg-ink-surface p-6">
             <div className="flex items-center justify-between gap-3">
-              <h3 className="font-display text-xl font-black">I Give</h3>
-              <span className="text-sm text-text-faint">Up to 6 units</span>
+              <h3 className="font-display text-xl font-black">{copy.iGive}</h3>
+              <span className="text-sm text-text-faint">{copy.upToSix}</span>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {giveSlots.map((slot, index) => {
@@ -272,8 +364,8 @@ export default function TradesPage() {
 
           <div className="rounded-2xl border border-ink-line bg-ink-surface p-6">
             <div className="flex items-center justify-between gap-3">
-              <h3 className="font-display text-xl font-black">I Get</h3>
-              <span className="text-sm text-text-faint">Up to 6 units</span>
+              <h3 className="font-display text-xl font-black">{copy.iGet}</h3>
+              <span className="text-sm text-text-faint">{copy.upToSix}</span>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {getSlots.map((slot, index) => {
@@ -317,38 +409,38 @@ export default function TradesPage() {
           <div className="xl:col-span-2 rounded-2xl border border-ink-line bg-ink-surface p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h3 className="font-display text-xl font-black">Trade result</h3>
-                <p className="mt-2 text-sm text-text-faint">Build both sides, then calculate to see whether the deal leans toward a loss or gain.</p>
+                <h3 className="font-display text-xl font-black">{copy.result}</h3>
+                <p className="mt-2 text-sm text-text-faint">{copy.buildBothSides}</p>
               </div>
               <button
                 onClick={() => setShowResult(true)}
                 className="rounded-full border border-rarity-legendary px-4 py-2 text-sm font-semibold text-rarity-legendary"
               >
-                Calculate
+                {copy.calculate}
               </button>
             </div>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               <div className="rounded-lg border border-ink-line/70 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">You give</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">{copy.youGive}</p>
                 <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : giveTotal}</p>
               </div>
               <div className="rounded-lg border border-ink-line/70 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">You get</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">{copy.youGet}</p>
                 <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : getTotal}</p>
               </div>
               <div className="rounded-lg border border-ink-line/70 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Difference</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">{copy.difference}</p>
                 <p className="mt-2 text-2xl font-semibold text-text">{UNDER_CONSTRUCTION ? "—" : showResult ? `${difference.toFixed(1)}%` : "—"}</p>
               </div>
             </div>
 
             <div className="mt-6 rounded-xl border border-ink-line/70 bg-ink p-4 text-sm text-text-faint">
-              <span className="font-semibold text-text">Result:</span> {UNDER_CONSTRUCTION ? "Values are hidden while this page is under construction." : summary}
+              <span className="font-semibold text-text">{copy.result}:</span> {UNDER_CONSTRUCTION ? copy.valuesHiddenWhileConstructing : summary}
             </div>
             {showResult && (
               <button onClick={() => setShowResult(false)} className="mt-4 rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">
-                Calculate again
+                {copy.calculateAgain}
               </button>
             )}
           </div>
@@ -366,7 +458,7 @@ export default function TradesPage() {
                 }}
                 className="flex h-12 items-center whitespace-nowrap rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
-                Edit modifier value
+                {copy.editModifiers}
               </button>
             )}
 
@@ -375,7 +467,7 @@ export default function TradesPage() {
                 onClick={() => openModifierEditor(selectedSlot.side, selectedSlot.slotIndex)}
                 className="flex h-12 items-center whitespace-nowrap rounded-full border border-rarity-legendary bg-ink-surface px-4 text-sm font-semibold text-rarity-legendary shadow-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
-                Edit selected slot
+                {copy.editSelectedSlot}
               </button>
             )}
           </div>
@@ -383,37 +475,37 @@ export default function TradesPage() {
           {modifierPanelOpen && (
             <div className="absolute bottom-full left-0 mb-3 w-[min(84vw,18rem)] max-w-[18rem] overflow-hidden rounded-2xl border border-ink-line bg-ink-surface shadow-2xl">
               <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
-                <h3 className="font-display text-lg font-black">Modifier values</h3>
+                <h3 className="font-display text-lg font-black">{copy.modifierValues}</h3>
                 <button onClick={() => setModifierPanelOpen(false)} className="pr-1 text-2xl text-text-faint">×</button>
               </div>
               <div className="flex-1 overflow-y-auto p-4">
                 <div className="space-y-3">
                   <label className="block text-sm text-text-faint">
-                    Mutation
+                    {copy.mutation}
                     <select value={modifierDraft.mutation ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                      <option value="">None</option>
+                      <option value="">{copy.none}</option>
                       {MUTATIONS.map((mutation) => (
                         <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
                       ))}
                     </select>
                   </label>
                   <label className="block text-sm text-text-faint">
-                    Trait
+                    {copy.trait}
                     <select value={modifierDraft.trait ?? ""} onChange={(e) => setModifierDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                      <option value="">None</option>
+                      <option value="">{copy.none}</option>
                       {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
                         <option key={trait.name} value={trait.name}>{trait.name}</option>
                       ))}
                     </select>
                   </label>
                   <label className="block text-sm text-text-faint">
-                    Level
+                    {copy.level}
                     <input type="number" min="1" max={MAX_LEVEL} value={modifierDraft.level} onChange={(e) => setModifierDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
                   </label>
                 </div>
               </div>
               <div className="border-t border-ink-line px-4 py-3">
-                <button onClick={applyModifierPreset} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">Apply</button>
+                <button onClick={applyModifierPreset} className="rounded-full border border-rarity-legendary px-3 py-2 text-sm font-semibold text-rarity-legendary">{copy.apply}</button>
               </div>
             </div>
           )}
@@ -424,7 +516,7 @@ export default function TradesPage() {
               <div className="overflow-y-auto px-4 py-5 sm:px-5 sm:py-6">
                 {modalState.type === "unit" ? (
                   <div>
-                    <h3 className="font-display text-lg font-black">Choose a unit</h3>
+                    <h3 className="font-display text-lg font-black">{copy.chooseUnit}</h3>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2">
                       {availableUnits.map((unit) => {
                         const value = getUnitDisplayValue(unit, availableUnits);
@@ -441,7 +533,7 @@ export default function TradesPage() {
                               </div>
                               <div className="min-w-0">
                                 <p className="truncate font-semibold text-text">{unit.name}</p>
-                                <p className="text-xs text-text-faint">{UNDER_CONSTRUCTION ? "Values hidden" : `Value: ${value}`}</p>
+                                <p className="text-xs text-text-faint">{UNDER_CONSTRUCTION ? copy.valuesHidden : `${copy.value}: ${value}`}</p>
                               </div>
                             </div>
                           </button>
@@ -451,33 +543,33 @@ export default function TradesPage() {
                   </div>
                 ) : (
                   <div>
-                    <h3 className="font-display text-lg font-black">Adjust modifiers</h3>
+                    <h3 className="font-display text-lg font-black">{copy.adjustModifiers}</h3>
                     <div className="mt-3 space-y-3">
                       <label className="block text-sm text-text-faint">
-                        Mutation
+                        {copy.mutation}
                         <select value={draft.mutation ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, mutation: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                          <option value="">None</option>
+                          <option value="">{copy.none}</option>
                           {MUTATIONS.map((mutation) => (
                             <option key={mutation.name} value={mutation.name}>{mutation.name}</option>
                           ))}
                         </select>
                       </label>
                       <label className="block text-sm text-text-faint">
-                        Trait
+                        {copy.trait}
                         <select value={draft.trait ?? ""} onChange={(e) => setDraft((prev) => ({ ...prev, trait: e.target.value || null }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text">
-                          <option value="">None</option>
+                          <option value="">{copy.none}</option>
                           {TRAIT_TIERS.flatMap((tier) => tier.traits).map((trait) => (
                             <option key={trait.name} value={trait.name}>{trait.name}</option>
                           ))}
                         </select>
                       </label>
                       <label className="block text-sm text-text-faint">
-                        Level
+                        {copy.level}
                         <input type="number" min="1" max={MAX_LEVEL} value={draft.level} onChange={(e) => setDraft((prev) => ({ ...prev, level: Math.min(MAX_LEVEL, Math.max(1, Number(e.target.value) || 1)) }))} className="mt-1 w-full rounded-lg border border-ink-line bg-ink px-3 py-2 text-sm text-text" />
                       </label>
                       <div className="flex flex-wrap gap-3">
-                        <button onClick={saveSlot} className="rounded-full border border-rarity-legendary px-4 py-2 text-sm font-semibold text-rarity-legendary">Save</button>
-                        <button onClick={clearSlot} className="rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">Clear</button>
+                        <button onClick={saveSlot} className="rounded-full border border-rarity-legendary px-4 py-2 text-sm font-semibold text-rarity-legendary">{copy.save}</button>
+                        <button onClick={clearSlot} className="rounded-full border border-ink-line px-4 py-2 text-sm text-text-faint">{copy.clear}</button>
                       </div>
                     </div>
                   </div>

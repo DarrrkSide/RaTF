@@ -56,10 +56,10 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
   const isMythic = unit.rarity === "Mythic";
   const isAldedo = unit.name === "Aldedo";
 
-  const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-xl border bg-ink-surface transition-all duration-300 ease-out hover:-translate-y-1 ${meta.border} cursor-pointer`;
-  const innerCardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-xl bg-ink-surface`;
+  const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl border bg-gradient-to-b from-ink-surface to-ink-surface2/90 shadow-[0_12px_30px_-16px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.75)] ${meta.border} cursor-pointer`;
+  const innerCardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl bg-transparent`;
   const imageAreaClasses = compact ? "relative flex aspect-[4/5] items-center justify-center overflow-hidden" : "relative flex h-28 items-center justify-center overflow-hidden";
-  const bodyClasses = compact ? "flex flex-1 flex-col justify-end gap-1 p-2" : "flex flex-1 flex-col gap-1.5 p-2.5";
+  const bodyClasses = compact ? "flex flex-1 flex-col justify-end gap-1 p-2.5" : "flex flex-1 flex-col gap-1.5 p-2.5";
   const titleClasses = compact ? "truncate font-body text-[10px] font-semibold text-text sm:text-xs" : "truncate font-body text-xs font-semibold text-text sm:text-sm";
   const badgeClasses = compact ? "w-fit rounded-full border px-2 py-0.5 font-mono text-[8px] font-bold uppercase tracking-wider" : "w-fit rounded-full border px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider";
 
@@ -83,8 +83,8 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
         <div
           className={imageAreaClasses}
           style={isMythic ? {
-            backgroundColor: `${meta.hex}1a`,
-          } : { backgroundColor: `${meta.hex}08` }}
+            background: `linear-gradient(135deg, ${meta.hex}26 0%, rgba(255,255,255,0.06) 100%)`,
+          } : { background: `linear-gradient(135deg, ${meta.hex}16 0%, rgba(255,255,255,0.05) 100%)` }}
       >
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -116,6 +116,7 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
         )}
 
         <span className="absolute left-0 top-0 h-full w-1" style={isMythic ? { background: "linear-gradient(180deg, #f472b6, #a78bfa, #22d3ee)" } : { backgroundColor: meta.hex }} />
+        <span className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
       <div className={bodyClasses}>

@@ -1,23 +1,45 @@
+"use client";
+
+import { useLanguage } from "@/components/LanguageProvider";
 import { CREDITS } from "@/data/credits";
 
+const CREDITS_COPY = {
+  en: {
+    eyebrow: "Appreciation",
+    title: "Credits",
+    description: "A dedicated thanks to the people and communities that helped shape this guide into something useful and enjoyable.",
+    badge: "Fan-made guide",
+    footer: "Not affiliated with Roll Anime to Fight or Roblox.",
+  },
+  es: {
+    eyebrow: "Agradecimientos",
+    title: "Créditos",
+    description: "Un agradecimiento especial a las personas y comunidades que ayudaron a convertir esta guía en algo útil y entretenido.",
+    badge: "Guía hecha por fans",
+    footer: "No está afiliado con Roll Anime to Fight ni con Roblox.",
+  },
+};
+
 export default function CreditsPage() {
+  const { language } = useLanguage();
+  const copy = CREDITS_COPY[language];
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-8 py-8 sm:py-10">
       <div className="overflow-hidden rounded-[2rem] border border-red-500/20 bg-gradient-to-br from-ink-surface via-ink-surface/95 to-red-500/10 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset,0_20px_50px_rgba(0,0,0,0.3)] sm:p-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-red-300/80">
-              Appreciation
+              {copy.eyebrow}
             </p>
             <h1 className="mt-2 font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
-              Credits
+              {copy.title}
             </h1>
             <p className="mt-3 max-w-2xl font-body text-sm leading-6 text-text-dim">
-              A dedicated thanks to the people and communities that helped shape this guide into something useful and enjoyable.
+              {copy.description}
             </p>
           </div>
           <div className="rounded-full border border-red-400/20 bg-red-500/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-red-200">
-            Fan-made guide
+            {copy.badge}
           </div>
         </div>
       </div>
@@ -49,7 +71,7 @@ export default function CreditsPage() {
       </div>
 
       <p className="text-center font-body text-xs uppercase tracking-[0.3em] text-text-faint">
-        Not affiliated with Roll Anime to Fight or Roblox.
+        {copy.footer}
       </p>
     </div>
   );

@@ -1,4 +1,44 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/components/LanguageProvider";
+
+const GUIDE_COPY = {
+  en: {
+    title: "Guide",
+    subtitle: "Explore the main guide topics with a smoother, more polished experience.",
+    overview: "Guide overview",
+    items: [
+      { title: "Team Building", href: "/tutorial/teambuilding", description: "How to build a META optimal team.", symbol: "⚔️" },
+      { title: "Traits benefits", href: "/tutorial/traits", description: "Trait tiers, buffs, and drop rates.", symbol: "✦" },
+      { title: "How to level up units", href: "/tutorial/upgrade", description: "The proper merging process for leveling units.", symbol: "⬆️" },
+      { title: "Mutation events", href: "/tutorial/mutations", description: "Mutation bonuses and the event schedule.", symbol: "☄️" },
+      { title: "Merging & cloning", href: "/tutorial/merging", description: "How merging and cloning work in practice.", symbol: "🧬" },
+      { title: "Gamepass priority", href: "/tutorial/gamepasses", description: "The recommended order for gamepasses.", symbol: "🛡️" },
+      { title: "Titles", href: "/tutorial/titles", description: "Achievement titles and approximate time estimates.", symbol: "🏷️" },
+      { title: "Codes", href: "/tutorial/codes", description: "Active redeem codes and their rewards.", symbol: "🎟️" },
+    ],
+    badge: (index: number) => `Guide ${index + 1}`,
+    action: "Open section →",
+  },
+  es: {
+    title: "Guía",
+    subtitle: "Explora los temas principales de la guía con una experiencia más fluida y pulida.",
+    overview: "Resumen de la guía",
+    items: [
+      { title: "Construcción de equipo", href: "/tutorial/teambuilding", description: "Cómo construir un equipo META óptimo.", symbol: "⚔️" },
+      { title: "Beneficios de traits", href: "/tutorial/traits", description: "Niveles de traits, buffs y probabilidades de drop.", symbol: "✦" },
+      { title: "Cómo subir de nivel unidades", href: "/tutorial/upgrade", description: "El proceso adecuado de fusión para subir de nivel las unidades.", symbol: "⬆️" },
+      { title: "Eventos de mutación", href: "/tutorial/mutations", description: "Bonos de mutación y calendario del evento.", symbol: "☄️" },
+      { title: "Fusión y clonación", href: "/tutorial/merging", description: "Cómo funcionan la fusión y la clonación en la práctica.", symbol: "🧬" },
+      { title: "Prioridad de gamepasses", href: "/tutorial/gamepasses", description: "El orden recomendado para los gamepasses.", symbol: "🛡️" },
+      { title: "Títulos", href: "/tutorial/titles", description: "Títulos de logro y estimaciones aproximadas de tiempo.", symbol: "🏷️" },
+      { title: "Códigos", href: "/tutorial/codes", description: "Códigos activos de canje y sus recompensas.", symbol: "🎟️" },
+    ],
+    badge: (index: number) => `Guía ${index + 1}`,
+    action: "Abrir sección →",
+  },
+};
 
 function SectionHeading({ title }: { title: string }) {
   return (
@@ -9,30 +49,24 @@ function SectionHeading({ title }: { title: string }) {
 }
 
 export default function TutorialPage() {
+  const { language } = useLanguage();
+  const copy = GUIDE_COPY[language];
+
   return (
     <div className="flex flex-col gap-14 transition-all duration-500 ease-out">
       <div className="rounded-2xl border border-ink-line/70 bg-gradient-to-br from-ink-surface via-ink-surface/90 to-ink-surface/70 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]">
         <h1 className="font-display text-4xl font-black tracking-[0.08em] text-text sm:text-5xl">
-          Guide
+          {copy.title}
         </h1>
         <p className="mt-3 max-w-2xl font-body text-sm leading-6 text-text-dim">
-          Explore the main guide topics with a smoother, more polished experience.
+          {copy.subtitle}
         </p>
       </div>
 
       <section>
-        <SectionHeading title="Guide overview" />
+        <SectionHeading title={copy.overview} />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { title: "Team Building", href: "/tutorial/teambuilding", description: "How to build a META optimal team.", symbol: "⚔️" },
-            { title: "Traits benefits", href: "/tutorial/traits", description: "Trait tiers, buffs, and drop rates.", symbol: "✦" },
-            { title: "How to level up units", href: "/tutorial/upgrade", description: "The proper merging process for leveling units.", symbol: "⬆️" },
-            { title: "Mutation events", href: "/tutorial/mutations", description: "Mutation bonuses and the event schedule.", symbol: "☄️" },
-            { title: "Merging & cloning", href: "/tutorial/merging", description: "How merging and cloning work in practice.", symbol: "🧬" },
-            { title: "Gamepass priority", href: "/tutorial/gamepasses", description: "The recommended order for gamepasses.", symbol: "🛡️" },
-            { title: "Titles", href: "/tutorial/titles", description: "Achievement titles and approximate time estimates.", symbol: "🏷️" },
-            { title: "Codes", href: "/tutorial/codes", description: "Active redeem codes and their rewards.", symbol: "🎟️" },
-          ].map((item, index) => (
+          {copy.items.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
@@ -46,14 +80,14 @@ export default function TutorialPage() {
               </div>
               <div className="relative z-10">
                 <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.35em] text-red-200/90">
-                  Guide {index + 1}
+                  {copy.badge(index)}
                 </div>
                 <h3 className="font-display text-xl font-black tracking-[0.06em] text-text transition-colors duration-300 group-hover:text-red-400">{item.title}</h3>
                 <p className="mt-2 font-body text-sm leading-6 text-text-dim">{item.description}</p>
               </div>
               <div className="relative z-10 mt-4 flex items-center justify-between">
                 <span className="guide-button px-3 py-1.5 text-sm">
-                  Open section →
+                  {copy.action}
                 </span>
                 <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-red-200 transition-transform duration-300 group-hover:scale-110">
                   ✦
