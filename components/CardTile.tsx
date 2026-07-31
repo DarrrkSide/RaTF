@@ -53,6 +53,7 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
   const meta = RARITY_META[unit.rarity];
   const imageCandidates = unit.imageCandidates ?? (unit.image ? [unit.image] : []);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPressed, setIsPressed] = useState(false);
   const currentImage = imageCandidates[currentImageIndex];
   const showImage = Boolean(currentImage);
   const isMythic = unit.rarity === "Mythic";
@@ -62,7 +63,7 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
     setCurrentImageIndex(0);
   }, [unit.id]);
 
-  const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl border bg-gradient-to-b from-ink-surface to-ink-surface2/90 shadow-[0_12px_30px_-16px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.75)] ${meta.border} cursor-pointer`;
+  const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl border bg-gradient-to-b from-ink-surface to-ink-surface2/90 shadow-[0_12px_30px_-16px_rgba(0,0,0,0.65)] transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.75)] ${meta.border} cursor-pointer ${isPressed ? "scale-[0.97] -translate-y-0.5 shadow-[0_10px_20px_-12px_rgba(0,0,0,0.65)]" : ""}`;
   const innerCardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl bg-transparent`;
   const imageAreaClasses = compact ? "relative flex aspect-[4/5] items-center justify-center overflow-hidden" : "relative flex h-28 items-center justify-center overflow-hidden";
   const bodyClasses = compact ? "flex flex-1 flex-col justify-end gap-1 p-2.5" : "flex flex-1 flex-col gap-1.5 p-2.5";
@@ -72,6 +73,10 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
   return (
     <div
       onClick={() => onOpen?.(unit)}
+      onPointerDown={() => setIsPressed(true)}
+      onPointerUp={() => setIsPressed(false)}
+      onPointerLeave={() => setIsPressed(false)}
+      onPointerCancel={() => setIsPressed(false)}
       role="button"
       tabIndex={0}
       className={cardClasses}

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { UNITS } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
+import { normalizeId } from "@/data/unitDetails";
 import {
   DEFAULT_MODIFIER_BONUSES,
   getModifierBreakdown,
@@ -23,13 +24,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     files = [];
   }
 
+  const normalizedId = normalizeId(id);
+
   const matchFile = files.find((file) => {
     const name = path.parse(file).name;
-    const candidateId = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    return candidateId === id;
+    const candidateId = normalizeId(name);
+    return candidateId === normalizedId;
   });
 
-  const unit = UNITS.find((u) => u.id === id);
+  const unit = UNITS.find((u) => u.id === normalizedId);
   const imageUrl = matchFile ? `/api/cards/${encodeURIComponent(matchFile)}` : unit?.image;
 
   const displayName = unit ? unit.name : matchFile ? prettifyName(path.parse(matchFile).name) : id;

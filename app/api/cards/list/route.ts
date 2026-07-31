@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { normalizeId } from "@/data/unitDetails";
 import { UNITS } from "@/data/units";
 
 function prettifyName(basename: string) {
@@ -8,10 +9,6 @@ function prettifyName(basename: string) {
     .replace(/[_-]+/g, " ")
     .replace(/\b(\w)/g, (m) => m.toUpperCase())
     .trim();
-}
-
-function normalizeId(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
 export async function GET() {

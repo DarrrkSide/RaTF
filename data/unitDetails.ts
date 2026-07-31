@@ -23,9 +23,13 @@ export type UnitDetails = {
   ability?: UnitAbility;
 };
 
+export function normalizeId(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 function u(name: string, rarity: Rarity, value?: number, tag?: string): UnitDetails {
   return {
-    id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    id: normalizeId(name),
     name,
     rarity,
     value,

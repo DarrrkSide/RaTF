@@ -43,17 +43,13 @@ import { Unit } from "@/data/units";
 import { RARITY_ORDER, RARITY_META, Rarity } from "@/data/rarity";
 import { TRAIT_TIERS } from "@/data/traits";
 import { MUTATIONS } from "@/data/mutations";
-import { getDetailsById } from "@/data/unitDetails";
+import { getDetailsById, normalizeId } from "@/data/unitDetails";
 import { QUALITY_TIER_LIST } from "@/data/tierlists";
 import CardTile from "@/components/CardTile";
 import Portal from "@/components/Portal";
 
-function normalizeImageId(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-}
-
 function getImagePathCandidates(unitName: string) {
-  const slug = normalizeImageId(unitName);
+  const slug = normalizeId(unitName);
   const normalizedName = unitName
     .replace(/\s+/g, "_")
     .replace(/\(/g, "")
@@ -392,9 +388,9 @@ export default function CardsPage() {
 
       {selected && (
         <Portal>
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40" onClick={() => setSelected(null)} />
-            <div className={`relative w-[90%] max-w-3xl rounded-xl border bg-ink-surface p-6 shadow-lg transform-gpu transition-all duration-200 ease-out ${modalMounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+          <div className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-out ${modalMounted ? "bg-black/40 backdrop-blur-sm" : "bg-black/0"}`}>
+            <div className="absolute inset-0" onClick={() => setSelected(null)} />
+            <div className={`relative w-[90%] max-w-3xl origin-center rounded-xl border bg-ink-surface p-6 shadow-[0_25px_60px_-20px_rgba(0,0,0,0.75)] transform-gpu transition-all duration-300 ease-out ${modalMounted ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-3"}`}>
               <div className="flex justify-between">
                 <h2 className="font-display text-2xl font-black">{selected.name}</h2>
                 <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
