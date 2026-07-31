@@ -145,6 +145,23 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   yuwah: { stats: { damage: 300, defense: 1.12, health: 6500, speed: 3 } },
   fryren: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 3.5 } },
   saitomo: { stats: { damage: 120, defense: 1.27, health: 4500, speed: 1 } },
+  truck: { stats: { damage: 385, defense: 1.18, health: 2800, speed: 1.1 } },
+  sakuna: { stats: { damage: 250, defense: 1.25, health: 2100, speed: 0.75 } },
+  erwon: {
+    stats: { damage: 400, defense: 1.25, health: 1000, speed: 2 },
+    ability: {
+      title: "Advance",
+      description: "Raises allies attack for 10 seconds"
+    }
+  },
+  grimmick: {
+    stats: { damage: 500, defense: 1.25, health: 7200, speed: 1.3 },
+    ability: {
+      title: "The Knock of Panama",
+      description: "Each attack causes knockback on enemies in range!"
+    }
+  },
+  goji: { stats: { damage: 250, defense: 1.25, health: 2100, speed: 0.8 } },
   brakura: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 1 } },
   wise: { stats: { damage: 2600, defense: 1.25, health: 14000, speed: 4 } },
   zero: { stats: { damage: 30, defense: 1.15, health: 320, speed: 2 } },
@@ -152,12 +169,19 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   itadoro: { stats: { damage: 10, defense: 1.12, health: 620, speed: 1 } },
   nonomi: { stats: { damage: 950, defense: 1.5, health: 10000, speed: 0.7 } },
   noruto: { stats: { damage: 200, defense: 1.25, health: 2500, speed: 1 } },
-keririn: { stats: { damage: 15, defense: 1.1, health: 240, speed: 1 } },
-luppi: { stats: { damage: 18, defense: 1.1, health: 250, speed: 1 } },
-janwoo: { stats: { damage: 58, defense: 1.1, health: 750, speed: 1 } },
-mobi: { stats: { damage: 52, defense: 1.1, health: 430, speed: 1.2 } },
-sukora: { stats: { damage: 10, defense: 1.13, health: 900, speed: 1 } },
-goke: { stats: { damage: 42, defense: 1, health: 600, speed: 1.1 } },
+  bon: { stats: { damage: 55, defense: 1.18, health: 2465, speed: 1 } },
+  picurro: { stats: { damage: 200, defense: 1.2, health: 1215, speed: 1 } },
+  manji: { stats: { damage: 115, defense: 1.2, health: 1105, speed: 1 } },
+  tanjuro: { stats: { damage: 95, defense: 1.1, health: 1063, speed: 1 } },
+  got: { stats: { damage: 80, defense: 1.25, health: 2805, speed: 1.25 } },
+  rinnju: { stats: { damage: 105, defense: 1.15, health: 1300, speed: 1 } },
+  shinrat: { stats: { damage: 65, defense: 1.17, health: 1870, speed: 1 } },
+  keririn: { stats: { damage: 15, defense: 1.1, health: 240, speed: 1 } },
+  luppi: { stats: { damage: 18, defense: 1.1, health: 250, speed: 1 } },
+  janwoo: { stats: { damage: 58, defense: 1.1, health: 750, speed: 1 } },
+  mobi: { stats: { damage: 52, defense: 1.1, health: 430, speed: 1.2 } },
+  sukora: { stats: { damage: 10, defense: 1.13, health: 900, speed: 1 } },
+  goke: { stats: { damage: 42, defense: 1, health: 600, speed: 1.1 } },
 };
 
 function applyOverrides(units: UnitDetails[]) {

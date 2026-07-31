@@ -470,12 +470,20 @@ export default function CardsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <h4 className="font-semibold">Ability</h4>
+                  <div className="mt-4 rounded-xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-transparent to-fuchsia-500/10 p-3 shadow-sm">
+                    <div className="mb-2 flex items-center gap-2">
+                      <div className="rounded-full bg-amber-500/20 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">
+                        Ability
+                      </div>
+                    </div>
                     {getDetailsById(selected.id)?.ability ? (
-                      <div>
-                        <div className="font-bold">{getDetailsById(selected.id)!.ability!.title}</div>
-                        <div className="text-sm text-text-faint">{getDetailsById(selected.id)!.ability!.description}</div>
+                      <div className="space-y-1">
+                        <div className="text-sm font-semibold text-white">
+                          {getDetailsById(selected.id)!.ability!.title}
+                        </div>
+                        <div className="text-sm leading-relaxed text-text-faint">
+                          {getDetailsById(selected.id)!.ability!.description}
+                        </div>
                       </div>
                     ) : (
                       <div className="text-sm text-text-faint">No ability info</div>
