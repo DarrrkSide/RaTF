@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Unit } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
 
@@ -49,12 +49,18 @@ function Emblem({ unit, hex }: { unit: Unit; hex: string }) {
   );
 }
 
-export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit; onOpen?: (u: Unit) => void; compact?: boolean }) {
+export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit & { imageCandidates?: string[] }; onOpen?: (u: Unit) => void; compact?: boolean }) {
   const meta = RARITY_META[unit.rarity];
-  const [imgFailed, setImgFailed] = useState(false);
-  const showImage = Boolean(unit.image && !imgFailed);
+  const imageCandidates = unit.imageCandidates ?? (unit.image ? [unit.image] : []);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const currentImage = imageCandidates[currentImageIndex];
+  const showImage = Boolean(currentImage);
   const isMythic = unit.rarity === "Mythic";
   const isAldedo = unit.name === "Aldedo";
+
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [unit.id]);
 
   const cardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl border bg-gradient-to-b from-ink-surface to-ink-surface2/90 shadow-[0_12px_30px_-16px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.75)] ${meta.border} cursor-pointer`;
   const innerCardClasses = `relative flex ${compact ? "h-full w-full" : "flex-col"} overflow-hidden rounded-2xl bg-transparent`;
@@ -89,11 +95,15 @@ export default function CardTile({ unit, onOpen, compact = false }: { unit: Unit
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={unit.image}
+            src={currentImage}
             alt={unit.name}
             className={`h-full w-full ${isAldedo ? "object-contain object-center scale-[0.9]" : "object-contain"}`}
             loading="lazy"
-            onError={() => setImgFailed(true)}
+            onError={() => {
+              if (currentImageIndex + 1 < imageCandidates.length) {
+                setCurrentImageIndex(currentImageIndex + 1);
+              }
+            }}
           />
         ) : (
           <>
