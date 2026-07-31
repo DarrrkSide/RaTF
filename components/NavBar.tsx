@@ -25,13 +25,37 @@ const LINKS = {
 };
 
 const SETTINGS_COPY = {
-  en: { language: "Language", open: "Open settings" },
-  es: { language: "Idioma", open: "Abrir ajustes" },
+  en: {
+    language: "Language",
+    open: "Open settings",
+    motion: "Reduced motion",
+    motionOn: "On",
+    motionOff: "Off",
+    graphics: "Reduce lag",
+    graphicsOn: "On",
+    graphicsOff: "Off",
+    compact: "Compact mode",
+    compactOn: "On",
+    compactOff: "Off",
+  },
+  es: {
+    language: "Idioma",
+    open: "Abrir ajustes",
+    motion: "Movimiento reducido",
+    motionOn: "Activado",
+    motionOff: "Desactivado",
+    graphics: "Reducir lag",
+    graphicsOn: "Activado",
+    graphicsOff: "Desactivado",
+    compact: "Modo compacto",
+    compactOn: "Activado",
+    compactOff: "Desactivado",
+  },
 };
 
 export default function NavBar() {
   const pathname = usePathname();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, reduceMotion, toggleReduceMotion, lowGraphics, toggleLowGraphics, compactMode, toggleCompactMode } = useLanguage();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const links = LINKS[language];
   const settingsCopy = SETTINGS_COPY[language];
@@ -91,6 +115,44 @@ export default function NavBar() {
                   >
                     ES
                   </button>
+                </div>
+                <div className="mt-3 space-y-3">
+                  <div>
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-text-faint">
+                      {settingsCopy.motion}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={toggleReduceMotion}
+                      className={`w-full rounded-lg px-2 py-1.5 text-sm transition ${reduceMotion ? "bg-rarity-god/20 text-white" : "bg-white/5 text-text-dim hover:text-text"}`}
+                    >
+                      {reduceMotion ? settingsCopy.motionOn : settingsCopy.motionOff}
+                    </button>
+                  </div>
+                  <div>
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-text-faint">
+                      {settingsCopy.graphics}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={toggleLowGraphics}
+                      className={`w-full rounded-lg px-2 py-1.5 text-sm transition ${lowGraphics ? "bg-rarity-god/20 text-white" : "bg-white/5 text-text-dim hover:text-text"}`}
+                    >
+                      {lowGraphics ? settingsCopy.graphicsOn : settingsCopy.graphicsOff}
+                    </button>
+                  </div>
+                  <div>
+                    <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-text-faint">
+                      {settingsCopy.compact}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={toggleCompactMode}
+                      className={`w-full rounded-lg px-2 py-1.5 text-sm transition ${compactMode ? "bg-rarity-god/20 text-white" : "bg-white/5 text-text-dim hover:text-text"}`}
+                    >
+                      {compactMode ? settingsCopy.compactOn : settingsCopy.compactOff}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

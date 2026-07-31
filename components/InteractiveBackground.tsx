@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type Ripple = {
   x: number;
@@ -20,6 +21,7 @@ type Particle = {
 
 export default function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { reduceMotion, lowGraphics } = useLanguage();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,6 +37,8 @@ export default function InteractiveBackground() {
     let ripples: Ripple[] = [];
     let zoom = 1;
     let targetZoom = 1;
+    let rafId = 0;
+    let running = true;
     const mouse = { x: -9999, y: -9999, active: false, radius: 140 };
 
     const createParticle = () => ({
@@ -74,6 +78,7 @@ export default function InteractiveBackground() {
     };
 
     const draw = () => {
+      if (!running) return;
       zoom += (targetZoom - zoom) * 0.028;
       syncParticleCount();
 
@@ -190,22 +195,26 @@ export default function InteractiveBackground() {
         .filter((ripple) => ripple.alpha > 0.03 && ripple.radius < ripple.maxRadius);
 
       for (const ripple of ripples) {
-        const gradient = ctx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, ripple.radius + 40);
-        gradient.addColorStop(0, `rgba(248,113,113,${ripple.alpha * 0.18})`);
-        gradient.addColorStop(1, "rgba(248,113,113,0)");
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius + 40, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
+        if (!lowGraphics) {
+          const gradient = ctx.createRadialGradient(ripple.x, ripple.y, 0, ripple.x, ripple.y, ripple.radius + 40);
+          gradient.addColorStop(0, `rgba(248,113,113,${ripple.alpha * 0.18})`);
+          gradient.addColorStop(1, "rgba(248,113,113,0)");
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius + 40, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
 
-        ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(248,113,113,${ripple.alpha * 0.28})`;
-        ctx.lineWidth = 1.4;
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(248,113,113,${ripple.alpha * 0.28})`;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+        }
       }
 
-      requestAnimationFrame(draw);
+      if (!reduceMotion) {
+        rafId = requestAnimationFrame(draw);
+      }
     };
 
     resize();
@@ -243,19 +252,23 @@ export default function InteractiveBackground() {
     };
 
     window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("pointerleave", handlePointerLeave);
-    window.addEventListener("wheel", handleWheel, { passive: true });
+    if (!reduceMotion) {
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerdown", handlePointerDown);
+      window.addEventListener("pointerleave", handlePointerLeave);
+      window.addEventListener("wheel", handleWheel, { passive: true });
+    }
 
     return () => {
+      running = false;
+      cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointerleave", handlePointerLeave);
       window.removeEventListener("wheel", handleWheel);
     };
-  }, []);
+  }, [reduceMotion, lowGraphics]);
 
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-0" />;
 }

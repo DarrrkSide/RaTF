@@ -74,7 +74,7 @@ const QUICK_LINKS = {
 
 const HERO_COPY = {
   en: {
-    badge: "New guide drops",
+    badge: "Meta update live",
     title: ["ROLL ANIME", "TO FIGHT"],
     subtitle: "Tier lists, unit cards, and everything else you need in one place.",
     featureTitle: "Quick paths",
