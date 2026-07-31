@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Anton, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
@@ -63,6 +64,7 @@ export default function RootLayout({
           </footer>
           <DiscordButton />
           <Analytics />
+          <SpeedInsights />
         </LanguageProvider>
       </body>
     </html>
