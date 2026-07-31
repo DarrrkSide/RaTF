@@ -48,6 +48,31 @@ import { QUALITY_TIER_LIST } from "@/data/tierlists";
 import CardTile from "@/components/CardTile";
 import Portal from "@/components/Portal";
 
+function normalizeImageId(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+function getImagePathCandidates(unitName: string) {
+  const slug = normalizeImageId(unitName);
+  const normalizedName = unitName
+    .replace(/\s+/g, "_")
+    .replace(/\(/g, "")
+    .replace(/\)/g, "")
+    .replace(/'/g, "")
+    .replace(/[^A-Za-z0-9_]/g, "");
+  const strippedParentheses = unitName.replace(/\s*\(.*?\)\s*/g, " ").trim();
+  const strippedName = strippedParentheses
+    .replace(/\s+/g, "_")
+    .replace(/'/g, "")
+    .replace(/[^A-Za-z0-9_]/g, "");
+
+  return [
+    `/api/cards/${encodeURIComponent(`${normalizedName}.png`)}`,
+    `/api/cards/${encodeURIComponent(`${strippedName}.png`)}`,
+    `/api/cards/${encodeURIComponent(`${slug}.png`)}`,
+  ].filter(Boolean);
+}
+
 function parsePercentValue(value?: string) {
   const match = value?.match(/([+-]?\d+(?:\.\d+)?)/);
   if (!match) return 0;
@@ -122,7 +147,17 @@ export default function CardsPage() {
     fetch("/api/cards/list")
       .then((r) => r.json())
       .then((data) => {
-        if (!cancelled) setUnits(data);
+        if (!cancelled) {
+          const normalized = data.map((unit: Unit & { image?: string }) => {
+            if (unit.image) return unit;
+            const imageCandidates = getImagePathCandidates(unit.name);
+            return {
+              ...unit,
+              image: imageCandidates[0],
+            };
+          });
+          setUnits(normalized);
+        }
       })
       .catch(() => {
         if (!cancelled) setUnits([]);

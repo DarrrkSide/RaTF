@@ -46,7 +46,6 @@ const GOD_UNITS: UnitDetails[] = [
   u("Isogo True Form", "God", 69000),
   u("Yamumoto", "God", 16000),
   u("Bills", "God", 138000),
-  u("Lulu", "God", 99000),
   u("Michael", "God", 172000),
   u("Remura", "God", 70000),
 ];

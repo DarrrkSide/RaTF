@@ -53,7 +53,7 @@ export const WAVE_TIER_LIST: TierRow[] = [
     sublabel: "Under 150 — not worth pushing with",
     color: "#4ade80",
     units: [
-      "Joti", "Nonomi", "Deyo", "Sakuna", "Bills", "Goji", "Lulu", "Grimmick",
+      "Joti", "Nonomi", "Deyo", "Sakuna", "Bills", "Goji", "Grimmick",
       "Jerin", "Michael", "Noruto", "Remura", "Zinichou", "Sukora", "Duma",
       "Coyote", "Fryren", "Tanjuro", "Brocolli", "Itadoro", "Rengundam",
        "Mobi", "Shinrat", "Akazo", "Manji", "Bon", "Orihemi", "Erwon",
@@ -89,7 +89,7 @@ export const QUALITY_TIER_LIST: TierRow[] = [
     sublabel: "Solid while you build toward S / META",
     color: "#e5e7eb",
     units: [
-      "Joti", "Lulu", "Michael", "Brocolli", "Deyo", "Rengundam", "Fryren",
+      "Joti", "Michael", "Brocolli", "Deyo", "Rengundam", "Fryren",
       "Akazo", "Remura", "Wise", "Galactic Garo", "Megumo", "Golden Frozer",
       "Orihemi", "Goji", "Sakuna", "Erwon", "Sukora",
     ],

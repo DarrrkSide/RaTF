@@ -25,8 +25,8 @@ function getImagePathCandidates(unitName: string) {
     .replace(/[^A-Za-z0-9_]/g, "");
 
   const candidates = [
-    `/api/cards/${encodeURIComponent(`${strippedName}.png`)}`,
     `/api/cards/${encodeURIComponent(`${normalizedName}.png`)}`,
+    `/api/cards/${encodeURIComponent(`${strippedName}.png`)}`,
     `/api/cards/${encodeURIComponent(`${slug}.png`)}`,
   ];
 

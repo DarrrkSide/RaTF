@@ -10,13 +10,18 @@ function prettifyName(basename: string) {
     .trim();
 }
 
+function normalizeId(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
 export async function GET() {
   const cardsDir = path.join(process.cwd(), "app", "cards");
   let files: string[] = [];
   try {
     files = fs
       .readdirSync(cardsDir)
-      .filter((f) => fs.statSync(path.join(cardsDir, f)).isFile());
+      .filter((f) => fs.statSync(path.join(cardsDir, f)).isFile())
+      .filter((f) => /\.(png|jpg|jpeg|webp)$/i.test(f));
   } catch (e) {
     files = [];
   }
@@ -25,7 +30,7 @@ export async function GET() {
 
   files.forEach((file) => {
     const name = path.parse(file).name;
-    const candidateId = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const candidateId = normalizeId(name);
     const imageUrl = `/api/cards/${encodeURIComponent(file)}`;
 
     if (map.has(candidateId)) {
