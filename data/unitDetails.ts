@@ -154,7 +154,13 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
       description: "Heals allies for 5% of max HP and boosts their attack for 12 seconds."
     }
   },
-  brocolli: { stats: { damage: 600, defense: 1.22, health: 6400, speed: 3 } },
+  akazo: {
+    stats: { damage: 1100, defense: 1.34, health: 20375, speed: 0.5 },
+    ability: {
+      title: "Compass",
+      description: "25% Chance to dodge enemy attacks"
+    }
+  },
   acer: {
     stats: { damage: 360, defense: 1.2, health: 3500, speed: 0.6 },
     ability: {
