@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { WAVE_TIER_LIST, QUALITY_TIER_LIST, TierRow } from "@/data/tierlists";
+import { TANKS_TIER_LIST, DAMAGE_DEALERS_TIER_LIST, SUPPORT_TIER_LIST, TierRow } from "@/data/tierlists";
 import { getUnitByName } from "@/data/units";
 import { RARITY_META } from "@/data/rarity";
 
@@ -10,12 +10,14 @@ type UnitMap = Record<string, { image?: string }>;
 
 const TABS = {
   en: [
-    { key: "wave", label: "Wave Clear", rows: WAVE_TIER_LIST },
-    { key: "quality", label: "Quality", rows: QUALITY_TIER_LIST },
+    { key: "tanks", label: "Tanks", rows: TANKS_TIER_LIST },
+    { key: "damage", label: "Damage Dealers", rows: DAMAGE_DEALERS_TIER_LIST },
+    { key: "support", label: "Support", rows: SUPPORT_TIER_LIST },
   ],
   es: [
-    { key: "wave", label: "Clear de oleada", rows: WAVE_TIER_LIST },
-    { key: "quality", label: "Calidad", rows: QUALITY_TIER_LIST },
+    { key: "tanks", label: "Tanques", rows: TANKS_TIER_LIST },
+    { key: "damage", label: "Atacantes", rows: DAMAGE_DEALERS_TIER_LIST },
+    { key: "support", label: "Apoyo", rows: SUPPORT_TIER_LIST },
   ],
 } as const;
 
@@ -71,7 +73,7 @@ function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, 
 
 export default function TierListPage() {
   const { language } = useLanguage();
-  const [tab, setTab] = useState<(typeof TABS)["en"][number]["key"]>("wave");
+  const [tab, setTab] = useState<(typeof TABS)["en"][number]["key"]>("tanks");
   const tabs = TABS[language];
   const active = tabs.find((t) => t.key === tab)!;
   const [unitMap, setUnitMap] = useState<UnitMap>({});

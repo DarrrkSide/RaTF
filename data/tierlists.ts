@@ -5,63 +5,167 @@ export type TierRow = {
   units: string[]; // unit names, matched against data/units.ts
 };
 
-// "How far a unit can reliably solo-push waves" — read top to bottom,
-// highest wave first.
-export const WAVE_TIER_LIST: TierRow[] = [
+// Tanks - Units with high HP and defensive abilities (ranked by HP)
+export const TANKS_TIER_LIST: TierRow[] = [
   {
-    label: "200+",
-    color: "#a78bfa",
+    label: "META",
+    sublabel: "Essential tanks (50k+ HP)",
+    color: "#e879f9",
     units: [
-      "Sakuna (Heian)",
-      "Goji Shinjuku",
-      "Ais",
-      "Aldedo",
-      "Shancks",
-      "Saitome (Serious)",
+      "Katakoru",
+      "Jerin",
+      "Gyomain",
+    ],
+  },
+  {
+    label: "S",
+    sublabel: "Excellent tanks (14k-25k HP)",
+    color: "#ef4444",
+    units: [
+      "Wise",
+      "Megumo",
+      "Joti",
+      "Nonomi",
+    ],
+  },
+  {
+    label: "A",
+    sublabel: "Strong tanks (7k-10k HP)",
+    color: "#f97316",
+    units: [
+      "Brakura",
       "Kenie",
+      "Yuwah",
+      "Fryren",
+      "Zinichou",
+    ],
+  },
+  {
+    label: "B",
+    sublabel: "Decent tanks (5k-6k HP)",
+    color: "#eab308",
+    units: [
+      "Brocolli",
+      "Orihemi",
+      "Truck",
+      "Grimmick",
+      "Hoshira",
+    ],
+  },
+  {
+    label: "C",
+    sublabel: "Situational (3k-4k HP)",
+    color: "#3b82f6",
+    units: [
+      "Acer",
+      "Kiwusuke",
+      "Rengundam",
+    ],
+  },
+];
+
+// Damage Dealers - Units ranked by damage output
+export const DAMAGE_DEALERS_TIER_LIST: TierRow[] = [
+  {
+    label: "META",
+    sublabel: "Extreme damage (40k+)",
+    color: "#e879f9",
+    units: [
+      "Yujo Timeskip",
+      "Katakoru",
+      "Lilim",
+    ],
+  },
+  {
+    label: "S",
+    sublabel: "Exceptional damage (5k-17.5k)",
+    color: "#ef4444",
+    units: [
+      "Joozou",
+      "July",
+      "Megumo",
+      "Shimo Haya",
+      "Ulquiopta",
+      "Wise",
+      "Yuwah",
+    ],
+  },
+  {
+    label: "A",
+    sublabel: "High damage (1.25k-2.1k)",
+    color: "#f97316",
+    units: [
+      "Kenie",
+      "Kiwusuke",
+      "Brakura",
+      "Fryren",
+      "Joti",
+      "Yoriki",
+      "Zinichou",
+    ],
+  },
+  {
+    label: "B",
+    sublabel: "Good damage (300-1k)",
+    color: "#eab308",
+    units: [
+      "Kokushiro",
+      "Rengundam",
+      "Grimmick",
+      "Jerin",
+      "Brocolli",
+      "Erwon",
+      "Acer",
+      "Hoshira",
+    ],
+  },
+  {
+    label: "C",
+    sublabel: "Moderate damage (10-250)",
+    color: "#3b82f6",
+    units: [
+      "Truck",
+      "Saitomo",
+      "Coyote",
+      "Sakuna",
+      "Goji",
+      "Noruto",
+      "Picurro",
+      "Zero",
+    ],
+  },
+];
+
+// Support - Units with healing, revive, and buff abilities
+export const SUPPORT_TIER_LIST: TierRow[] = [
+  {
+    label: "META",
+    sublabel: "Essential support",
+    color: "#e879f9",
+    units: [
       "Kiwusuke",
       "Wise",
     ],
   },
   {
-    label: "190",
-    color: "#fb7185",
-    units: ["Yoichi", "Bloodtear"],
-  },
-  {
-    label: "180",
-    color: "#fb923c",
-    units: ["Aisen Divine", "Isogo True Form", "Takamoso", "Entomancer", "Galactic Garo"],
-  },
-  {
-    label: "170",
-    color: "#fde047",
-    units: ["Yutta", "Ulquiopta"],
-  },
-  {
-    label: "160",
-    color: "#facc15",
-    units: ["Gyomain", "Shimo Haya"],
-  },
-  {
-    label: "150",
-    color: "#a3e635",
-    units: ["Yamumoto", "Yuwah", "Megumo", "Brakura", "Genes"],
-  },
-  {
-    label: "Trash",
-    sublabel: "Under 150 — not worth pushing with",
-    color: "#4ade80",
+    label: "S",
+    sublabel: "Excellent support",
+    color: "#ef4444",
     units: [
-      "Joti", "Nonomi", "Deyo", "Sakuna", "Bills", "Goji", "Grimmick",
-      "Jerin", "Michael", "Noruto", "Remura", "Zinichou", "Sukora", "Duma",
-      "Coyote", "Fryren", "Tanjuro", "Brocolli", "Itadoro", "Rengundam",
-       "Mobi", "Shinrat", "Akazo", "Manji", "Bon", "Orihemi", "Erwon",
-      "Rinnju", "Janwoo", "Mika", "Acer", "Yoriki", "Hoshira", "Kokushiro",
-      "Muscle", "Usoff", "Got", "Saitomo", "Truck", "Zero", "Keririn", "Picurro",
+      "Megumo",
+      "Orihemi",
+    ],
+  },
+  {
+    label: "A",
+    sublabel: "Strong support",
+    color: "#f97316",
+    units: [
+      "Erwon",
     ],
   },
 ];
+
 
 // Overall power / usefulness tier list, judged at level 1 (no traits or
 // mutations factored in).

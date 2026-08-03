@@ -12,6 +12,11 @@ export type UnitAbility = {
   description: string;
 };
 
+export type UnitForm = {
+  name: string;
+  stats: UnitStats;
+};
+
 export type UnitDetails = {
   id: string;
   name: string;
@@ -21,6 +26,7 @@ export type UnitDetails = {
   image?: string;
   stats?: UnitStats;
   ability?: UnitAbility;
+  forms?: UnitForm[];
 };
 
 export function normalizeId(value: string) {
@@ -39,6 +45,24 @@ function u(name: string, rarity: Rarity, value?: number, tag?: string): UnitDeta
   };
 }
 
+const LIMITED_UNITS: UnitDetails[] = [
+  u("Aldedo", "Limited", 298000),
+  u("Saitome (Serious)", "Limited", 274000),
+  u("Bloodtear", "Limited", 261000),
+  u("Takamoso", "Limited", 179000),
+  u("Entomancer", "Limited", 165000),
+  u("Genes", "Limited", 162000),
+  u("Galactic Garow", "Limited", 139000),
+  u("Katakoru", "Limited"),
+  u("Tazumaki", "Limited"),
+  u("Golden Frozer", "Limited", 137000),
+  u("Muscle", "Limited", 130000),
+  u("July", "Limited", 250000),
+  u("Joozou", "Limited", 260000),
+  u("Lilim", "Limited", 270000),
+  u("Tanjuro", "Epic", 117000),
+];
+
 const GOD_UNITS: UnitDetails[] = [
   u("Sakuna (Heian)", "God",500000),
   u("Goji Shinjuku", "God", 190000),
@@ -51,23 +75,8 @@ const GOD_UNITS: UnitDetails[] = [
   u("Yamumoto", "God", 16000),
   u("Bills", "God", 138000),
   u("Michael", "God", 172000),
+  u("Yujo Timeskip", "God"),
   u("Remura", "God", 70000),
-];
-
-const LIMITED_UNITS: UnitDetails[] = [
-  u("Aldedo", "Limited", 298000),
-  u("Saitome (Serious)", "Limited", 274000),
-  u("Bloodtear", "Limited", 261000),
-  u("Takamoso", "Limited", 179000),
-  u("Entomancer", "Limited", 165000),
-  u("Genes", "Limited", 162000),
-  u("Galactic Garo", "Limited", 139000),
-  u("Golden Frozer", "Limited", 137000),
-  u("Muscle", "Limited", 130000),
-  u("July", "Limited", 250000),
-  u("Joozou", "Limited", 260000),
-  u("Lilim", "Limited", 270000),
-  u("Tanjuro", "Epic", 117000),
 ];
 
 const SECRET_UNITS: UnitDetails[] = [
@@ -182,6 +191,18 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
       description: "Traps every enemy in frozen time before erasing them with overwhelming damage.",
     },
   },
+  katakoru: {
+    stats: {
+      damage: 40000,
+      defense: 1.35,
+      health: 50000,
+      speed: 2.4,
+    },
+    ability: {
+      title: "Dough Body",
+      description: "Katakoru turns his body into dough to dodge enemy attacks."
+    }
+  },
   joozou: {
     stats: {
       damage: 17500,
@@ -205,6 +226,32 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
       title: "Combat Switching",
       description: "Switches to stronger melee attacks when enemies get close, gaining 35% Attack, 15% Attack Speed, and 5% Lifesteal while in melee mode.",
     },
+  },
+  "yujo-timeskip": {
+    stats: {
+      damage: 1500000,
+      defense: 1.44,
+      health: 30000,
+      speed: 1.6,
+    },
+    ability: {
+      title: "Technique Swap",
+      description: "Changes Yujo's attack style to Black Flash, Piercing Blood, and World Cutting Slash."
+    },
+    forms: [
+      {
+        name: "Black Flash",
+        stats: { damage: 600000, defense: 1.44, health: 30000, speed: 1.6 }
+      },
+      {
+        name: "Piercing Blood",
+        stats: { damage: 1500000, defense: 1.44, health: 30000, speed: 1.6 }
+      },
+      {
+        name: "World Cutting Slash",
+        stats: { damage: 900000, defense: 1.44, health: 30000, speed: 1.6 }
+      }
+    ]
   },
   gyomain: {
     stats: { damage: 4000, defense: 1.32, health: 25000, speed: 2 },
