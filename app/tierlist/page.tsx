@@ -1,23 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { TANKS_TIER_LIST, DAMAGE_DEALERS_TIER_LIST, SUPPORT_TIER_LIST, TierRow } from "@/data/tierlists";
+import { SUPPORT_TIER_LIST, TierRow, AUTO_TIER_CATEGORIES } from "@/data/tierlists";
 import { getUnitByName } from "@/data/units";
+import { UNIT_DETAILS } from "@/data/unitDetails";
 import { RARITY_META } from "@/data/rarity";
 
 type UnitMap = Record<string, { image?: string }>;
 
 const TABS = {
   en: [
-    { key: "tanks", label: "Tanks", rows: TANKS_TIER_LIST },
-    { key: "damage", label: "Damage Dealers", rows: DAMAGE_DEALERS_TIER_LIST },
-    { key: "support", label: "Support", rows: SUPPORT_TIER_LIST },
+    { key: "tanks", label: "Tanks" },
+    { key: "damage", label: "Damage Dealers" },
+    { key: "support", label: "Support" },
   ],
   es: [
-    { key: "tanks", label: "Tanques", rows: TANKS_TIER_LIST },
-    { key: "damage", label: "Atacantes", rows: DAMAGE_DEALERS_TIER_LIST },
-    { key: "support", label: "Apoyo", rows: SUPPORT_TIER_LIST },
+    { key: "tanks", label: "Tanques" },
+    { key: "damage", label: "Atacantes" },
+    { key: "support", label: "Apoyo" },
   ],
 } as const;
 
@@ -71,19 +72,80 @@ function TierRowShelf({ row, unitMap }: { row: TierRow; unitMap: Record<string, 
   );
 }
 
+function resolveTierRowCounts(category: typeof AUTO_TIER_CATEGORIES[keyof typeof AUTO_TIER_CATEGORIES], total: number) {
+  const explicitCounts = category.rows.map((row) => row.size.count ?? 0);
+  const explicitTotal = explicitCounts.reduce((sum, count) => sum + count, 0);
+  const percentRows = category.rows.map((row) => ({
+    row,
+    desired: row.size.percent ? Math.round((row.size.percent / 100) * total) : 0,
+  }));
+  const remaining = Math.max(total - explicitTotal, 0);
+  const percentTotal = percentRows.reduce((sum, entry) => sum + entry.desired, 0);
+  const scale = percentTotal > remaining && percentTotal > 0 ? remaining / percentTotal : 1;
+
+  const counts = category.rows.map((row, index) => {
+    if (row.size.count != null) {
+      return row.size.count;
+    }
+    const desired = percentRows[index].desired;
+    return Math.max(Math.floor(desired * scale), 0);
+  });
+
+  let allocated = counts.reduce((sum, count) => sum + count, 0);
+  if (allocated < total && counts.length > 0) {
+    counts[counts.length - 1] += total - allocated;
+  }
+  return counts;
+}
+
+function getAutoTierRows(key: "tanks" | "damage") {
+  const category = AUTO_TIER_CATEGORIES[key];
+  const metric = category.metric;
+  const units = UNIT_DETAILS.filter((unit) => typeof unit.stats?.[metric] === "number");
+  const sortedUnits = [...units].sort((a, b) => {
+    const aValue = a.stats?.[metric] ?? 0;
+    const bValue = b.stats?.[metric] ?? 0;
+    return category.sortDescending ? bValue - aValue : aValue - bValue;
+  });
+  const counts = resolveTierRowCounts(category, sortedUnits.length);
+  const rows: TierRow[] = [];
+  let offset = 0;
+
+  for (let index = 0; index < category.rows.length; index += 1) {
+    const row = category.rows[index];
+    const count = Math.min(counts[index], sortedUnits.length - offset);
+    const slice = sortedUnits.slice(offset, offset + count).map((unit) => unit.name);
+    offset += count;
+    rows.push({
+      label: row.label,
+      sublabel: row.sublabel,
+      color: row.color,
+      units: slice,
+    });
+  }
+
+  return rows;
+}
+
 export default function TierListPage() {
   const { language } = useLanguage();
   const [tab, setTab] = useState<(typeof TABS)["en"][number]["key"]>("tanks");
   const tabs = TABS[language];
-  const active = tabs.find((t) => t.key === tab)!;
   const [unitMap, setUnitMap] = useState<UnitMap>({});
+  const rows = useMemo(() => {
+    if (tab === "support") return SUPPORT_TIER_LIST;
+    return getAutoTierRows(tab as "tanks" | "damage");
+  }, [tab]);
 
   useEffect(() => {
-    fetch('/api/cards/list').then(r => r.json()).then((items: any[]) => {
-      const map: UnitMap = {};
-      items.forEach(it => { map[it.id] = { image: it.image }; });
-      setUnitMap(map);
-    }).catch(() => {});
+    fetch('/api/cards/list')
+      .then((r) => r.json())
+      .then((items: any[]) => {
+        const map: UnitMap = {};
+        items.forEach((it) => { map[it.id] = { image: it.image }; });
+        setUnitMap(map);
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -110,7 +172,7 @@ export default function TierListPage() {
       </div>
 
       <div key={tab} className="fade-in rounded-2xl border border-ink-line bg-ink-surface px-4 sm:px-6">
-        {active.rows.map((row) => (
+        {rows.map((row) => (
           <TierRowShelf key={row.label} row={row} unitMap={unitMap} />
         ))}
       </div>

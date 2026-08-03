@@ -429,6 +429,18 @@ takamoso: {
       description: "Switches to stronger melee attacks when enemies get close, gaining 35% Attack, 15% Attack Speed, and 5% Lifesteal while in melee mode.",
     },
   },
+  brocolli: {
+    stats: {
+      damage: 600,
+      defense: 1.22,
+      health: 6400,
+      speed: 3,
+    },
+    ability: {
+      title: "Legendary Rage",
+      description: "When health drops 40%, increase attack by 65%, defense by 15% and speed by 50%",
+    },
+  },
   "golden-frozer": {
     stats: {
       damage: 1500,

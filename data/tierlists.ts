@@ -5,6 +5,97 @@ export type TierRow = {
   units: string[]; // unit names, matched against data/units.ts
 };
 
+export type AutoTierRow = {
+  label: string;
+  sublabel?: string;
+  color: string;
+  size: {
+    count?: number;
+    percent?: number;
+  };
+};
+
+export type AutoTierCategory = {
+  metric: "health" | "damage" | "defense" | "speed";
+  sortDescending: boolean;
+  rows: AutoTierRow[];
+};
+
+export const AUTO_TIER_CATEGORIES: Record<"tanks" | "damage", AutoTierCategory> = {
+  tanks: {
+    metric: "health",
+    sortDescending: true,
+    rows: [
+      {
+        label: "META",
+        sublabel: "Top tanks by HP",
+        color: "#e879f9",
+        size: { count: 3 },
+      },
+      {
+        label: "S",
+        sublabel: "High HP tanks",
+        color: "#ef4444",
+        size: { percent: 18 },
+      },
+      {
+        label: "A",
+        sublabel: "Strong tanks",
+        color: "#f97316",
+        size: { percent: 22 },
+      },
+      {
+        label: "B",
+        sublabel: "Solid tanks",
+        color: "#eab308",
+        size: { percent: 28 },
+      },
+      {
+        label: "C",
+        sublabel: "Situational tanks",
+        color: "#3b82f6",
+        size: { percent: 32 },
+      },
+    ],
+  },
+  damage: {
+    metric: "damage",
+    sortDescending: true,
+    rows: [
+      {
+        label: "META",
+        sublabel: "Top damage dealers",
+        color: "#e879f9",
+        size: { count: 3 },
+      },
+      {
+        label: "S",
+        sublabel: "Excellent damage",
+        color: "#ef4444",
+        size: { percent: 20 },
+      },
+      {
+        label: "A",
+        sublabel: "High damage",
+        color: "#f97316",
+        size: { percent: 25 },
+      },
+      {
+        label: "B",
+        sublabel: "Good damage",
+        color: "#eab308",
+        size: { percent: 30 },
+      },
+      {
+        label: "C",
+        sublabel: "Moderate damage",
+        color: "#3b82f6",
+        size: { percent: 25 },
+      },
+    ],
+  },
+};
+
 // Tanks - Units with high HP and defensive abilities (ranked by HP)
 export const TANKS_TIER_LIST: TierRow[] = [
   {
