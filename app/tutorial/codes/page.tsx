@@ -2,37 +2,25 @@ import { TutorialSectionShell } from "@/components/TutorialSectionShell";
 
 const CODES = [
   {
-    code: "SORCERERISHERE!",
-    subtitle: "Reach wave 76",
-    date: "7/26/26",
+    code: "SORCERERPART2!",
+    subtitle: "Defeat wave 76 before redeeming",
+    date: "8/2/26",
     rewards: [
-      { icon: "/api/cards/items/Gold_Coin.png", alt: "gold coin", label: "150k Gold" },
-      { icon: "/api/cards/Rengundam.png", alt: "rengoku", label: "Diamond Rengoku" },
-      { icon: "/api/cards/items/Trait_Shard.png", alt: "trait shard", label: "25 Trait Shards" },
-      { icon: "/api/cards/items/God_Essence.png", alt: "god essence", label: "5× God Essence" },
+      { icon: "/api/cards/items/Gold_Coin.png", alt: "gold coin", label: "200k Gold" },
+      { icon: "/api/cards/Joti.png", alt: "joti", label: "Diamond Joti" },
+      { icon: "/api/cards/items/Time_Potion.png", alt: "time potion", label: "3 Time Potions" },
+      { icon: "/api/cards/items/Luck_Potion.png", alt: "luck potion", label: "2 Luck Potions" },
     ],
   },
   {
-    code: "EVOLUTIONMACHINE!",
-    subtitle: "Reach wave 76",
-    date: "7/26/26",
+    code: "TRADING&BATTLEPASS!",
+    subtitle: "Defeat wave 76 before redeeming",
+    date: "8/2/26",
     rewards: [
-      { icon: "/api/cards/items/Gold_Coin.png", alt: "gold coin", label: "200k Gold" },
-      { icon: "/api/cards/Gyomain.png", alt: "gyomei", label: "Gold Gyomei" },
-      { icon: "/api/cards/items/Trait_Shard.png", alt: "trait shard", label: "25 Trait Shards" },
-      { icon: "/api/cards/items/Cursed_Finger.png", alt: "cursed finger", label: "3 Cursed Fingers" },
-      { icon: "/api/cards/items/Six_Eyes.png", alt: "six eyes", label: "1 Six Eyes" },
-    ],
-  },
-  {
-    code: "SRRYFORSHUTDOWN",
-    subtitle: "Reach wave 76",
-    date: "7/27/26",
-    rewards: [
-      { icon: "/api/cards/items/Gold_Coin.png", alt: "gold coin", label: "200k Gold" },
-      { icon: "/api/cards/items/Trait_Shard.png", alt: "trait shard", label: "25 Trait Shards" },
-      { icon: "/api/cards/items/Cursed_Finger.png", alt: "cursed finger", label: "1 Cursed Finger" },
-      { icon: "/api/cards/items/Six_Eyes.png", alt: "six eyes", label: "1 Six Eyes" },
+      { icon: "/api/cards/items/Gold_Coin.png", alt: "gold coin", label: "350k Gold" },
+      { icon: "/api/cards/Megumo.png", alt: "megumo", label: "Gold Megumo" },
+      { icon: "/api/cards/items/Super_Time_Potion.png", alt: "super time potion", label: "1 Super Time Potion" },
+      { icon: "/api/cards/items/Trading_Ticket.png", alt: "trading ticket", label: "3 Trading Tickets" },
     ],
   },
 ];
