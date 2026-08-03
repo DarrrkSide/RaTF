@@ -12,6 +12,7 @@ export const MUTATIONS: Mutation[] = [
   { name: "Destroyer", damage: "+275%", health: "+100%", color: "#fb923c" },
   { name: "Hollow", damage: "+350%", health: "+125%", color: "#c4b5fd" },
   { name: "Slayer", damage: "+550%", health: "+250%", color: "#f59e0b" },
+  { name: "Cursed", damage: "+550%", health: "+175%", color: "#a855f7" },
   { name: "Astronaut", damage: "+650%", health: "+250%", color: "#a5f3fc" },
 ];
 

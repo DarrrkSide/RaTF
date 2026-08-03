@@ -49,6 +49,7 @@ export const MUTATION_VALUE_MULTIPLIERS: Record<string, number> = {
   Destroyer: 1.5,
   Hollow: 1.6,
   Slayer: 2.0,
+  Cursed: 1.9,
   Astronaut: 2.2,
 };
 
