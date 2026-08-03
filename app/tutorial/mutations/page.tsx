@@ -4,9 +4,10 @@ import { TutorialSectionShell } from "@/components/TutorialSectionShell";
 import { MUTATIONS } from "@/data/mutations";
 import { useEffect, useState } from "react";
 
-function formatMutationValue(name: string, value: string, type: "damage" | "health") {
-  if (name === "Astronaut") {
-    return type === "damage" ? "x7.5" : "x3.5";
+function formatMutationValue(value: string) {
+  const normalized = value.trim().toLowerCase();
+  if (normalized.startsWith("x")) {
+    return normalized;
   }
   return value;
 }
@@ -45,8 +46,8 @@ export default function MutationsPage() {
                     <span className="ml-2 inline-flex items-center rounded-full bg-amber-200/10 px-2 py-0.5 text-xs font-semibold text-amber-200 animate-pulse">✦</span>
                   )}
                 </td>
-                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.damage, "damage")}</td>
-                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.name, mut.health, "health")}</td>
+                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.damage)}</td>
+                <td className="px-4 py-3 font-mono text-sm text-text">{formatMutationValue(mut.health)}</td>
               </tr>
             ))}
           </tbody>

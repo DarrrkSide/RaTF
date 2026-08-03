@@ -69,8 +69,17 @@ function getImagePathCandidates(unitName: string) {
   ].filter(Boolean);
 }
 
-function parsePercentValue(value?: string) {
-  const match = value?.match(/([+-]?\d+(?:\.\d+)?)/);
+function parseMutationValue(value?: string) {
+  if (!value) return 0;
+
+  const normalized = value.trim().toLowerCase();
+
+  if (normalized.startsWith("x")) {
+    const multiplier = Number(normalized.slice(1));
+    return Number.isFinite(multiplier) ? multiplier - 1 : 0;
+  }
+
+  const match = normalized.match(/([+-]?\d+(?:\.\d+)?)/);
   if (!match) return 0;
   return Number(match[1]) / 100;
 }
@@ -97,17 +106,19 @@ function getEffectiveStats(unit: Unit, traitName: string | null, mutationName: s
   const mutation = MUTATIONS.find((entry) => entry.name === mutationName);
   const trait = TRAIT_TIERS.flatMap((tier) => tier.traits).find((entry) => entry.name === traitName);
 
-  const mutationDamageMultiplier = mutation ? parsePercentValue(mutation.damage) : 0;
-  const mutationHealthMultiplier = mutation ? parsePercentValue(mutation.health) : 0;
+  const mutationDamageMultiplier = mutation ? parseMutationValue(mutation.damage) : 0;
+  const mutationHealthMultiplier = mutation ? parseMutationValue(mutation.health) : 0;
+  const mutationDefenseMultiplier = mutation ? parseMutationValue(mutation.defense) : 0;
+  const mutationSpeedMultiplier = mutation ? parseMutationValue(mutation.speed) : 0;
   const traitDamageMultiplier = getBuffPercent(trait?.buffs, "damage");
   const traitHealthMultiplier = getBuffPercent(trait?.buffs, "health");
   const traitSpeedMultiplier = getBuffPercent(trait?.buffs, "speed");
 
   return {
     damage: details?.damage ? details.damage * (1 + mutationDamageMultiplier + traitDamageMultiplier) : undefined,
-    defense: details?.defense,
+    defense: details?.defense ? details.defense * (1 + mutationDefenseMultiplier) : undefined,
     health: details?.health ? details.health * (1 + mutationHealthMultiplier + traitHealthMultiplier) : undefined,
-    speed: details?.speed ? details.speed * (1 + traitSpeedMultiplier) : undefined,
+    speed: details?.speed ? details.speed * (1 + mutationSpeedMultiplier + traitSpeedMultiplier) : undefined,
   };
 }
 
