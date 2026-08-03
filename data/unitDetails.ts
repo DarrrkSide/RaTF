@@ -94,6 +94,7 @@ const SECRET_UNITS: UnitDetails[] = [
   u("Gyomain", "Secret", 1000),
   u("Jerin", "Secret", 3000),
   u("Hakuro", "Secret", 25000),
+  u("Moru", "Secret"),
 ];
 
 const MYTHIC_UNITS: UnitDetails[] = [
@@ -292,6 +293,43 @@ genes: {
     description: "Self-destructs at critical health, instantly destroying enemies caught in the blast."
   }
 },
+"galactic-garow": {
+  stats: {
+    damage: 397.5,
+    defense: 1.28,
+    health: 4000,
+    speed: 1.0,
+  },
+  ability: {
+    title: "Galactic Adaptation",
+    description: "Infinitely scales stats and recovers health each wave defeated",
+  },
+},
+"yoichi": {
+  stats: {
+    damage: 5250,
+    defense: 1.28,
+    health: 26812.5,
+    speed: 1,
+  },
+  ability: {
+    title: "None",
+    description: "No active or passive ability.",
+  },
+},
+"aisen-divine": {
+  stats: {
+    damage: 42705,
+    defense: 1.35,
+    health: 33392.86,
+    speed: 3.5,
+  },
+  ability: {
+    title: "Reality Shatter",
+    description: "Aisen's attack reduces enemy defense and make them take 50% more damage.",
+  },
+},
+
 takamoso: {
   stats: {
     damage: 4875,
@@ -528,6 +566,30 @@ takamoso: {
       title: "Divine Arrowfall",
       description: "Calls forth a barrage of arrows from the sky, raining destruction upon the enemies."
     }
+  },
+  moru: {
+    stats: {
+      damage: 117000,
+      defense: 1.24,
+      health: 36666.67,
+      speed: 2.1333,
+    },
+    ability: {
+      title: "Heavenly Regen",
+      description: "Heals allies with the lowest health.",
+    },
+  },
+  michael: {
+    stats: {
+      damage: 2860,
+      defense: 1.34,
+      health: 22750,
+      speed: 0.65,
+    },
+    ability: {
+      title: "Demon King",
+      description: "When health drops below 30%, Michael transforms into monster with stronger stats but 65% health.",
+    },
   },
   fryren: { stats: { damage: 2000, defense: 1.25, health: 5800, speed: 3.5 } },
   saitomo: { stats: { damage: 120, defense: 1.27, health: 4500, speed: 1 } },
