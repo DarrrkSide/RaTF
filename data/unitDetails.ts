@@ -47,7 +47,7 @@ function u(name: string, rarity: Rarity, value?: number, tag?: string): UnitDeta
 
 const LIMITED_UNITS: UnitDetails[] = [
   u("Aldedo", "Limited", 298000),
-  u("Saitome (Serious)", "Limited", 274000),
+  u("Saitomo Serious", "Limited", 274000),
   u("Bloodtear", "Limited", 261000),
   u("Takamoso", "Limited", 179000),
   u("Entomancer", "Limited", 165000),
@@ -77,6 +77,7 @@ const GOD_UNITS: UnitDetails[] = [
   u("Michael", "God", 172000),
   u("Yujo Timeskip", "God"),
   u("Remura", "God", 70000),
+  u("Daburo", "God", 120000),
 ];
 
 const SECRET_UNITS: UnitDetails[] = [
@@ -91,6 +92,7 @@ const SECRET_UNITS: UnitDetails[] = [
   u("Megumo", "Secret", 8000),
   u("Gyomain", "Secret", 1000),
   u("Jerin", "Secret", 3000),
+  u("Hakuro", "Secret", 25000),
 ];
 
 const MYTHIC_UNITS: UnitDetails[] = [
@@ -106,6 +108,7 @@ const MYTHIC_UNITS: UnitDetails[] = [
   u("Yoriki", "Mythic", 2600),
   u("Acer", "Mythic", 2500),
   u("Coyote", "Mythic", 2400),
+  u("Kashimi", "Mythic", 8000),
 ];
 
 const LEGENDARY_UNITS: UnitDetails[] = [
@@ -155,7 +158,7 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
     }
   },
   akazo: {
-    stats: { damage: 1100, defense: 1.34, health: 20375, speed: 0.5 },
+    stats: { damage: 169, defense: 1.34, health: 5821, speed: 0.5 },
     ability: {
       title: "Compass",
       description: "25% Chance to dodge enemy attacks"
@@ -231,6 +234,78 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
     ability: {
       title: "Combat Switching",
       description: "Switches to stronger melee attacks when enemies get close, gaining 35% Attack, 15% Attack Speed, and 5% Lifesteal while in melee mode.",
+    },
+  },
+  "golden-frozer": {
+    stats: {
+      damage: 1500,
+      defense: 1.28,
+      health: 10000,
+      speed: 0.5,
+    },
+    ability: {
+      title: "None",
+      description: "No active or passive ability.",
+    },
+  },
+  kashimi: {
+    stats: {
+      damage: 9000,
+      defense: 1.33,
+      health: 15000,
+      speed: 0.8,
+    },
+    ability: {
+      title: "None",
+      description: "No active or passive ability.",
+    },
+  },
+  hakuro: {
+    stats: {
+      damage: 65000,
+      defense: 1.35,
+      health: 55000,
+      speed: 2.4,
+    },
+    ability: {
+      title: "Idle Death Gamble",
+      description: "5% Jackpot chance every wave. Failed rolls add 5% chance.",
+    },
+  },
+  daburo: {
+    stats: {
+      damage: 65000,
+      defense: 1.35,
+      health: 68750,
+      speed: 0.85,
+    },
+    ability: {
+      title: "Light & Dark",
+      description: "Above 50% HP: +50% damage. Below 30%: 10% lifesteal per enemy hit until 80% HP.",
+    },
+  },
+  hakaru: {
+    stats: {
+      damage: 189750,
+      defense: 1.5,
+      health: 7777777,
+      speed: 2.0,
+    },
+    ability: {
+      title: "Idle Death Gamble",
+      description: "Jackpot grants 50% more attack and rapid healing for 20 seconds.",
+    },
+  },
+  remura: {
+    stats: {
+      damage: 3000,
+      defense: 1.2,
+      health: 9000,
+      speed: 3.0,
+    },
+    ability: {
+      title: "None",
+      description: "No active or passive ability.",
     },
   },
   "yujo-timeskip": {
