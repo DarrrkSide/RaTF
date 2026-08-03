@@ -43,11 +43,11 @@ const REWARD_SUMMARY = {
     units: 4,
   },
   totals: {
-    traitShards: 285290,
-    godEssence: 2439,
-    secretEssence: 3557,
-    tokens: 4065,
-    infiniteTickets: 813,
+    traitShards: { free: 285, premium: 290 },
+    godEssence: { free: 24, premium: 39 },
+    secretEssence: { free: 35, premium: 57 },
+    tokens: { free: 40, premium: 65 },
+    infiniteTickets: { free: 8, premium: 13 },
   },
 };
 
@@ -72,21 +72,15 @@ export default function BattlepassPage() {
               </div>
             </div>
 
-            <p className="text-sm text-text-dim">Accessible to all players. Contains core progression items and useful merge materials.</p>
-
-            <ul className="mt-2 space-y-2 text-sm text-text-dim">
-              <li>• Core XP / small boosters</li>
-              <li>• Merge materials & shards</li>
-              <li>• Cosmetic flair (borders, icons)</li>
-            </ul>
+            <p className="text-sm text-text-dim">Contains the free-track rewards shown in the summary above.</p>
           </div>
 
           {/* Totals card */}
           <div className="rounded-2xl border border-ink-line/70 bg-gradient-to-br from-ink-surface/90 to-cyan-500/6 p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-text-faint">Season totals</p>
-                <p className="mt-1 text-lg font-black">All tracks combined</p>
+                <p className="text-sm uppercase tracking-[0.24em] text-text-faint">Free | Premium</p>
+                <p className="mt-1 text-lg font-black">Split shown as Free | Premium</p>
               </div>
               <div className="text-sm font-semibold text-text-dim">30 levels</div>
             </div>
@@ -94,25 +88,48 @@ export default function BattlepassPage() {
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">Trait Shards</p>
-                <p className="mt-1 text-lg font-black">{REWARD_SUMMARY.totals.traitShards.toLocaleString()}</p>
+                <p className="mt-1 text-lg font-black">
+                  {REWARD_SUMMARY.totals.traitShards.free.toLocaleString()} <span className="mx-2 text-text-dim">|</span> {(REWARD_SUMMARY.totals.traitShards.free + REWARD_SUMMARY.totals.traitShards.premium).toLocaleString()}
+                </p>
+                <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">God Essence</p>
-                <p className="mt-1 text-lg font-black">{REWARD_SUMMARY.totals.godEssence.toLocaleString()}</p>
+                <p className="mt-1 text-lg font-black">
+                  {typeof REWARD_SUMMARY.totals.godEssence === "number"
+                    ? `${REWARD_SUMMARY.totals.godEssence.toLocaleString()} | ${REWARD_SUMMARY.totals.godEssence.toLocaleString()}`
+                    : `${REWARD_SUMMARY.totals.godEssence.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.godEssence.free + REWARD_SUMMARY.totals.godEssence.premium).toLocaleString()}`}
+                </p>
+                <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">Secret Essence</p>
-                <p className="mt-1 text-lg font-black">{REWARD_SUMMARY.totals.secretEssence.toLocaleString()}</p>
+                <p className="mt-1 text-lg font-black">
+                  {typeof REWARD_SUMMARY.totals.secretEssence === "number"
+                    ? `${REWARD_SUMMARY.totals.secretEssence.toLocaleString()} | ${REWARD_SUMMARY.totals.secretEssence.toLocaleString()}`
+                    : `${REWARD_SUMMARY.totals.secretEssence.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.secretEssence.free + REWARD_SUMMARY.totals.secretEssence.premium).toLocaleString()}`}
+                </p>
+                <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">Tokens</p>
-                <p className="mt-1 text-lg font-black">{REWARD_SUMMARY.totals.tokens.toLocaleString()}</p>
+                <p className="mt-1 text-lg font-black">
+                  {typeof REWARD_SUMMARY.totals.tokens === "number"
+                    ? `${REWARD_SUMMARY.totals.tokens.toLocaleString()} | ${REWARD_SUMMARY.totals.tokens.toLocaleString()}`
+                    : `${REWARD_SUMMARY.totals.tokens.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.tokens.free + REWARD_SUMMARY.totals.tokens.premium).toLocaleString()}`}
+                </p>
+                <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
             </div>
 
             <div className="mt-4 rounded-2xl bg-ink p-3">
               <p className="text-xs text-text-faint">Infinite Tickets</p>
-              <p className="mt-1 text-lg font-black">{REWARD_SUMMARY.totals.infiniteTickets.toLocaleString()}</p>
+              <p className="mt-1 text-lg font-black">
+                {typeof REWARD_SUMMARY.totals.infiniteTickets === "number"
+                  ? `${REWARD_SUMMARY.totals.infiniteTickets.toLocaleString()} | ${REWARD_SUMMARY.totals.infiniteTickets.toLocaleString()}`
+                  : `${REWARD_SUMMARY.totals.infiniteTickets.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.infiniteTickets.free + REWARD_SUMMARY.totals.infiniteTickets.premium).toLocaleString()}`}
+              </p>
+              <p className="text-xs text-text-dim mt-1">Free | Premium</p>
             </div>
           </div>
 
@@ -128,12 +145,7 @@ export default function BattlepassPage() {
               </div>
             </div>
 
-            <p className="text-sm text-text-dim">Unlocks exclusive items on every tier plus stronger boosters and cosmetic rewards.</p>
-
-            <div className="mt-2 flex items-center gap-3 text-sm text-text-dim">
-              <div className="rounded-full bg-amber-500/10 px-3 py-1">+ Exclusive units</div>
-              <div className="rounded-full bg-amber-500/10 px-3 py-1">+ More tokens</div>
-            </div>
+            <p className="text-sm text-text-dim">Contains the premium-track rewards shown in the summary above.</p>
           </div>
         </div>
       </section>
@@ -158,37 +170,7 @@ export default function BattlepassPage() {
 
         <section className="rounded-3xl border border-ink-line/70 bg-ink-surface p-6 shadow-sm">
           <h2 className="font-display text-2xl font-black">Rewards</h2>
-          <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-ink-line/70 bg-ink p-4">
-              <h3 className="font-semibold">Normal track</h3>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-text-dim">
-                {BATTLEPASS_REWARDS.normal.map((reward) => (
-                  <li key={reward} className="flex items-start gap-3">
-                    <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white">
-                      •
-                    </span>
-                    <span>{reward}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-ink-line/70 bg-ink p-4">
-              <h3 className="font-semibold">Premium track</h3>
-              <p className="mt-2 text-sm text-text-dim">
-                Premium unlocks extra rewards for every tier and gives stronger progression bonuses.
-              </p>
-              <ul className="mt-4 space-y-3 text-sm leading-6 text-text-dim">
-                {BATTLEPASS_REWARDS.premium.map((reward) => (
-                  <li key={reward} className="flex items-start gap-3">
-                    <span className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-500/15 text-xs font-semibold text-amber-200">
-                      •
-                    </span>
-                    <span>{reward}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <p className="mt-4 text-sm text-text-dim">Detailed reward lists were removed — the season summary above reflects the exact rewards provided.</p>
         </section>
 
         <section className="rounded-3xl border border-ink-line/70 bg-ink-surface p-6 shadow-sm">
