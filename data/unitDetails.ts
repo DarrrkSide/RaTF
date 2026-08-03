@@ -64,6 +64,9 @@ const LIMITED_UNITS: UnitDetails[] = [
   u("Galactic Garo", "Limited", 139000),
   u("Golden Frozer", "Limited", 137000),
   u("Muscle", "Limited", 130000),
+  u("July", "Limited", 250000),
+  u("Joozou", "Limited", 260000),
+  u("Lilim", "Limited", 270000),
   u("Tanjuro", "Epic", 117000),
 ];
 
@@ -166,6 +169,42 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
       title: "Divine General",
       description: "Summons Mahorogo when Megumo's health is below 10%"
     }
+  },
+  july: {
+    stats: {
+      damage: 8500,
+      defense: 1.5,
+      health: 15000,
+      speed: 0.8,
+    },
+    ability: {
+      title: "Chrono Stasis",
+      description: "Traps every enemy in frozen time before erasing them with overwhelming damage.",
+    },
+  },
+  joozou: {
+    stats: {
+      damage: 17500,
+      defense: 1.41,
+      health: 15000,
+      speed: 0.7,
+    },
+    ability: {
+      title: "Bleed",
+      description: "Basic attacks apply stacking bleed damage over time.",
+    },
+  },
+  lilim: {
+    stats: {
+      damage: 40000,
+      defense: 1.33,
+      health: 16500,
+      speed: 0.75,
+    },
+    ability: {
+      title: "Combat Switching",
+      description: "Switches to stronger melee attacks when enemies get close, gaining 35% Attack, 15% Attack Speed, and 5% Lifesteal while in melee mode.",
+    },
   },
   gyomain: {
     stats: { damage: 4000, defense: 1.32, health: 25000, speed: 2 },
@@ -274,8 +313,8 @@ function applyOverrides(units: UnitDetails[]) {
 }
 
 export const UNIT_DETAILS: UnitDetails[] = [
-  ...applyOverrides(GOD_UNITS),
   ...applyOverrides(LIMITED_UNITS),
+  ...applyOverrides(GOD_UNITS),
   ...applyOverrides(SECRET_UNITS),
   ...applyOverrides(MYTHIC_UNITS),
   ...applyOverrides(LEGENDARY_UNITS),
