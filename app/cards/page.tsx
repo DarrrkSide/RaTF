@@ -113,12 +113,13 @@ function getEffectiveStats(unit: Unit, traitName: string | null, mutationName: s
   const traitDamageMultiplier = getBuffPercent(trait?.buffs, "damage");
   const traitHealthMultiplier = getBuffPercent(trait?.buffs, "health");
   const traitSpeedMultiplier = getBuffPercent(trait?.buffs, "speed");
+  const speedMultiplier = (1 + mutationSpeedMultiplier) * (1 + traitSpeedMultiplier);
 
   return {
     damage: details?.damage ? details.damage * (1 + mutationDamageMultiplier + traitDamageMultiplier) : undefined,
     defense: details?.defense ? details.defense * (1 + mutationDefenseMultiplier) : undefined,
     health: details?.health ? details.health * (1 + mutationHealthMultiplier + traitHealthMultiplier) : undefined,
-    speed: details?.speed ? details.speed * (1 + mutationSpeedMultiplier + traitSpeedMultiplier) : undefined,
+    speed: details?.speed ? details.speed / speedMultiplier : undefined,
   };
 }
 
@@ -482,7 +483,7 @@ export default function CardsPage() {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-semibold">Speed</h4>
+                      <h4 className="font-semibold">Speed (sec/atk)</h4>
                       <p className="text-sm font-semibold text-text">
                         {effectiveStats?.speed?.toLocaleString() ?? "—"}
                         {(selectedTrait || selectedMutation) && (
@@ -494,6 +495,7 @@ export default function CardsPage() {
                       {(selectedTrait || selectedMutation) && originalStats?.speed != null && (
                         <p className="mt-1 text-[0.75rem] text-text-dim">Base {originalStats.speed.toLocaleString()}</p>
                       )}
+                      <p className="mt-1 text-[0.75rem] text-text-faint">Lower is faster</p>
                     </div>
                   </div>
 

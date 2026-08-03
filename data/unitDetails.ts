@@ -60,6 +60,7 @@ const LIMITED_UNITS: UnitDetails[] = [
   u("July", "Limited", 250000),
   u("Joozou", "Limited", 260000),
   u("Lilim", "Limited", 270000),
+  u("Yuwi", "Limited"),
   u("Tanjuro", "Epic", 117000),
 ];
 
@@ -149,6 +150,135 @@ const COMMON_UNITS: UnitDetails[] = [
 ];
 
 const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
+  deyo: {
+  stats: {
+    damage: 420,
+    defense: 1.28,
+    health: 14000,
+    speed: 3
+  },
+  ability: {
+    title: "Time Stop",
+    description: "Freeze all enemy in place for 20s"
+  }
+},
+
+yamumoto: {
+  stats: {
+    damage: 5000,
+    defense: 1.25,
+    health: 11500,
+    speed: 1.4
+  },
+  ability: {
+    title: "Inferno Blade",
+    description: "Causes burns to enemies that are hit by the Heavenly Sword!"
+  }
+},
+
+bills: {
+  stats: {
+    damage: 1400,
+    defense: 1.3,
+    health: 17500,
+    speed: 1.4
+  },
+  ability: {
+    title: "Sphere of Destruction",
+    description: "Throws a destruction ball that explodes with splash damage"
+  }
+},
+
+"goji-shinjuku": {
+  stats: {
+    damage: 50000,
+    defense: 1.95,
+    health: 35000,
+    speed: 4.352
+  },
+  ability: {
+    title: "Hollow Purple",
+    description: "Pulls Blue and Red together, then unleashes Hollow Purple across the map."
+  }
+},
+
+yutta: {
+  stats: {
+    damage: 52500,
+    defense: 1.31,
+    health: 21875,
+    speed: 2
+  },
+  ability: {
+    title: "Rikka",
+    description: "Gains LifeSteal, summons Rikka and unleashes powerful blasts to enemies in the back!"
+  }
+},
+
+"sakuna-heian": {
+  stats: {
+    damage: 2600000,
+    defense: 1.35,
+    health: 48125,
+    speed: 0.7
+  },
+  ability: {
+    title: "Malevolent Shrine",
+    description: "Increases attack and speed by a greater amount!"
+  }
+},
+
+yuwi: {
+  stats: {
+    damage: 105000,
+    defense: 1.5,
+    health: 43750,
+    speed: 0.8
+  },
+  ability: {
+    title: "Mystic Draw",
+    description: "Randomly summons Dark Magician or Dark Magician Girl."
+  }
+},
+
+"hakaru-jackpot": {
+  stats: {
+    damage: 165000,
+    defense: 1.5,
+    health: 7777777,
+    speed: 2
+  },
+  ability: {
+    title: "Idle Death Gamble",
+    description: "Jackpot grants 50% more attack and rapid healing for 20 seconds."
+  }
+},
+
+ais: {
+  stats: {
+    damage: 105000,
+    defense: 1.25,
+    health: 12500,
+    speed: 1
+  },
+  ability: {
+    title: "The Undeads",
+    description: "Summons 2 Death Knight to help you in battle!"
+  }
+},
+
+genes: {
+  stats: {
+    damage: 9000,
+    defense: 1.28,
+    health: 12000,
+    speed: 0.9
+  },
+  ability: {
+    title: "Core Overload",
+    description: "Self-destructs at critical health, instantly destroying enemies caught in the blast."
+  }
+},
   usoff: { stats: { damage: 16, defense: 1.1, health: 160, speed: 1 } },
   kiwusuke: {
     stats: { damage: 1500, defense: 1.25, health: 5000, speed: 2 },

@@ -77,7 +77,7 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
             )}
             {currentStats.speed !== undefined && (
               <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
-                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Speed</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Speed (sec/atk)</p>
                 <p className="mt-2 text-lg font-semibold text-text">{currentStats.speed}</p>
               </div>
             )}
