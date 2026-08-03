@@ -96,27 +96,21 @@ export default function BattlepassPage() {
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">God Essence</p>
                 <p className="mt-1 text-lg font-black">
-                  {typeof REWARD_SUMMARY.totals.godEssence === "number"
-                    ? `${REWARD_SUMMARY.totals.godEssence.toLocaleString()} | ${REWARD_SUMMARY.totals.godEssence.toLocaleString()}`
-                    : `${REWARD_SUMMARY.totals.godEssence.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.godEssence.free + REWARD_SUMMARY.totals.godEssence.premium).toLocaleString()}`}
+                  {REWARD_SUMMARY.totals.godEssence.free.toLocaleString()} <span className="mx-2 text-text-dim">|</span> {(REWARD_SUMMARY.totals.godEssence.free + REWARD_SUMMARY.totals.godEssence.premium).toLocaleString()}
                 </p>
                 <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">Secret Essence</p>
                 <p className="mt-1 text-lg font-black">
-                  {typeof REWARD_SUMMARY.totals.secretEssence === "number"
-                    ? `${REWARD_SUMMARY.totals.secretEssence.toLocaleString()} | ${REWARD_SUMMARY.totals.secretEssence.toLocaleString()}`
-                    : `${REWARD_SUMMARY.totals.secretEssence.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.secretEssence.free + REWARD_SUMMARY.totals.secretEssence.premium).toLocaleString()}`}
+                  {REWARD_SUMMARY.totals.secretEssence.free.toLocaleString()} <span className="mx-2 text-text-dim">|</span> {(REWARD_SUMMARY.totals.secretEssence.free + REWARD_SUMMARY.totals.secretEssence.premium).toLocaleString()}
                 </p>
                 <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
               <div className="rounded-2xl bg-ink p-3">
                 <p className="text-xs text-text-faint">Tokens</p>
                 <p className="mt-1 text-lg font-black">
-                  {typeof REWARD_SUMMARY.totals.tokens === "number"
-                    ? `${REWARD_SUMMARY.totals.tokens.toLocaleString()} | ${REWARD_SUMMARY.totals.tokens.toLocaleString()}`
-                    : `${REWARD_SUMMARY.totals.tokens.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.tokens.free + REWARD_SUMMARY.totals.tokens.premium).toLocaleString()}`}
+                  {REWARD_SUMMARY.totals.tokens.free.toLocaleString()} <span className="mx-2 text-text-dim">|</span> {(REWARD_SUMMARY.totals.tokens.free + REWARD_SUMMARY.totals.tokens.premium).toLocaleString()}
                 </p>
                 <p className="text-xs text-text-dim mt-1">Free | Premium</p>
               </div>
@@ -125,9 +119,7 @@ export default function BattlepassPage() {
             <div className="mt-4 rounded-2xl bg-ink p-3">
               <p className="text-xs text-text-faint">Infinite Tickets</p>
               <p className="mt-1 text-lg font-black">
-                {typeof REWARD_SUMMARY.totals.infiniteTickets === "number"
-                  ? `${REWARD_SUMMARY.totals.infiniteTickets.toLocaleString()} | ${REWARD_SUMMARY.totals.infiniteTickets.toLocaleString()}`
-                  : `${REWARD_SUMMARY.totals.infiniteTickets.free.toLocaleString()} | ${(REWARD_SUMMARY.totals.infiniteTickets.free + REWARD_SUMMARY.totals.infiniteTickets.premium).toLocaleString()}`}
+                {REWARD_SUMMARY.totals.infiniteTickets.free.toLocaleString()} <span className="mx-2 text-text-dim">|</span> {(REWARD_SUMMARY.totals.infiniteTickets.free + REWARD_SUMMARY.totals.infiniteTickets.premium).toLocaleString()}
               </p>
               <p className="text-xs text-text-dim mt-1">Free | Premium</p>
             </div>
