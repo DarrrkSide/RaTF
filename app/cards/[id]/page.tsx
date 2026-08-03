@@ -39,6 +39,10 @@ export default async function Page({ params }: { params: { id: string } }) {
   const breakdown = unit ? getModifierBreakdown(unit, { mutation: null, trait: null, level: 1 }, DEFAULT_MODIFIER_BONUSES) : null;
 
   return (
-    <CardDetail unit={unit} displayName={displayName} imageUrl={imageUrl} breakdown={breakdown} />
+    <div className="min-h-screen flex items-start justify-center py-8">
+      <div className="w-full px-4">
+        <CardDetail unit={unit} displayName={displayName} imageUrl={imageUrl} breakdown={breakdown} />
+      </div>
+    </div>
   );
 }

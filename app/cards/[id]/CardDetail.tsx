@@ -24,11 +24,23 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
   const forms = unit?.forms || [];
   const currentForm = forms.length > 0 ? forms[selectedFormIndex] : null;
   const currentStats = currentForm?.stats || unit?.stats;
+  const [selectedLevel, setSelectedLevel] = useState<number>(1);
+
+  // Apply simple level multipliers per user request:
+  // Level 1 = normal, Level 7 (A) => health x2.4, damage x3
+  const displayedStats = currentStats
+    ? {
+        damage: currentStats.damage !== undefined ? Math.round(currentStats.damage * (selectedLevel === 7 ? 3 : 1)) : undefined,
+        defense: currentStats.defense,
+        health: currentStats.health !== undefined ? Math.round(currentStats.health * (selectedLevel === 7 ? 2.4 : 1)) : undefined,
+        speed: currentStats.speed,
+      }
+    : null;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        <div className="h-40 w-40 overflow-hidden rounded-lg border" style={{ backgroundColor: meta.hex + "14" }}>
+    <div className="w-full max-w-3xl mx-auto p-4 flex flex-col gap-3 max-h-[80vh] overflow-y-auto">
+      <div className="flex items-start gap-4">
+        <div className="h-32 w-32 overflow-hidden rounded-lg border" style={{ backgroundColor: meta.hex + "14" }}>
           {imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={imageUrl} alt={displayName} className="h-full w-full object-cover" />
@@ -37,9 +49,9 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
           )}
         </div>
         <div>
-          <h1 className="font-display text-3xl font-black">{displayName}</h1>
+          <h1 className="font-display text-2xl font-black">{displayName}</h1>
           <div
-            className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"
+            className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-[11px] font-bold uppercase"
             style={rarity === "Mythic" ? {
               color: "#f8fafc",
               borderColor: "transparent",
@@ -50,35 +62,80 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
             {rarity}
           </div>
         </div>
+        <div className="ml-auto flex flex-col items-end gap-2">
+          <div className="inline-flex items-center gap-2">
+            <button
+              onClick={() => setSelectedLevel(1)}
+              className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 1 ? 'bg-white/10' : 'bg-transparent'}`}
+              type="button"
+            >
+              Lvl 1
+            </button>
+            <button
+              onClick={() => setSelectedLevel(7)}
+              className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 7 ? 'bg-white/10' : 'bg-transparent'}`}
+              type="button"
+            >
+              Lvl 7 (A)
+            </button>
+          </div>
+          {forms.length > 0 && (
+            <button
+              onClick={() => setSelectedFormIndex((prev) => (prev + 1) % forms.length)}
+              className="mt-1 rounded-md bg-rose-500 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-600"
+              type="button"
+            >
+              Switch Form
+            </button>
+          )}
+        </div>
       </div>
 
 
-      <div className="rounded-2xl border border-ink-line bg-ink-surface p-5">
-        <h2 className="font-display text-xl font-black">Stats {currentForm && `- ${currentForm.name}`}</h2>
-        {currentStats ? (
+      <div className="rounded-2xl border border-ink-line bg-ink-surface p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-lg font-black">Stats {currentForm && `- ${currentForm.name}`}</h2>
+          <div className="inline-flex items-center gap-2">
+            <button
+              onClick={() => setSelectedLevel(1)}
+              className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 1 ? 'bg-white/10' : 'bg-transparent'}`}
+              type="button"
+            >
+              Lvl 1
+            </button>
+            <button
+              onClick={() => setSelectedLevel(7)}
+              className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 7 ? 'bg-white/10' : 'bg-transparent'}`}
+              type="button"
+            >
+              Lvl 7 (A)
+            </button>
+          </div>
+        </div>
+        {displayedStats ? (
           <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {currentStats.damage !== undefined && (
+            {displayedStats.damage !== undefined && (
               <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Damage</p>
-                <p className="mt-2 text-lg font-semibold text-text">{currentStats.damage.toLocaleString()}</p>
+                <p className="mt-2 text-lg font-semibold text-text">{displayedStats.damage.toLocaleString()}</p>
               </div>
             )}
-            {currentStats.defense !== undefined && (
+            {displayedStats.defense !== undefined && (
               <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Defense</p>
-                <p className="mt-2 text-lg font-semibold text-text">{currentStats.defense}</p>
+                <p className="mt-2 text-lg font-semibold text-text">{displayedStats.defense}</p>
               </div>
             )}
-            {currentStats.health !== undefined && (
+            {displayedStats.health !== undefined && (
               <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Health</p>
-                <p className="mt-2 text-lg font-semibold text-text">{currentStats.health.toLocaleString()}</p>
+                <p className="mt-2 text-lg font-semibold text-text">{displayedStats.health.toLocaleString()}</p>
               </div>
             )}
-            {currentStats.speed !== undefined && (
+            {displayedStats.speed !== undefined && (
               <div className="rounded-xl border border-ink-line/70 bg-ink p-3">
                 <p className="text-xs uppercase tracking-[0.2em] text-text-faint">Speed (sec/atk)</p>
-                <p className="mt-2 text-lg font-semibold text-text">{currentStats.speed}</p>
+                <p className="mt-2 text-lg font-semibold text-text">{displayedStats.speed}</p>
               </div>
             )}
           </div>
@@ -87,20 +144,57 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
         )}
       </div>
 
-      {unit?.ability && (
-        <div 
-          onClick={() => {
-            if (forms.length > 0) {
-              setSelectedFormIndex((prev) => (prev + 1) % forms.length);
-            }
-          }}
-          className={`rounded-2xl border border-ink-line bg-ink-surface p-5 ${forms.length > 0 ? 'cursor-pointer hover:bg-ink-surface2 transition-colors' : ''}`}
-        >
-          <h2 className="font-display text-xl font-black">{unit.ability.title}</h2>
-          <p className="mt-3 text-sm text-text">{unit.ability.description}</p>
-          {forms.length > 0 && (
-            <p className="mt-3 text-xs uppercase tracking-[0.2em] text-text-faint">Current: {forms[selectedFormIndex].name} • Click to switch</p>
+      {/* Modifiers / traits area: make scrollable to reduce vertical footprint */}
+      <div className="rounded-2xl border border-ink-line bg-ink-surface p-3">
+        <h3 className="font-display text-sm font-bold">Modifiers & Traits</h3>
+        <div className="mt-2 max-h-40 overflow-y-auto pr-2 text-sm text-text-dim">
+          {/* Recompute breakdown for selected level so values match */}
+          {unit ? (() => {
+            const local = getModifierBreakdown(unit, { mutation: null, trait: null, level: selectedLevel }, DEFAULT_MODIFIER_BONUSES);
+            return (
+              <div className="space-y-2">
+                <div>Level multiplier: <strong>{local?.levelMultiplier ?? 1}</strong> (level {local?.level})</div>
+                <div>Base value: <strong>{(local?.baseValue ?? 0).toLocaleString()}</strong></div>
+                <div>Total value: <strong>{Math.round(local?.total ?? 0).toLocaleString()}</strong></div>
+                <div className="pt-2">Traits and mutations can be selected from team builder — this panel is scrollable.</div>
+              </div>
+            );
+          })() : (
+            <div>No modifier data.</div>
           )}
+        </div>
+      </div>
+
+      {unit?.ability && (
+        <div className="rounded-2xl border border-ink-line bg-ink-surface p-4">
+          <div className="flex items-start justify-between gap-4">
+            <div
+              onClick={() => {
+                if (forms.length > 0) {
+                  setSelectedFormIndex((prev) => (prev + 1) % forms.length);
+                }
+              }}
+              className={`${forms.length > 0 ? 'cursor-pointer hover:bg-ink-surface2 transition-colors p-1 rounded' : ''} flex-1`}
+            >
+              <h2 className="font-display text-lg font-black">{unit.ability.title}</h2>
+              <p className="mt-2 text-sm text-text">{unit.ability.description}</p>
+              {forms.length > 0 && (
+                <p className="mt-2 text-xs uppercase tracking-[0.2em] text-text-faint">Current: {forms[selectedFormIndex].name} • Tap ability to switch</p>
+              )}
+            </div>
+
+            {forms.length > 0 && (
+              <div className="shrink-0">
+                <button
+                  onClick={() => setSelectedFormIndex((prev) => (prev + 1) % forms.length)}
+                  className="inline-flex items-center gap-2 rounded-md bg-cyan-500 px-3 py-2 text-sm font-semibold text-white hover:bg-cyan-600"
+                  type="button"
+                >
+                  Switch Form
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

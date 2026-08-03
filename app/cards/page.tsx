@@ -149,6 +149,8 @@ export default function CardsPage() {
   const [selectedTrait, setSelectedTrait] = useState<string | null>(null);
   const [selectedMutation, setSelectedMutation] = useState<string | null>(null);
   const [modalMounted, setModalMounted] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState<number>(1);
+  const [selectedFormIndex, setSelectedFormIndex] = useState<number>(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -178,6 +180,8 @@ export default function CardsPage() {
   useEffect(() => {
     setSelectedTrait(null);
     setSelectedMutation(null);
+    setSelectedLevel(1);
+    setSelectedFormIndex(0);
   }, [selected?.id]);
 
   useEffect(() => {
@@ -210,8 +214,38 @@ export default function CardsPage() {
 
   const effectiveStats = useMemo(() => {
     if (!selected) return null;
-    return getEffectiveStats(selected, selectedTrait, selectedMutation);
-  }, [selected, selectedTrait, selectedMutation]);
+    const details = getDetailsById(selected.id);
+    if (!details) return null;
+
+    // choose base stats: form stats if present and index valid, otherwise unit stats
+    const forms = details.forms ?? [];
+    const form = forms.length > 0 ? forms[selectedFormIndex % forms.length] : null;
+    const baseStats = form?.stats ?? details.stats ?? null;
+    if (!baseStats) return null;
+
+    // apply trait and mutation multipliers (same logic as getEffectiveStats)
+    const mutation = MUTATIONS.find((entry) => entry.name === selectedMutation);
+    const trait = TRAIT_TIERS.flatMap((tier) => tier.traits).find((entry) => entry.name === selectedTrait);
+
+    const mutationDamageMultiplier = mutation ? parseMutationValue(mutation.damage) : 0;
+    const mutationHealthMultiplier = mutation ? parseMutationValue(mutation.health) : 0;
+    const mutationDefenseMultiplier = mutation ? parseMutationValue(mutation.defense) : 0;
+    const mutationSpeedMultiplier = mutation ? parseMutationValue(mutation.speed) : 0;
+    const traitDamageMultiplier = getBuffPercent(trait?.buffs, "damage");
+    const traitHealthMultiplier = getBuffPercent(trait?.buffs, "health");
+    const traitSpeedMultiplier = getBuffPercent(trait?.buffs, "speed");
+    const speedMultiplier = (1 + mutationSpeedMultiplier) * (1 + traitSpeedMultiplier);
+
+    const levelDamageMul = selectedLevel === 7 ? 3 : 1;
+    const levelHealthMul = selectedLevel === 7 ? 2.4 : 1;
+
+    return {
+      damage: baseStats.damage ? Math.round(baseStats.damage * (1 + mutationDamageMultiplier + traitDamageMultiplier) * levelDamageMul) : undefined,
+      defense: baseStats.defense ? Math.round(baseStats.defense * (1 + mutationDefenseMultiplier)) : undefined,
+      health: baseStats.health ? Math.round(baseStats.health * (1 + mutationHealthMultiplier + traitHealthMultiplier) * levelHealthMul) : undefined,
+      speed: baseStats.speed ? Number((baseStats.speed / speedMultiplier).toFixed(2)) : undefined,
+    };
+  }, [selected, selectedTrait, selectedMutation, selectedLevel, selectedFormIndex]);
 
   const originalStats = useMemo(() => {
     if (!selected) return null;
@@ -401,21 +435,49 @@ export default function CardsPage() {
       {selected && (
         <Portal>
           <div className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-out ${modalMounted ? "bg-black/40 backdrop-blur-sm" : "bg-black/0"}`}>
-            <div className="absolute inset-0" onClick={() => setSelected(null)} />
-            <div className={`relative w-[90%] max-w-3xl origin-center rounded-xl border bg-ink-surface p-6 shadow-[0_25px_60px_-20px_rgba(0,0,0,0.75)] transform-gpu transition-all duration-300 ease-out ${modalMounted ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-3"}`}>
-              <div className="flex justify-between">
+              <div className="absolute inset-0" onClick={() => setSelected(null)} />
+            <div className={`relative w-[90%] max-w-3xl origin-center rounded-xl border bg-ink-surface p-4 shadow-[0_25px_60px_-20px_rgba(0,0,0,0.75)] transform-gpu transition-all duration-300 ease-out ${modalMounted ? "scale-100 opacity-100 translate-y-0" : "scale-95 opacity-0 translate-y-3"}`}>
+              <div className="flex items-start justify-between gap-4">
                 <h2 className="font-display text-2xl font-black">{selected.name}</h2>
-                <button className="text-text-dim" onClick={() => setSelected(null)}>×</button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setSelectedLevel(1)}
+                    className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 1 ? 'bg-white/10' : 'bg-transparent'}`}
+                    type="button"
+                  >
+                    Lvl 1
+                  </button>
+                  <button
+                    onClick={() => setSelectedLevel(7)}
+                    className={`rounded-md px-2 py-1 text-sm font-medium ${selectedLevel === 7 ? 'bg-white/10' : 'bg-transparent'}`}
+                    type="button"
+                  >
+                    Lvl 7
+                  </button>
+                  {getDetailsById(selected.id)?.forms?.length ? (
+                    <button
+                      onClick={() => setSelectedFormIndex((prev) => {
+                        const forms = getDetailsById(selected.id)!.forms!;
+                        return (prev + 1) % forms.length;
+                      })}
+                      className="ml-2 rounded-md bg-rose-500 px-3 py-1 text-sm font-semibold text-white hover:bg-rose-600"
+                      type="button"
+                    >
+                      Switch Form
+                    </button>
+                  ) : null}
+                  <button className="ml-2 text-text-dim" onClick={() => setSelected(null)}>×</button>
+                </div>
               </div>
-              <div className="mt-4 flex gap-4">
+              <div className="mt-3 flex gap-4">
                 <div
-                className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-lg"
-                style={
-                  selected.rarity === "Mythic"
-                    ? { backgroundColor: RARITY_META[selected.rarity].hex + "14" }
-                    : { backgroundColor: RARITY_META[selected.rarity].hex + "08" }
-                }
-              >
+                  className="h-36 w-36 flex-shrink-0 overflow-hidden rounded-lg"
+                  style={
+                    selected.rarity === "Mythic"
+                      ? { backgroundColor: RARITY_META[selected.rarity].hex + "14" }
+                      : { backgroundColor: RARITY_META[selected.rarity].hex + "08" }
+                  }
+                >
                   {selected.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={selected.image} alt={selected.name} className="h-full w-full object-cover" />
@@ -423,7 +485,7 @@ export default function CardsPage() {
                     <div className="flex h-full w-full items-center justify-center">No image</div>
                   )}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 max-h-[60vh] overflow-y-auto">
                   <div className="flex items-center gap-2">
                     <div
                       className="w-fit rounded-full border px-3 py-1 font-mono text-xs font-bold uppercase"

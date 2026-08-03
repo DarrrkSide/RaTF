@@ -241,17 +241,30 @@ yuwi: {
   }
 },
 
-"hakaru-jackpot": {
+"isogo-true-form": {
   stats: {
-    damage: 165000,
-    defense: 1.5,
-    health: 7777777,
-    speed: 2
+    damage: 60375,
+    defense: 1.33,
+    health: 57750,
+    speed: 1.0,
   },
   ability: {
-    title: "Idle Death Gamble",
-    description: "Jackpot grants 50% more attack and rapid healing for 20 seconds."
-  }
+    title: "Final Dark Slash",
+    description: "Fires a massive Dark Slash that explodes into a nuke on impact.",
+  },
+},
+
+shancks: {
+  stats: {
+    damage: 975000,
+    defense: 1.3,
+    health: 196000,
+    speed: 1.3,
+  },
+  ability: {
+    title: "Conqueror's Haki",
+    description: "Overwhelms every enemy in range.",
+  },
 },
 
 ais: {
@@ -278,6 +291,18 @@ genes: {
     title: "Core Overload",
     description: "Self-destructs at critical health, instantly destroying enemies caught in the blast."
   }
+},
+takamoso: {
+  stats: {
+    damage: 4875,
+    defense: 1.2,
+    health: 6825,
+    speed: 0.61,
+  },
+  ability: {
+    title: "Slim down",
+    description: "After fighting for 10 waves, Takamoso slims down and gains stronger stats!",
+  },
 },
   usoff: { stats: { damage: 16, defense: 1.1, health: 160, speed: 1 } },
   kiwusuke: {
@@ -425,6 +450,17 @@ genes: {
       title: "Idle Death Gamble",
       description: "Jackpot grants 50% more attack and rapid healing for 20 seconds.",
     },
+    forms: [
+      {
+        name: "Hakaru Jackpot",
+        stats: {
+          damage: 189750,
+          defense: 1.5,
+          health: 7777777,
+          speed: 2.0,
+        },
+      },
+    ],
   },
   remura: {
     stats: {
