@@ -235,7 +235,7 @@ export const SUPPORT_TIER_LIST: TierRow[] = [
     color: "#e879f9",
     units: [
       "Kiwusuke",
-      "Wise",
+      "Hakuro",
     ],
   },
   {
@@ -243,10 +243,13 @@ export const SUPPORT_TIER_LIST: TierRow[] = [
     sublabel: "Excellent support",
     color: "#ef4444",
     units: [
+      "Yuwi",
+      "Wise",
       "Megumo",
       "Orihemi",
     ],
   },
+
   {
     label: "A",
     sublabel: "Strong support",

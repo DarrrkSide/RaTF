@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RARITY_META } from "@/data/rarity";
 import type { Unit } from "@/data/units";
 import {
@@ -24,7 +24,13 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
   const forms = unit?.forms || [];
   const currentForm = forms.length > 0 ? forms[selectedFormIndex] : null;
   const currentStats = currentForm?.stats || unit?.stats;
+  const currentAbility = currentForm?.ability || unit?.ability;
+  const currentDisplayName = currentForm?.name || displayName;
   const [selectedLevel, setSelectedLevel] = useState<number>(1);
+
+  useEffect(() => {
+    setSelectedFormIndex(0);
+  }, [unit?.id]);
 
   // Apply simple level multipliers per user request:
   // Level 1 = normal, Level 7 (A) => health x2.4, damage x3
@@ -43,13 +49,13 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
         <div className="h-32 w-32 overflow-hidden rounded-lg border" style={{ backgroundColor: meta.hex + "14" }}>
           {imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={imageUrl} alt={displayName} className="h-full w-full object-cover" />
+            <img src={imageUrl} alt={currentDisplayName} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center">{displayName}</div>
+            <div className="flex h-full w-full items-center justify-center">{currentDisplayName}</div>
           )}
         </div>
         <div>
-          <h1 className="font-display text-2xl font-black">{displayName}</h1>
+          <h1 className="font-display text-2xl font-black">{currentDisplayName}</h1>
           <div
             className="mt-2 w-fit rounded-full border px-3 py-1 font-mono text-[11px] font-bold uppercase"
             style={rarity === "Mythic" ? {
@@ -165,7 +171,7 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
         </div>
       </div>
 
-      {unit?.ability && (
+      {currentAbility && (
         <div className="rounded-2xl border border-ink-line bg-ink-surface p-4">
           <div className="flex items-start justify-between gap-4">
             <div
@@ -176,10 +182,10 @@ export default function CardDetail({ unit, displayName, imageUrl, breakdown }: C
               }}
               className={`${forms.length > 0 ? 'cursor-pointer hover:bg-ink-surface2 transition-colors p-1 rounded' : ''} flex-1`}
             >
-              <h2 className="font-display text-lg font-black">{unit.ability.title}</h2>
-              <p className="mt-2 text-sm text-text">{unit.ability.description}</p>
+              <h2 className="font-display text-lg font-black">{currentAbility.title}</h2>
+              <p className="mt-2 text-sm text-text">{currentAbility.description}</p>
               {forms.length > 0 && (
-                <p className="mt-2 text-xs uppercase tracking-[0.2em] text-text-faint">Current: {forms[selectedFormIndex].name} • Tap ability to switch</p>
+                <p className="mt-2 text-xs uppercase tracking-[0.2em] text-text-faint">Current: {currentForm?.name ?? displayName} • Tap ability to switch</p>
               )}
             </div>
 

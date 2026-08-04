@@ -15,6 +15,7 @@ export type UnitAbility = {
 export type UnitForm = {
   name: string;
   stats: UnitStats;
+  ability?: UnitAbility;
 };
 
 export type UnitDetails = {
@@ -231,15 +232,43 @@ yutta: {
 
 yuwi: {
   stats: {
-    damage: 11666.67,
+    damage: 14700,
     defense: 1.5,
-    health: 8095.24,
+    health: 20000,
     speed: 0.8
   },
   ability: {
     title: "Mystic Draw",
     description: "Randomly summons Dark Magician or Dark Magician Girl."
-  }
+  },
+  forms: [
+    {
+      name: "Purple Magician",
+      stats: {
+        damage: 225000,
+        defense: 1.5,
+        health: 12500,
+        speed: 1.5,
+      },
+      ability: {
+        title: "Dark Magic",
+        description: "His hits weaken enemies, making them take 50% more damage.",
+      },
+    },
+    {
+      name: "Purple Magician Girl",
+      stats: {
+        damage: 52500,
+        defense: 1.5,
+        health: 12500,
+        speed: 3.0,
+      },
+      ability: {
+        title: "Magician's Blessing",
+        description: "Heals all allies for 10% of their maximum health.",
+      },
+    },
+  ],
 },
 
 "isogo-true-form": {
