@@ -165,7 +165,59 @@ const KNOWN_DETAIL_OVERRIDES: Record<string, Partial<UnitDetails>> = {
   }
 },
 
-yamumoto: {
+aldedo: {
+  stats: {
+    damage: 30000,
+    defense: 1.25,
+    health: 250000,
+    speed: 1.0
+  },
+  ability: {
+    title: "Loyalty",
+    description: "Albedo gains double stats when fighting with Ainz"
+  }
+},
+
+tazumaki: {
+  stats: {
+    damage: 35000,
+    defense: 1.25,
+    health: 17500,
+    speed: 2.0
+  },
+  ability: {
+    title: "Meteor Drop",
+    description: "Calls down a meteor that smashes enemies in a wide area."
+  }
+},
+
+bloodtear: {
+  stats: {
+    damage: 10000,
+    defense: 1.32,
+    health: 35000,
+    speed: 1.3
+  },
+  ability: {
+    title: "Vampire Mode",
+    description: "Bloodtear triggers a life steal effect every attack!"
+  }
+},
+
+entomancer: {
+  stats: {
+    damage: 6300,
+    defense: 1.25,
+    health: 16000,
+    speed: 1.15
+  },
+  ability: {
+    title: "Entomancy Arachnid",
+    description: "Summons a large spider that defeats enemies with its powerful fangs!"
+  }
+},
+
+"saitomo-serious": {
   stats: {
     damage: 5000,
     defense: 1.25,
