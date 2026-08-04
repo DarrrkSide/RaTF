@@ -195,45 +195,45 @@ bills: {
     damage: 50000,
     defense: 1.95,
     health: 35000,
-    speed: 4.352
+    speed: 7.25,
   },
   ability: {
     title: "Hollow Purple",
-    description: "Pulls Blue and Red together, then unleashes Hollow Purple across the map."
-  }
+    description: "Pulls Blue and Red together, then unleashes Hollow Purple across the map.",
+  },
 },
 
 yutta: {
   stats: {
-    damage: 52500,
+    damage: 24500,
     defense: 1.31,
-    health: 21875,
-    speed: 2
+    health: 20000,
+    speed: 2.0,
   },
   ability: {
     title: "Rikka",
-    description: "Gains LifeSteal, summons Rikka and unleashes powerful blasts to enemies in the back!"
-  }
+    description: "Gains LifeSteal, summons Rikka and unleashes powerful blasts to enemies in the back!",
+  },
 },
 
 "sakuna-heian": {
   stats: {
-    damage: 2600000,
+    damage: 240000,
     defense: 1.35,
-    health: 48125,
-    speed: 0.7
+    health: 11666.67,
+    speed: 0.93
   },
   ability: {
     title: "Malevolent Shrine",
-    description: "Increases attack and speed by a greater amount!"
+    description: "Malevolent Shrine unleashes a continuous barrage of slashes to all enemies in range, boosting attack and speed by a greater amount!"
   }
 },
 
 yuwi: {
   stats: {
-    damage: 105000,
+    damage: 11666.67,
     defense: 1.5,
-    health: 43750,
+    health: 8095.24,
     speed: 0.8
   },
   ability: {
@@ -244,9 +244,9 @@ yuwi: {
 
 "isogo-true-form": {
   stats: {
-    damage: 60375,
+    damage: 12075,
     defense: 1.33,
-    health: 57750,
+    health: 11550,
     speed: 1.0,
   },
   ability: {
@@ -257,14 +257,14 @@ yuwi: {
 
 shancks: {
   stats: {
-    damage: 975000,
+    damage: 97500,
     defense: 1.3,
-    health: 196000,
+    health: 19600,
     speed: 1.3,
   },
   ability: {
     title: "Conqueror's Haki",
-    description: "Overwhelms every enemy in range.",
+    description: "Overwhelms every enemy in range, stunning them and boosting all stats.",
   },
 },
 
@@ -273,7 +273,7 @@ ais: {
     damage: 105000,
     defense: 1.25,
     health: 12500,
-    speed: 1
+    speed: 1.25
   },
   ability: {
     title: "The Undeads",
@@ -283,7 +283,7 @@ ais: {
 
 genes: {
   stats: {
-    damage: 9000,
+    damage: 7500,
     defense: 1.28,
     health: 12000,
     speed: 0.9
@@ -295,34 +295,34 @@ genes: {
 },
 "galactic-garow": {
   stats: {
-    damage: 397.5,
+    damage: 265,
     defense: 1.28,
-    health: 4000,
+    health: 2909.09,
     speed: 1.0,
   },
   ability: {
     title: "Galactic Adaptation",
-    description: "Infinitely scales stats and recovers health each wave defeated",
+    description: "Infinitely scales stats and recovers health each wave defeated.",
   },
 },
 "yoichi": {
   stats: {
-    damage: 5250,
+    damage: 3500,
     defense: 1.28,
-    health: 26812.5,
-    speed: 1,
+    health: 21450,
+    speed: 1.0,
   },
   ability: {
-    title: "None",
-    description: "No active or passive ability.",
+    title: "",
+    description: "",
   },
 },
 "aisen-divine": {
   stats: {
-    damage: 42705,
+    damage: 64057.5,
     defense: 1.35,
-    health: 33392.86,
-    speed: 3.5,
+    health: 14025,
+    speed: 3.506,
   },
   ability: {
     title: "Reality Shatter",
@@ -335,7 +335,7 @@ takamoso: {
     damage: 4875,
     defense: 1.2,
     health: 6825,
-    speed: 0.61,
+    speed: 0.55,
   },
   ability: {
     title: "Slim down",
@@ -438,39 +438,39 @@ takamoso: {
     },
     ability: {
       title: "Legendary Rage",
-      description: "When health drops 40%, increase attack by 65%, defense by 15% and speed by 50%",
+      description: "When health drops 40%, increase attack by 65%, defense by 15% and speed by 50%.",
     },
   },
   "golden-frozer": {
     stats: {
-      damage: 1500,
+      damage: 1250,
       defense: 1.28,
       health: 10000,
       speed: 0.5,
     },
     ability: {
-      title: "None",
-      description: "No active or passive ability.",
+      title: "",
+      description: "",
     },
   },
   kashimi: {
     stats: {
-      damage: 9000,
+      damage: 3500,
       defense: 1.33,
-      health: 15000,
+      health: 12500,
       speed: 0.8,
     },
     ability: {
-      title: "None",
-      description: "No active or passive ability.",
+      title: "",
+      description: "",
     },
   },
   hakuro: {
     stats: {
-      damage: 65000,
+      damage: 25000,
       defense: 1.35,
-      health: 55000,
-      speed: 2.4,
+      health: 16000,
+      speed: 2.0,
     },
     ability: {
       title: "Idle Death Gamble",
@@ -479,10 +479,10 @@ takamoso: {
   },
   daburo: {
     stats: {
-      damage: 65000,
+      damage: 10000,
       defense: 1.35,
-      health: 68750,
-      speed: 0.85,
+      health: 25000,
+      speed: 1.0,
     },
     ability: {
       title: "Light & Dark",
@@ -491,9 +491,9 @@ takamoso: {
   },
   hakaru: {
     stats: {
-      damage: 189750,
+      damage: 65000,
       defense: 1.5,
-      health: 7777777,
+      health: 3888888.5,
       speed: 2.0,
     },
     ability: {
@@ -504,9 +504,9 @@ takamoso: {
       {
         name: "Hakaru Jackpot",
         stats: {
-          damage: 189750,
+          damage: 126923.08,
           defense: 1.5,
-          health: 7777777,
+          health: 11111111,
           speed: 2.0,
         },
       },
@@ -581,21 +581,21 @@ takamoso: {
   },
   moru: {
     stats: {
-      damage: 117000,
+      damage: 30000,
       defense: 1.24,
-      health: 36666.67,
-      speed: 2.1333,
+      health: 20000,
+      speed: 2.0,
     },
     ability: {
       title: "Heavenly Regen",
-      description: "Heals allies with the lowest health.",
+      description: "Heals the allies with the lowest health.",
     },
   },
   michael: {
     stats: {
-      damage: 2860,
+      damage: 752.63,
       defense: 1.34,
-      health: 22750,
+      health: 3250,
       speed: 0.65,
     },
     ability: {
