@@ -15,8 +15,8 @@ const GUIDE_COPY = {
       { title: "Mutation events", href: "/tutorial/mutations", description: "Mutation bonuses and the event schedule.", symbol: "☄️" },
       { title: "Merging & cloning", href: "/tutorial/merging", description: "How merging and cloning work in practice.", symbol: "🧬" },
       { title: "Clone machine", href: "/tutorial/clone-machine", description: "Clone machine timings by mutation, trait, rarity, and level 1 baseline data.", symbol: "🧪" },
+      { title: "Evolution Machine", href: "/tutorial/evolution-machine", description: "How to evolve god units with Infinite Tower and crafting materials.", symbol: "🔧" },
       { title: "Gamepass priority", href: "/tutorial/gamepasses", description: "The recommended order for gamepasses.", symbol: "🛡️" },
-      { title: "Battlepass", href: "/tutorial/battlepass", description: "Seasonal Battlepass rewards, premium vs free tracks, and quests.", symbol: "🎫" },
       { title: "Free-to-play tokens", href: "/tutorial/free-to-play-tokens", description: "How to earn tokens and spend them efficiently without Robux.", symbol: "🪙" },
       { title: "Titles", href: "/tutorial/titles", description: "Achievement titles and approximate time estimates.", symbol: "🏷️" },
       { title: "Codes", href: "/tutorial/codes", description: "Active redeem codes and their rewards.", symbol: "🎟️" },
@@ -75,33 +75,33 @@ export default function TutorialPage() {
 
       <section>
         <SectionHeading title={copy.overview} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {copy.items.map((item, index) => (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {copy.items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group relative flex min-h-[180px] flex-col justify-between overflow-hidden rounded-[1.6rem] border border-red-500/20 bg-gradient-to-br from-ink-surface via-ink-surface/95 to-red-500/10 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset,0_16px_42px_rgba(0,0,0,0.28)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-red-400/50 hover:shadow-[0_18px_48px_rgba(239,68,68,0.22)]"
+              className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[1.8rem] border border-red-500/10 bg-gradient-to-br from-ink-surface via-ink-surface/95 to-red-500/10 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset,0_16px_42px_rgba(0,0,0,0.28)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-red-400/20 hover:shadow-[0_18px_48px_rgba(255,255,255,0.08)]"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.05),transparent_40%)]" />
               <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full border border-white/10 bg-white/5 blur-2xl" />
               <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full border border-white/10 bg-black/10 blur-3xl" />
-              <div className="absolute right-4 top-4 text-4xl opacity-60 text-text-dim transition-transform duration-300 group-hover:scale-110">
+              <div className="pointer-events-none absolute right-4 top-6 text-[5rem] font-black text-red-500/10 blur-sm">
                 {item.symbol}
               </div>
               <div className="relative z-10">
-                <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.35em] text-red-200/90">
-                  {copy.badge(index)}
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-2xl text-red-300 shadow-[0_10px_25px_rgba(239,68,68,0.16)]">
+                  {item.symbol}
                 </div>
-                <h3 className="font-display text-xl font-black tracking-[0.06em] text-text transition-colors duration-300 group-hover:text-red-400">{item.title}</h3>
-                <p className="mt-2 font-body text-sm leading-6 text-text-dim">{item.description}</p>
+                <h3 className="font-display text-2xl font-black tracking-[0.05em] text-text transition-colors duration-300 group-hover:text-red-300">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-text-dim">{item.description}</p>
               </div>
-              <div className="relative z-10 mt-4 flex items-center justify-between">
-                <span className="guide-button px-3 py-1.5 text-sm">
+              <div className="relative z-10 mt-6 flex items-center justify-between gap-3">
+                <span className="text-sm font-semibold tracking-[0.04em] text-red-300/95 transition-colors duration-200 group-hover:text-red-200">
                   {copy.action}
                 </span>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-lg text-red-200 transition-transform duration-300 group-hover:scale-110">
-                  ✦
-                </div>
+                <span className="text-xs uppercase tracking-[0.3em] text-text-faint">Guide</span>
               </div>
             </Link>
           ))}
